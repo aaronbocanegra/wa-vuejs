@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--home">
+  <div class="page page--category pt-5">
     <transition name="fade" mode="out-in">
       <category-posts-widget  v-if="this.prevSlug == this.$route.params.categorySlug"
                               v-bind:catid="this.category.id" 

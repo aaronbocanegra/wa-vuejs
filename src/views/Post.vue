@@ -1,5 +1,5 @@
 <template>
-    <div v-if="post && isAllLoaded">
+    <div v-if="post && isAllLoaded" class="page page--post pt-5">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
         <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-green-900">

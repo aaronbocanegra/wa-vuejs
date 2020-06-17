@@ -1,8 +1,8 @@
 <template>
   <div class="widget category-posts">
-    <h3>
+    <h1>
       <slot></slot>
-    </h3>
+    </h1>
     <div v-if="categoryPostsLoaded">
       <div v-for="post in categoryPosts(catid)" :key="post.id">
         <router-link 

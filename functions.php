@@ -206,6 +206,47 @@ function vuejs_wordpress_get_custom_logo( ) {
 }
 add_filter( 'get_custom_logo', 'vuejs_wordpress_get_custom_logo' );
 
+/**
+ * Get wa-link-prevue from url
+ *
+ * @return string $JSON
+ */
+function vuejs_wordpress_get_wa_link_prevue( ) {
+        $link = rtrim( $_GET['link'], '/');
+        $linkRegex = '/((http(s)?)(\:\/\/)?(www)?(\w+)?(\.)(\w+)(\.)?(\w+)?)/m';
+        preg_match_all( $linkRegex, $link, $baseUrl, PREG_SET_ORDER, 0);
+        $baseUrl = $baseUrl[0][0];
+        $html = file_get_contents($link);
+        $titleRegex = '/(?<=<title>)(.*?)(?=<\/title>)/m';
+        preg_match_all( $titleRegex, $html, $title, PREG_SET_ORDER, 0);
+
+        $descRegex = '/(<meta(.*)name=[\'|\"]description[\'|\"](.*)content=[]\'|\"])(.*)([\'|\"](.*)?\/?>)/m';
+        preg_match_all( $descRegex, $html, $description, PREG_SET_ORDER, 0);
+
+        $imageRegex = '/(<img(.*)src=[\'|\"])([^"|^\']*)([\'|\"](.*)>)/m';
+        preg_match_all( $imageRegex, $html, $images, PREG_SET_ORDER, 0);
+
+	if( count($title) > 0){
+          $title = $title[0][0];
+        }
+
+	if( count($description) > 0){
+          $description = $description[0][0];
+          $dRegex = '/(?<=content=[]\'|\"])(.*)(?=[\'|\"])/m';
+          preg_match_all( $dRegex, $description, $description, PREG_SET_ORDER, 0);
+          $description = $description[0][0];
+        }
+
+        $images = $images[0][0];
+        $imgRegex = '/(?<=\ssrc=[\'|\"])([^"|^\']*)(?=[\'|\"])/m';
+        preg_match_all( $imgRegex, $images, $images, PREG_SET_ORDER, 0);
+        $images = str_replace( $link, '', $images[0][0] );
+        $images = $baseUrl . '/' . trim( $images, '/' );
+
+	return ['link' => $link, 'title' => $title, 'description' => $description, 'image' => $images];
+}
+add_filter( 'get_wa_link_prevue', 'vuejs_wordpress_get_wa_link_prevue' );
+
 function vuejs_wordpress_get_videos() {
         $videos = get_post_meta($_GET['postid'], 'vuejs_custom_videos' );
         return $videos;
@@ -355,6 +396,13 @@ function vuejs_wordpress_register_rest_routes() {
         //},
     ] );
 
+    register_rest_route( 'vuejs_wordpress/v2', '/wa-link-prevue', [
+        'methods'  => 'GET',
+        'callback' => function ( $request ) {
+            return vuejs_wordpress_get_wa_link_prevue();
+        },
+    ] );
+
     // For retrieving all Menus.
     // Sample request URL: http://example.com/wp-json/vujs_wordpress/v2/menus
     register_rest_route( 'vuejs_wordpress/v2', '/menus', [
@@ -362,9 +410,6 @@ function vuejs_wordpress_register_rest_routes() {
         'callback' => function () {
             return vuejs_wordpress_get_menus();
         },
-        //'permission_callback' => function () {
-        //    return current_user_can( 'manage_options' );
-        //},
     ] );
 
     // Sample request URL: http://example.com/wp-json/vuejs_wordpress/v2/vuejs_videos?postid=1

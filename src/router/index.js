@@ -6,6 +6,7 @@ import Home from '../views/Home.vue';
 import Post from '../views/Post.vue';
 import Page from '../views/Page.vue';
 import Category from '../views/Category.vue';
+import Archive from '../views/Archive.vue';
 
 Vue.use(Router);
 
@@ -37,6 +38,13 @@ const router = new Router({
       name: 'Category',
       linkExactActiveClass: 'active',
       component: Category,
+      meta: { transitionName: 'slide' },
+    },
+    {
+      path: '/archive/:taxSlug',
+      name: 'Archive',
+      linkExactActiveClass: 'active',
+      component: Archive,
       meta: { transitionName: 'slide' },
     },
   ],

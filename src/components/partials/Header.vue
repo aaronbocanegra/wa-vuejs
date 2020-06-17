@@ -5,7 +5,9 @@
 
       <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
       <div id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
-        <router-link to="/" class="" :title="site_url">
+        <router-link to="/" class="" 
+                     @click.native="setPageTitle()"
+                     :title="site_url">
           <img class="h-16 md:h-24 lg:h-28"
             :src="allCustomLogo.image.src"
             :alt="allCustomLogo.site_name" />
@@ -37,6 +39,7 @@
             <!-- Home Link -->
             <router-link v-if="hmi.url === site_url"
                          to="/"
+                         @click.native="setPageTitle()"
                          :title="hmi.title"
                          class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600">
@@ -53,6 +56,14 @@
             <!-- Category Link -->
             <router-link v-else-if="hmi.object == 'category'"
                          :to="{name: 'Category', params: { categorySlug: hmi.slug }}"
+                         :title="hmi.title" 
+                         class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
+                                border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
+                         v-html="hmi.title" replace>
+            </router-link>
+            <!-- Archive Link -->
+            <router-link v-else-if="hmi.url.includes('archive/')"
+                         :to="hmi.url"
                          :title="hmi.title" 
                          class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
@@ -85,6 +96,14 @@
                  <!-- Category Sub Link -->
                  <router-link v-else-if="cmi.object == 'category'"
                               :to="{name: 'Category', params: { categorySlug: cmi.slug }}"
+                              :title="cmi.title" 
+                              class="block font-semibold lg:mt-4 lg:inline-block lg:mt-0 text-green-600 hover:text-white
+                                     border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right pr-1"
+                              v-html="cmi.title" replace>
+                </router-link>
+                 <!-- Archive Sub Link -->
+                 <router-link v-else-if="cmi.url.includes('archive/')"
+                              :to="cmi.title"
                               :title="cmi.title" 
                               class="block font-semibold lg:mt-4 lg:inline-block lg:mt-0 text-green-600 hover:text-white
                                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right pr-1"
@@ -181,6 +200,10 @@ export default {
           el.classList.add("lg:hidden");
         }
       }
+    },
+
+    setPageTitle: function(){
+      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
     },
 
   }

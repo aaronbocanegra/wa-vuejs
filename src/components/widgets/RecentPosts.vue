@@ -1,8 +1,8 @@
 <template>
   <div class="widget recent-posts">
-    <h3>
+    <h1>
       <slot></slot>
-    </h3>
+    </h1>
     <div v-if="recentPostsLoaded">
         <ul>
           <router-link 

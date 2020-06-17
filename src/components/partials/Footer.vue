@@ -13,6 +13,7 @@
             <!-- Home Link -->
             <router-link v-if="fmi.url === site_url"
               to="/"
+              @click.native="setPageTitle()"
               :title="fmi.title"
               class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
@@ -29,6 +30,14 @@
             <!-- Category Link -->
             <router-link v-else-if="fmi.object === 'category'"
                :to="{name: 'Category', params: { categorySlug: fmi.slug }}"
+               :title="fmi.title" 
+              class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
+                     border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
+               v-html="fmi.title" replace>
+                </router-link>
+            <!-- Archive Link -->
+            <router-link v-else-if="fmi.url.includes('archive/')"
+               :to="fmi.url"
                :title="fmi.title" 
               class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
@@ -67,6 +76,14 @@
                           border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right px-5" 
                    v-html="cmi.title" replace>
                  </router-link>
+                 <!-- Archive Sub Link -->
+                 <router-link v-else-if="cmi.url.includes('archive/')"
+                   :to="cmi.url"
+                   :title="cmi.title" 
+                   class="block font-semibold inline-block text-green-600 hover:text-white
+                          border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right px-5" 
+                   v-html="cmi.title" replace>
+                 </router-link>
                  <!-- Custom Sub Link -->
                  <a v-else 
                    :href="[cmi.url === '#' ? 'javascript:void(0);' : cmi.url]"
@@ -91,6 +108,7 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters({
+      allCustomLogo:       'allCustomLogo',
       allMenus:            'allMenus',
       allMenusLoaded:      'allMenusLoaded'
     }),
@@ -109,6 +127,12 @@ export default {
   
   mounted() {
 
+  },
+
+  methods: {
+    setPageTitle: function(){
+      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
+    },
   },
 }
 </script>

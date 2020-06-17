@@ -1,8 +1,8 @@
 <template>
   <div class="widget pages">
-    <h3>
+    <h1>
       <slot></slot>
-    </h3>
+    </h1>
     <div v-if="allPagesLoaded">
       <!-- Pages -->
       <ul class="grid grid-cols-2 w-full mb-3">
