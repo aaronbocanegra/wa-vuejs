@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @apply font-normal mb-2;
+}
+
+h1 {
+  @apply text-3xl font-hairline;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-xl uppercase tracking-widest font-semibold;
+}
+
+h4 {
+  @apply text-xl;
+}
+
+.site-content p {
+  @apply mb-5;
+}
+
+.loader .progress-bar {
+  @apply bg-red-500;
+}
+
+a {
+  @apply text-green-900;
+}
+
+a:hover{
+  @apply text-green-600;
+}
+
+li a.router-link-exact-active, a.active, li.active a{
+  @apply border-blue-600 border-b-2 text-white;
+}
+
+.activeMobileMenu{ 
+  @apply block;
+}
+
+button:focus{
+  outline: none;
+}
+
+button:disabled,
+button[disabled]{
+  @apply cursor-not-allowed opacity-25;
+}
+
+.overlay-details{
+  @apply left-0;
+}
+
+.overlay-desc p{
+  @apply mb-0 m-0 font-light;
+}
+
+.slideLeft{
+  transform: translateX(-400%);
+  @apply opacity-0 w-0; 
+}
+
+.slideRight{
+  transform: translateX(400%);
+  @apply opacity-0 w-0; 
+}
+
+.slideLeft .overlay-details, 
+.slideRight .overlay-details{
+  @apply opacity-0 hidden;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-bounce--enter {
+  opacity: 0;
+  transform: scale3d(2, 0.5, 1) translate3d(400px, 0, 0);
+}
+
+.slide-bounce-enter-to { transform: scale3d(1, 1, 1); }
+
+.slide-bounce-enter-active,
+.slide-bounce-leave-active { transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+
+.slide-bounce-leave { transform: scale3d(1, 1, 1); }
+
+.slide-bounce-leave-to {
+  opacity: 0;
+  transform: scale3d(2, 0.5, 1) translate3d(-400px, 0, 0);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+
+.line-height-8{
+  line-height: 2rem;
+}

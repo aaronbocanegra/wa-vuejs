@@ -1,0 +1,517 @@
+<template>
+  <transition name="wa-lightbox-modal">
+    <div v-if="gallery.length > 0" id="gallery-wrap" class="relative">
+      
+      <!-- Thumbs -->
+      <div id="thumbnails" class="flex">
+        <ul class="flex w-full flex-wrap justify-center">
+          <li v-for="(item, index) in gallery"
+            @click="openLightbox(index)"
+            class="flex w-31/100 m:w-8/25 max-w-thumb relative m-1 cursor-pointer" >
+            <img 
+              :src="item.thumbnail"
+              :alt="item.alt" 
+              class="" />
+            <div class="title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-10000">
+              {{ item.title }}
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Overlay -->
+      <div id="overlay"
+           v-bind:class="[isLightbox ? 'flex' : 'hidden']"
+           v-touch:swipe="swipeLightbox"
+           class="overlay fixed w-screen h-screen inset-0 bg-black z-100000 bg-opacity-90 items-center justify-between p-3">
+        
+        <!-- Previous -->
+        <div id="swipe-left" class="w-10">
+          <button type="button" 
+                 @click="loadPreviousItem();"
+                 id="wa-lightbox-button--prev" 
+                 class="wa-lightbox-button"
+                 title="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 24 24" 
+                 class="text-white hover:text-green-600 fill-current h-10 pl-2">
+                   <path d="M11.28 15.7l-1.34 1.37L5 12l4.94-5.07 1.34 1.38-2.68 2.72H19v1.94H8.6z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Thumbs -->
+        <div id="overlay-thumbnails" 
+             v-bind:class="[toggleThumbnails ? 'flex' : 'hidden']"
+             class="w-full justify-center flex">
+          <ul class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-1 p-3">
+            <li v-for="(item, index) in gallery"
+              @click="switchLightbox(index)"
+              class="relative cursor-pointer" >
+              <!-- Thumbnail -->
+              <img 
+                :src="item.thumbnail"
+                :alt="item.alt" 
+                class=""/>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Lightbox Media Placeholder -->
+        <div id="media-content" 
+                          v-bind:class="[toggleThumbnails ? 'hidden' : 'flex']"
+                          class="flex-row justify-start">
+
+          <!-- Slide Effect -->
+          <div v-if="effect === 'slide'" class="w-full">      
+            <ul class="flex w-full">
+              <!-- Define Overlay for Lightbox -->
+              <li v-for="(item, index) in gallery" :key="item.id"
+                  :id="'item-' + item.id"
+                  @click="toggleDesc();"
+                  v-bind:class="[ index === imgIndex ? 'wa-lightbox__slide--current' : '' ]"
+                  class="justify-center content-overlay w-full wa-lightbox__slide transition-all ease-in duration-700 slideRight">
+
+                <picture class="flex w-full justify-center">
+                         <source media="(min-width:1280px)" :srcset="item.md">
+                         <source media="(min-width:1920px)" :srcset="item.lg">
+                         <source media="(min-width:3840px)" :srcset="item.xl">
+                         <img :src="item.src" :alt="item.alt" draggable="false"
+                              class="flex h-auto w-screen md:h-screen p-6 md:w-auto cursor-pointer">
+                </picture>
+
+                <div :id="'overlay-details-' + index" 
+                     class="overlay-details flex flex-row absolute bottom-0  px-3 py-2 w-screen text-white bg-opacity-75 bg-black z-100000">
+                  <h5 class="m-0 mb-0 p-0 font-hairline">{{ item.title }}&nbsp;|&nbsp;</h5>
+                  <div v-html="item.description" class="overlay-desc"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div v-if="effect === 'fade'">      
+            <!-- Define Overlay for Lightbox -->
+            <div v-for="(item, index) in gallery" :key="item.id"
+                 :id="'item-' + item.id"
+                 @click="toggleDesc();"
+                 v-bind:class="[ index === imgIndex ? 'wa-lightbox-fade__slide--current' : 'wa-lightbox-fade__slide' ]"
+                 class="wa-lightbox-fade__slide justify-center content-overlay w-full opacity-0 transition ease-in-out duration-300">
+
+              <div v-if="index === imgIndex">
+                <picture class="flex w-full justify-center">
+                         <source media="(min-width:1280px)" :srcset="item.md">
+                         <source media="(min-width:1920px)" :srcset="item.lg">
+                         <source media="(min-width:3840px)" :srcset="item.xl">
+                         <img :src="item.src" :alt="item.alt" draggable="false"
+                              class="flex h-auto w-screen md:h-screen p-6 md:w-auto cursor-pointer">
+                </picture>
+                <div :id="'overlay-details-' + index" 
+                     class="overlay-details flex flex-row absolute bottom-0 left-0 px-3 py-2 w-screen text-white bg-opacity-75 bg-black z-100000">
+                  <h5 class="m-0 mb-0 p-0 font-hairline">{{ item.title }}&nbsp;|&nbsp;</h5>
+                  <div v-html="item.description" class="overlay-desc"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Next -->
+        <div id="swipe-right">
+          <button type="button" 
+                 @click="loadNextItem();"
+                 id="wa-lightbox-button--next"
+                 class="wa-lightbox-button" 
+                 title="Next">
+             <svg xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24"
+                  class="text-white fill-current hover:text-green-600 h-10 pr-2">
+               <path d="M15.4 12.97l-2.68 2.72 1.34 1.38L19 12l-4.94-5.07-1.34 1.38 2.68 2.72H5v1.94z"></path>
+             </svg>
+          </button>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="wa-lightbox-toolbar absolute bg-black bg-opacity-50 top-0 right-0">
+
+          <!-- Play Slideshow -->
+          <button type="button" 
+                  title="Play slideshow" 
+                  @click="toggleSlideshow()"
+                  class="wa-lightbox-toolbar__btn">
+            <svg v-if="!this.isSlideshowPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              class="h-10 fill-current text-white hover:text-green-600">
+              <path d="M6.5 5.4v13.2l11-6.6z"></path>
+            </svg>
+            <!-- Pause Slideshow -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg"
+                 class="h-10 w-10 fill-current text-red-600 items-center">
+              <g>
+                <rect id="svg_4" height="26" width="26" x="7" y="7" rx="5" />
+              </g>
+            </svg>
+          </button>
+
+          <!-- Show Thumbnails -->
+          <button type="button" v-if="thumbnails" @click="showThumbs();" title="Show thumbnails" class="wa-lightbox-toolbar__btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                 class="h-10 fill-current text-white hover:text-green-600">
+              <path d="M14.59 14.59h3.76v3.76h-3.76v-3.76zm-4.47 
+              0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76v-3.76zm-4.47 
+              0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76V5.65zm-4.47 
+              0h3.76v3.76h-3.76V5.65zm-4.47 0h3.76v3.76H5.65V5.65z">
+              </path>
+            </svg>
+          </button>
+
+          <!-- Fullscreen -->
+          <button type="button" v-if="fullScreen" @click="toggleFullScreenMode();" class="wa-lightbox-toolbar__btn" title="Fullscreen">
+            <svg  viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" 
+                 class="h-10 fill-current text-white hover:text-green-600">
+              <path d="M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5V4.5H7V3H3v4zm10.5 6.5H11V15h4v-4h-1.5v2.5zM11 3v1.5h2.5V7H15V3h-4z"></path>
+            </svg>
+          </button>
+
+          <!-- Close -->
+          <button type="button" 
+                  title="Close" 
+                  @click="closeLightbox()"
+                  class="wa-lightbox-toolbar__btn"> 
+            <slot name="close">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
+                   class="h-10 fill-current text-white hover:text-green-600">
+                <path d="M12 10.6L6.6 5.2 5.2 6.6l5.4 5.4-5.4 5.4 1.4 1.4 5.4-5.4 5.4 5.4 1.4-1.4-5.4-5.4 5.4-5.4-1.4-1.4-5.4 5.4z"></path>
+              </svg>
+            </slot>
+          </button>
+
+        </div>
+        <!--/wa-lightbox--toolbar-->
+      </div>
+
+    </div>
+  </transition>
+
+  <!-- End wa-lightbox modal -->
+</template>
+
+<script>
+// refrences Vue-Cool-Lightbox
+// https://github.com/lucaspulliese/vue-cool-lightbox
+// https://vue-cool-lightbox.lucaspulliese.com/
+export default {
+  props: [
+           'gallery',
+           'effect',
+         ],
+
+  data() {
+    return {
+      isLightbox: false,
+      thumbnails: true,
+      fullScreen: true,
+      slideshow: null,
+      isSlideshowPlaying: false,
+      isFullScreenMode: false,
+      toggleThumbnails: false,
+      toggleShowDesc: true,
+      currentItem: [],
+      previousItem: [],
+      nextItem: [],
+      imgIndex: 0,
+    };
+  },
+
+  mounted(){
+  },
+ 
+  methods: {
+
+    openLightbox: function(index){
+      this.imgIndex = index;
+      if(this.effect == 'fade'){
+        setTimeout(() => {
+          var fadeIn = document.getElementsByClassName('wa-lightbox-fade__slide--current');
+          fadeIn[0].classList.remove('opacity-0');
+        }, 50);
+      }else if(this.effect == 'slide'){
+        setTimeout(() => {
+          var fadeIn = document.getElementsByClassName('wa-lightbox__slide--current');
+          fadeIn[0].classList.remove('slideRight');
+        }, 50);
+      }
+
+      //Define current,next,previous items
+      this.currentItem = document.getElementById('item-' + index);
+      this.nextItem = this.currentItem.nextElementSibling;
+      this.previousItem = this.currentItem.previousElementSibling;
+
+      this.loadLightbox();
+
+      document.body.style.overflow = 'hidden';
+    },
+ 
+    closeLightbox: function(){
+      this.isLightbox = false;
+      document.body.style.overflow = 'auto';
+    },
+
+    switchLightbox: function(id){
+      this.toggleThumbnails = false;
+      this.imgIndex = id;
+
+      //Define current,next,previous items
+      this.currentItem = document.getElementById('item-' + id);
+      this.nextItem = this.currentItem.nextElementSibling;
+      this.previousItem = this.currentItem.previousElementSibling;
+
+      this.loadLightbox();
+    },
+
+    swipeLightbox: function(direction){
+      switch(direction) {
+        case 'top':
+          this.hideDesc();
+          break;
+        case 'right':
+          this.loadPreviousItem();
+          break;
+        case 'bottom':
+          this.showDesc();
+          break;
+        case 'left':
+          this.loadNextItem();
+          break;
+       }
+    },
+
+    loadNextItem: function(){
+      if(this.nextItem != null){
+        if(this.effect == 'fade'){
+          setTimeout(() => {
+            var fadeOut = document.getElementsByClassName('wa-lightbox-fade__slide--current');
+            fadeOut[0].classList.add('opacity-0');
+            setTimeout(() => {
+              this.imgIndex++;
+              setTimeout(() => {
+                var fadeIn = document.getElementsByClassName('wa-lightbox-fade__slide--current');
+                fadeIn[0].classList.remove('opacity-0');
+              }, 300);
+            }, 300);
+          }, 50);
+        }else if(this.effect == 'slide'){
+          setTimeout(() => {
+            var fadeOut = document.getElementsByClassName('wa-lightbox__slide--current');
+            fadeOut[0].classList.add('slideLeft');
+            setTimeout(() => {
+              this.imgIndex++;
+              setTimeout(() => {
+                var fadeIn = document.getElementsByClassName('wa-lightbox__slide--current');
+                fadeIn[0].classList.remove('slideRight');
+              }, 700);
+            }, 700);
+          }, 50);
+        }
+
+        this.currentItem = this.nextItem;
+        this.nextItem = this.currentItem.nextElementSibling;
+        this.previousItem = this.currentItem.previousElementSibling;
+
+        this.loadLightbox();
+      }
+    },
+
+    loadPreviousItem: function(){
+      if(this.previousItem != null){
+        if(this.effect == 'fade'){
+          setTimeout(() => {
+            var fadeOut = document.getElementsByClassName('wa-lightbox-fade__slide--current');
+            fadeOut[0].classList.add('opacity-0');
+            setTimeout(() => {
+              this.imgIndex--;
+              setTimeout(() => {
+                var fadeIn = document.getElementsByClassName('wa-lightbox-fade__slide--current');
+                fadeIn[0].classList.remove('opacity-0');
+              }, 300);
+            }, 300);
+          },50);
+        }else if(this.effect == 'slide'){
+          setTimeout(() => {
+            var fadeOut = document.getElementsByClassName('wa-lightbox__slide--current');
+            fadeOut[0].classList.add('slideRight');
+            setTimeout(() => {
+              this.imgIndex--;
+              setTimeout(() => {
+                var fadeIn = document.getElementsByClassName('wa-lightbox__slide--current');
+                fadeIn[0].classList.remove('slideLeft');
+                fadeIn[0].classList.remove('slideRight');
+              }, 700);
+            }, 700);
+          }, 50);
+        }
+
+        this.currentItem  = this.previousItem;
+        this.nextItem     = this.currentItem.nextElementSibling;
+        this.previousItem = this.currentItem.previousElementSibling;
+
+        this.loadLightbox();
+      }
+    },
+
+    loadLightbox: function(){
+      //Active Lightbox
+      if(this.previousItem != null){
+        this.previousItem.classList.remove('slideRight');
+        this.previousItem.classList.add('slideLeft');
+      }
+
+      if(this.nextItem != null){
+        this.nextItem.classList.remove('slideLeft');
+        this.nextItem.classList.add('slideRight');
+      }
+
+      this.isLightbox = true;
+
+      //Setup Description overlay
+      if(this.toggleShowDesc){
+        this.showDesc();
+      }else{
+        this.hideDesc();
+      }
+
+      //Handle Buttons
+      var btnPrev = document.getElementById('wa-lightbox-button--prev');
+      var btnNext = document.getElementById('wa-lightbox-button--next');
+
+      if(this.nextItem != null){
+        btnNext.disabled=false;
+      }else{
+        btnNext.disabled=true;
+        this.isSlideshowPlaying = false;
+      }
+
+      if(this.previousItem != null){
+        btnPrev.disabled=false;
+      }else{
+        btnPrev.disabled=true;
+      }
+    },
+ 
+    toggleDesc: function(){
+       if(!this.toggleShowDesc){
+         this.showDesc();
+       }else{
+         this.hideDesc();
+       }
+    },
+
+    showDesc: function(){
+       var divs = document.querySelectorAll('.overlay-details');
+       if(divs.length > 0){
+         for (var i = 0; i < divs.length; i++) {
+           divs[i].classList.remove('hidden');
+         }
+       this.toggleShowDesc = true;
+       }
+    },
+
+    hideDesc: function(){
+       var divs = document.querySelectorAll('.overlay-details');
+       if(divs.length > 0){
+         for (var i = 0; i < divs.length; i++) {
+           divs[i].classList.add('hidden');
+         }
+       this.toggleShowDesc = false;
+       }
+    },
+
+    toggleFullScreenMode: function() {
+      if(this.isFullScreenMode) {
+        this.closeFullscreen()
+      } else {
+        this.fullScreenMode()
+      }
+      this.isFullScreenMode = !this.isFullScreenMode
+    },
+
+    closeFullscreen: function() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+      }
+    },
+
+    fullScreenMode: function() {
+      /* Get the documentElement (<html>) to display the page in fullscreen */
+      var elem = document.documentElement;
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+      } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+      }
+    },
+    
+    showThumbs: function(){
+      //Active Lightbox
+      this.toggleThumbnails = !this.toggleThumbnails;
+      if(this.toggleThumbnails){
+        this.isLightbox = true;      
+
+        var btnPrev = document.getElementById('wa-lightbox-button--prev');
+        var btnNext = document.getElementById('wa-lightbox-button--next');
+        btnPrev.disabled = true;
+        btnNext.disabled = true;
+      }else{
+        var el = this.currentItem.lastChild;      
+        this.loadLightbox(el);
+      }
+    },
+
+    toggleSlideshow: function(){
+      this.isSlideshowPlaying = !this.isSlideshowPlaying;
+      if(this.isSlideshowPlaying){
+        this.slideshow = setInterval(() => {
+          this.loadNextItem();
+        }, 4000);
+      }else{
+        clearInterval(this.slideshow);
+      }
+    },
+  },
+}
+</script>
+
+<style type="postcss" scoped>
+
+  .wa-lightbox__slide{
+    backface-visibility: hidden;
+    z-index: 1;
+    display: none;
+    opacity: 0;
+  }
+	
+  .wa-lightbox__slide--current{
+    display: flex;
+    opacity:1;
+  }
+
+  .wa-lightbox-fade__slide{
+    display: none;
+    backface-visibility: hidden;
+    z-index: 1;
+  }
+
+  .wa-lightbox-fade__slide--current{
+    display: flex;
+  }
+
+</style>
