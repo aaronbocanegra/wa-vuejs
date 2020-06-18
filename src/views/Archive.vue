@@ -1,44 +1,67 @@
 <template>
-  <div class="page page--archive pt-5 w-full">
-    <h1>{{ this.title }}</h1>
-    <div class="wa-vuejs-taxonomy wa-vuejs-taxonomy__tags">
-      <ul v-if="isTaxonomyLoaded" class="w-full">
-        <li class="w-full">
-          <wa-link-prevue url="https://whatartist.com" title="Whatartist"></wa-link-prevue>
-        </li>
-        <li v-for="tag in tags"
-            class="w-full">
-          <wa-link-prevue :url="tag.description" :title="tag.name"></wa-link-prevue>
-        </li>
-      </ul>
+  <div class="page page--archive pt-5 w-full mb-5 sm:mb-10 md:mb-10">
+    <h1>{{ title }}</h1>
+
+    <!-- Tags Archive -->
+    <div class="wa-vuejs-taxonomy__tags" v-if="taxonomy === 'tags'">
+      <nav class="wa-vuejs_taxonomy__nav flex flex-row justify-end border-b-2 mb-3 pr-3">
+        <button type="button"
+                @click="selectTagMode = 'cards'"
+                v-bind:class="[ selectTagMode === 'cards' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
+                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-green-300 hover:text-black text-white mr-1 tracking-wider"
+                value="Cards">Cards</button>
+        <button type="button"
+                @click="selectTagMode = 'icons'"
+                v-bind:class="[ selectTagMode === 'icons' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
+                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-green-300 hover:text-black text-white mr-1 tracking-wider"
+                value="icons">Icons</button>
+        <button type="button"
+                @click="selectTagMode = 'cloud'"
+                v-bind:class="[ selectTagMode === 'cloud' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
+                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-green-300 hover:text-black text-white tracking-wider"
+                value="cloud">Cloud</button>
+      </nav> 
+      <tags-archive v-if="taxonomy === 'tags'" :mode="selectTagMode"></tags-archive>
     </div>
+
+    <!-- Categories Archive -->
+    <div class="wa-vuejs-taxonomy__categories" v-if="taxonomy === 'categories'">
+      <nav class="wa-vuejs_taxonomy__nav">
+        <button type="button"
+                @click="selectTagMode = 'cards'"
+                value="Cards">Cards</button>
+        <button type="button"
+                @click="selectTagMode = 'icons'"
+                value="Cards">Cards</button>
+      </nav> 
+      <categories-archive v-if="taxonomy === 'categories'" :mode="selectTagMode"></categories-archive>
+    </div>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import SETTINGS from "../settings";
-import WaLinkPrevue from '../components/WaLinkPrevue.vue';
+import TagsArchive from "../components/widgets/TagsArchive.vue"
 import { mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters({
       allCustomLogo:       'allCustomLogo',
-      allCustomLogoLoaded: 'allCustomLogoLoaded',
     }),
   },
 
   data() {
     return {
-      tags: [],
-      isTaxonomyLoaded: false,
+      taxonomy: this.$route.params.taxSlug,
       title: false,
+      selectTagMode: 'cards',
     };
   },  // End data
  
   components: {
-    WaLinkPrevue,
+    TagsArchive,
   },
 
   beforeMount() {
@@ -46,25 +69,9 @@ export default {
   }, // End beforeMount
 
   mounted() {
-    this.getTags();
   }, // End Mounted
  
   methods: {
-    async getTags() {
-      await axios
-        .get(
-          SETTINGS.API_BASE_PATH + "tags?orderby=name"
-        )
-        .then(response => {
-          this.tags = response.data;
-          this.isTaxonomyLoaded = true;
-          console.log(this.tags);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
     setPageTitle: function(){
       var origPageTitle = this.$route.params.taxSlug;
       var uppercaseFirstLetter = origPageTitle.charAt(0).toUpperCase();
@@ -73,8 +80,9 @@ export default {
       var baseName = this.allCustomLogo.site_name;
       var pageTitle = this.title + " | " + baseName;
       document.title = pageTitle;
-    }
+    },
   },
+
 };
 </script>
 

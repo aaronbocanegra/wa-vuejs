@@ -214,9 +214,19 @@ add_filter( 'get_custom_logo', 'vuejs_wordpress_get_custom_logo' );
 function vuejs_wordpress_get_wa_link_prevue( ) {
         $link = rtrim( $_GET['link'], '/');
         $linkRegex = '/((http(s)?)(\:\/\/)?(www)?(\w+)?(\.)(\w+)(\.)?(\w+)?)/m';
-        preg_match_all( $linkRegex, $link, $baseUrl, PREG_SET_ORDER, 0);
-        $baseUrl = $baseUrl[0][0];
-        $html = file_get_contents($link);
+        if( preg_match_all( $linkRegex, $link, $baseUrl, PREG_SET_ORDER, 0) ){
+		$baseUrl = $baseUrl[0][0];
+        }else{
+		return FALSE;
+	}
+
+      	$headers = @get_headers( $link );
+	if( !$headers ){
+    		return FALSE;
+	}else{
+		$html = file_get_contents( $link );
+	}
+
         $titleRegex = '/(?<=<title>)(.*?)(?=<\/title>)/m';
         preg_match_all( $titleRegex, $html, $title, PREG_SET_ORDER, 0);
 
@@ -240,10 +250,18 @@ function vuejs_wordpress_get_wa_link_prevue( ) {
         $images = $images[0][0];
         $imgRegex = '/(?<=\ssrc=[\'|\"])([^"|^\']*)(?=[\'|\"])/m';
         preg_match_all( $imgRegex, $images, $images, PREG_SET_ORDER, 0);
-        $images = str_replace( $link, '', $images[0][0] );
-        $images = $baseUrl . '/' . trim( $images, '/' );
+	if($images[0][0]){
+    		$images = str_replace( $link, '', $images[0][0] );
+        	$images = $baseUrl . '/' . trim( $images, '/' );
+	}else{
+		$images = NULL;
+	}
 
-	return ['link' => $link, 'title' => $title, 'description' => $description, 'image' => $images];
+        if($title || $description || $images){
+		return ['link' => $link, 'title' => $title, 'description' => $description, 'image' => $images];
+	}else{
+		return FALSE;
+	}
 }
 add_filter( 'get_wa_link_prevue', 'vuejs_wordpress_get_wa_link_prevue' );
 
@@ -600,9 +618,8 @@ function vuejs_gallery_save( $post_id ) {
 	if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
 		return $post_id;
 	$meta_key = 'vuejs_custom_gallery';
-	$old_meta = get_post_meta( $post->ID, $meta_key );
         $imageArr = ltrim( $_POST[$meta_key], ',' );
-	update_post_meta( $post_id, $meta_key, $imageArr, $old_meta );
+	update_post_meta( $post_id, $meta_key, $imageArr );
 	return $post_id;
 }
 
@@ -616,9 +633,8 @@ function vuejs_videos_save( $post_id ) {
 		return $post_id;
 	// New
 	$meta_key = 'vuejs_custom_videos';
-	$old_meta = get_post_meta( $post->ID, $meta_key );
 	if ( !empty( $_POST[$meta_key] ) )
-		update_post_meta( $post_id, $meta_key, $_POST[$meta_key], $old_meta );
+		update_post_meta( $post_id, $meta_key, $_POST[$meta_key] );
 	elseif ( empty( $_POST[$meta_key] ) )
 		delete_post_meta( $post_id, $meta_key, $_POST[$meta_key] );
 

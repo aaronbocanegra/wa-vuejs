@@ -5,7 +5,7 @@
       <progress-bar :show-loader="showLoader" :loader-style="loaderStyle" />
     </transition>
 
-    <div class="site-content mx-auto py-2 flex-1 px-10 md:px-0 max-w-2xl lg:max-w-5xl">
+    <div class="site-content mx-auto py-2 flex-1 px-10 md:px-0 w-full max-w-2xl lg:max-w-5xl">
       <transition-page>
         <router-view></router-view>
       </transition-page>
