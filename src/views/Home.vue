@@ -1,6 +1,6 @@
 <template>
-  <div class="page page--home pt-5">
-    <recent-posts-widget v-bind:limit="5" class="mb-10">Portfolio</recent-posts-widget>
+  <div class="page page--home">
+    <recent-posts-widget v-bind:limit="5">Portfolio</recent-posts-widget>
     <pages-widget v-bind:limit="5">Pages</pages-widget>
   </div>
 </template>
@@ -14,11 +14,5 @@ export default {
     RecentPostsWidget,
     PagesWidget,
   }, // End Components
-
-  beforeUpdate() {
-  }, // End Updated
-
 };
 </script>
-
-<style type="postcss"></style>

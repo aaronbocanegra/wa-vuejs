@@ -1,15 +1,16 @@
 <template>
-  <div id="app" class="flex flex-col md:min-h-screen overflow-x-hidden">
+  <div id="app">
     <app-header />
     <transition name="loader-animation" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <progress-bar :show-loader="showLoader" :loader-style="loaderStyle" />
     </transition>
 
-    <div class="site-content mx-auto py-2 flex-1 px-10 md:px-0 w-full max-w-2xl lg:max-w-5xl">
+    <main :style="'min-height: ' + pageHeight + 'px;'"
+          class="site-content mx-auto h-full py-2 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
       <transition-page>
         <router-view></router-view>
       </transition-page>
-    </div>
+    </main>
 
     <app-footer />
   </div>
@@ -27,8 +28,12 @@ export default {
   data() {
     return {
       showLoader: true,
+      pageHeight: 0,
+      mBottom: 0,
+      mTop: 0,
     };
   },
+
   computed: {
     ...mapGetters({
       isLoading: 'isLoading',
@@ -47,6 +52,11 @@ export default {
     TransitionPage,
   },
 
+  mounted() {
+    this.setPageHeight();
+    window.addEventListener('resize', this.setPageHeight);
+  },
+
   watch: {
     // watch the value of isLoading and once it's false hide the loader
     isLoading(val) {
@@ -55,6 +65,22 @@ export default {
         setTimeout(function() {
           self.showLoader = false;
         }, 1000);
+      }
+    },
+  },
+
+  methods: {
+    setPageHeight(){
+      document.getElementsByTagName('body')[0].classList.add('overflow-auto');
+      if(document.getElementsByTagName('header').length > 0 && document.getElementsByTagName('footer').length > 0){
+        this.mTop = document.getElementsByTagName('header')[0].clientHeight;
+        this.mBottom = document.getElementsByTagName('footer')[0].clientHeight;
+        var sHeight = window.innerHeight;
+        if( sHeight < 800 ){
+          this.pageHeight = ( sHeight - ( this.mTop + this.mBottom ) -40 );
+        }else{
+          this.pageHeight = ( sHeight - ( this.mTop + this.mBottom ) );
+        }
       }
     },
   },

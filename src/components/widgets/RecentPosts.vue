@@ -4,37 +4,37 @@
       <slot></slot>
     </h1>
     <div v-if="recentPostsLoaded">
-        <ul>
-          <router-link 
-            v-for="post in filteredPosts()" :key="post.id"
-            tag="li"
-            :to="post.slug" 
-            :title="post.title.rendered"
-            class="w-full flex flex-row cursor-pointer">
-            <img v-if="post._embedded['wp:featuredmedia'] != undefined"
-              class="w-1/4 md:w-1/2 object-contain flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-              :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
-              :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
-            <div
-              class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
-                    bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-3/4 md:w-1/2 object-contain">
-              <div class="mb-8">
-                <div class="text-gray-900 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
-                <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
-              </div>
-              <div class="flex items-center">
-                <img
-                  class="w-10 h-10 rounded-full mr-4"
-                  :src="post._embedded['author'][0].avatar_urls[96]"
-                  alt="post._embedded['author'][0].name"
-                />
-                <div class="text-sm">
-                  <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
-                </div>
+      <!-- Posts -->
+      <ul class="mb-5">
+        <router-link v-for="post in filteredPosts()" :key="post.id"
+                     tag="li"
+                     :to="post.slug" 
+                     :title="post.title.rendered"
+                     class="w-full flex flex-row cursor-pointer">
+          <img v-if="post._embedded['wp:featuredmedia'] != undefined"
+            class="w-1/4 md:w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+            :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
+            :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
+          <div
+            class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
+                  bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-3/4 md:w-1/2 object-contain">
+            <div class="mb-8">
+              <div class="text-gray-900 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
+              <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
+            </div>
+            <div class="flex items-center">
+              <img
+                class="w-10 h-10 rounded-full mr-4"
+                :src="post._embedded['author'][0].avatar_urls[96]"
+                :alt="post._embedded['author'][0].name"
+              />
+              <div class="text-sm">
+                <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
               </div>
             </div>
-          </router-link>
-        </ul>
+          </div>
+        </router-link>
+      </ul>
       <!-- Pagination -->
       <ul class="flex flex-row justify-end my-2 w-full h-8 text-green-600 hover:text-green-300">
         <li>
@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import SETTINGS from "../../settings";
 import { mapGetters } from 'vuex';
 import Loader from "../partials/Loader.vue";
 
@@ -94,7 +96,6 @@ export default {
   computed: {
     ...mapGetters({
       recentPosts: 'recentPosts',
-      recentPostCount: 'recentPostCount',
       recentPostsLoaded: 'recentPostsLoaded',
     }),
   },
@@ -116,28 +117,24 @@ export default {
     Loader,
   },  // End components
 
-  beforeMount(){
+  mounted() {
     this.getNumPages();
   },
-
-  mounted() {
-    this.$store.dispatch('getPosts', { limit: this.perPage, page: this.pageNum });
-  }, // End Mounted
 
   methods: {
     filteredPosts: function () {
        if( this.isPagesChanged ){
          this.prevPage = this.pageNum - 1;
          this.nextPage = this.pageNum + 1;
-         this.$store.dispatch('getPosts', { limit: this.perPage, page: this.pageNum });
+         this.$store.dispatch('getPosts', { limit: parseInt( this.perPage ), page: parseInt( this.pageNum ) });
          this.isPagesChanged = false;
        }
-       return this.recentPosts( this.perPage, this.pageNum );
+       return this.recentPosts( parseInt( this.perPage ), parseInt( this.pageNum ) );
     },
 
     getNumPages: function() {
       this.pageNum = 1;
-      this.numPosts = this.recentPostCount;
+      this.numPosts = this.$root.recentPostsCount;
       if(this.perPageSlide > this.numPosts){
         this.perPageSlide = this.numPosts
         this.perPage = this.perPageSlide;
@@ -158,6 +155,3 @@ export default {
   },
 };
 </script>
-
-<style type="postcss" scoped>
-</style>

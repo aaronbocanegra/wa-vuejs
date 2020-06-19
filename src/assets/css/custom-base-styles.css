@@ -81,15 +81,6 @@ button[disabled]{
   @apply opacity-0 hidden;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s ease-out;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .slide-bounce--enter {
   opacity: 0;
   transform: scale3d(2, 0.5, 1) translate3d(400px, 0, 0);
@@ -108,12 +99,10 @@ button[disabled]{
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0
+  transition: opacity 0.5s ease-out;
 }
 
-.line-height-8{
-  line-height: 2rem;
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }

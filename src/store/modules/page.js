@@ -4,6 +4,7 @@ import * as types from '../mutation-types';
 // initial state
 const state = {
   all: [],
+//  some: [],
   loaded: false,
   page: null,
 };
@@ -26,30 +27,19 @@ const getters = {
     return (page[0]) ? page[0].content.rendered : false;
   },
 
-  somePages: state => pager => {
-    if (
-      !pager ||
-      !Number.isInteger(pager) ||
-      typeof pager == 'undefined'
-    ) {
+  somePages: state => (limit, pager) => {
+    if ( !pager || !Number.isInteger(pager) || typeof pager == 'undefined' ) {
       return state.all;
     }
-    let all  = state.all;
-    return all;
-  },
-
-  somePages: state => limit => {
-    if (
-      !limit ||
-      !Number.isInteger(limit) ||
-      typeof limit == 'undefined'
-    ) {
-      return state.all;
+    if ( !limit || !Number.isInteger(limit) || typeof limit == 'undefined' ) {
+        return state.all;
     }
     let all = state.all;
-    return all;
+    let start = ( pager - 1 ) * limit;
+    let end = start + limit;
+    //return all;
+    return all.slice( start, end );
   },
-
 };
 
 // actions
@@ -62,6 +52,7 @@ const actions = {
     });
   },
 
+  /*
   getPages({ commit }, { limit, pager }) {
     api.getSomePages(limit, pager, some_pages=> {
       commit(types.STORE_FETCHED_SOME_PAGES, { some_pages });
@@ -69,6 +60,7 @@ const actions = {
       commit(types.INCREMENT_LOADING_PROGRESS);
     });
   },
+  */
 
   getPagesCount({ commit }) {
     api.getPagesCount(pages_count => {
@@ -86,9 +78,11 @@ const mutations = {
     state.all = pages;
   },
 
+  /*
   [types.STORE_FETCHED_SOME_PAGES](state, { some_pages }) {
     state.some_pages = some_pages;
   },
+  */
 
   [types.STORE_FETCHED_PAGE_COUNT](state, { pages_count }) {
     state.pages_count = pages_count;
@@ -98,9 +92,11 @@ const mutations = {
     state.loaded = val;
   },
 
+  /*
   [types.SOME_PAGES_LOADED](state, val) {
     state.loaded = val;
   },
+  */
 
   [types.PAGE_COUNT_LOADED](state, val) {
     state.loaded = val;

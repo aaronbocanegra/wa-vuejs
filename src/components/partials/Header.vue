@@ -1,7 +1,7 @@
 <template>
-  <header class="site-header flex items-center justify-between flex-wrap bg-black p-2">
+  <header class="site-header flex w-full items-center justify-between flex-wrap bg-black p-2 mb-5">
       <!-- Main Navigation -->
-    <nav class="flex items-center justify-between w-full">
+    <nav class="flex items-center justify-between w-full whitespace-no-wrap">
 
       <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
       <div id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
@@ -9,8 +9,8 @@
                      @click.native="setPageTitle()"
                      :title="site_url">
           <img class="h-16 md:h-24 lg:h-28"
-            :src="allCustomLogo.image.src"
-            :alt="allCustomLogo.site_name" />
+            :src="this.$root.allCustomLogo.image.src"
+            :alt="this.$root.allCustomLogo.site_name" />
         </router-link>
       </div>
 
@@ -128,30 +128,20 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-  computed: {
-    ...mapGetters({
-      allCustomLogo:       'allCustomLogo',
-      allCustomLogoLoaded: 'allCustomLogoLoaded',
-      allMenus:            'allMenus',
-      allMenusLoaded:      'allMenusLoaded'
-    }),
-  },
-
   data() {
     return {
-      headerMenu: false,
+      headerMenu: this.$root.allMenus.header,
       activeMobileMenu: false,
       site_url: location.origin,
     };
   },
 
   beforeMount(){
-    this.headerMenu = this.allMenus.header
+    console.log(this);
+    //this.headerMenu = this.allMenus.header
     // console.log("Custom Logo")
-    // console.log(this.allCustomLogo)
+    // console.log(this.$root.allCustomLogo)
     // console.log("Menus")
     // console.log(this.allMenus)
   },
@@ -203,7 +193,7 @@ export default {
     },
 
     setPageTitle: function(){
-      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
+      document.title = this.$root.allCustomLogo.site_name + " | " + this.$root.allCustomLogo.site_tagline;
     },
 
   }

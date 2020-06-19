@@ -21,7 +21,7 @@
                 <img
                   class="w-10 h-10 rounded-full mr-4"
                   :src="page._embedded['author'][0].avatar_urls[96]"
-                  alt="page._embedded['author'][0].name"
+                  :alt="page._embedded['author'][0].name"
                 />
                 <div class="text-sm">
                   <p class="text-gray-600">{{ page._embedded["author"][0].name }}</p>
@@ -84,17 +84,16 @@
 <script>
 import axios from "axios";
 import SETTINGS from "../../settings";
+import Loader from "../partials/Loader.vue";
 
 import { mapGetters } from 'vuex';
-import Loader from "../partials/Loader.vue";
 
 export default {
   props: [ 'limit', 'pager' ],
   computed: {
     ...mapGetters({
-      allPagesCount: 'allPagesCount',
-      // somePages: 'somePages',
-      // allPagesLoaded: 'allPagesLoaded',
+      somePages: 'somePages',
+      allPagesLoaded: 'allPagesLoaded',
     }),
   },
 
@@ -107,8 +106,6 @@ export default {
       nextPage: 2,
       numTotalPages: false,
       numPages: false,
-      somePages: [],
-      allPagesLoaded: false,
       isPageChanged: true,
     };
   },
@@ -118,42 +115,22 @@ export default {
   },  // End components
 
   mounted() {
-    this.$store.dispatch('getPagesCount');
-    //this.$store.dispatch('getPages', { limit: this.perPage, pager: this.pageNum });
     this.getNumPages();
-    this.getSomePages();
   },
  
   methods: {
-    async getSomePages() {
-      await axios
-        .get(
-           SETTINGS.API_BASE_PATH + 'pages?_embed&per_page=' + this.perPage + '&page=' + this.pageNum
-         )
-        .then(response => {
-          this.somePages = response.data;
-          this.allPagesLoaded = true;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
     filteredPages: function () {
        if( this.isPagesChanged ){
          this.prevPage = this.pageNum - 1;
          this.nextPage = this.pageNum + 1;
-         this.getSomePages();
          this.isPagesChanged = false;
        }
-       return this.somePages;
-       // this.$store.dispatch('getPages', { limit: this.perPage, pager: this.pageNum });
-       // return this.somePages(this.perPage, this.pageNum);
+       return this.somePages( parseInt( this.perPage ), parseInt( this.pageNum ) );
     },
 
     getNumPages: function() {
       this.pageNum = 1;
-      this.numTotalPages = this.allPagesCount;
+      this.numTotalPages = this.$root.allPagesCount;
       if(this.perPageSlide > this.numTotalPages){
         this.perPageSlide = this.numTotalPages
         this.perPage = this.perPageSlide;

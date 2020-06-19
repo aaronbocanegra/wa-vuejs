@@ -287,12 +287,8 @@ export default {
       imgIndex          : 0,
     };
   },
-
-  mounted(){
-  },
  
   methods: {
-
     openLightbox: function(index){
       this.imgIndex = index;
       this.loadLightbox();

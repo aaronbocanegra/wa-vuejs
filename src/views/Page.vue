@@ -1,9 +1,11 @@
 <template>
-    <div v-if="allPagesLoaded" class="pt-5">
+  <div class="page page--page">
+    <div v-if="allPagesLoaded">
       <h1 class="text-3xl mb-5">{{ pageContent.title.rendered }}</h1>
       <div class="page-content" v-html="pageContent.content.rendered"></div>
     </div>
     <Loader v-else />
+  </div>
 </template>
 
 <script>
@@ -13,7 +15,6 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters({
-      allCustomLogo: 'allCustomLogo',
       page: 'page',
       allPagesLoaded: 'allPagesLoaded',
     }),
@@ -37,7 +38,7 @@ export default {
  
   methods: {
     setPageTitle: function(){
-      var pageTitle = this.pageContent.title.rendered + " | " + this.allCustomLogo.site_name;
+      var pageTitle = this.pageContent.title.rendered + " | " + this.$root.allCustomLogo.site_name;
       document.title = pageTitle;
     }
 

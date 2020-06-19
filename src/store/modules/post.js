@@ -15,7 +15,15 @@ const state = {
 
 // getters
 const getters = {
-  recentPosts: state => page => {
+  recentPosts: state => ( limit, page ) => {
+    if (
+      !limit ||
+      !Number.isInteger(limit) ||
+      typeof limit == 'undefined'
+    ) {
+      return state.recent;
+    }
+
     if (
       !page ||
       !Number.isInteger(page) ||
@@ -24,22 +32,10 @@ const getters = {
       return state.recent;
     }
     let recent = state.recent;
-    return recent;
-  },
-
-  recentPosts: state => limit => {
-    if (
-      !limit ||
-      !Number.isInteger(limit) ||
-      typeof limit == 'undefined'
-    ) {
-      return state.recent;
-    }
-    let recent = state.recent;
     return recent; //return recent.slice(0, limit);
   },
 
-  recentPostCount: state => state.post_count,
+  recentPostsCount: state => state.post_count,
 
   recentPostsLoaded: state => state.loaded,
 };
@@ -58,8 +54,8 @@ const actions = {
     });
   },
 
-  getPostCount({ commit }) {
-    api.getPostCount(post_count => {
+  getPostsCount({ commit }) {
+    api.getPostsCount(post_count => {
       commit(types.STORE_FETCHED_POST_COUNT, { post_count });
       commit(types.POST_COUNT_LOADED, true);
       commit(types.INCREMENT_LOADING_PROGRESS);
@@ -70,7 +66,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  [types.STORE_FETCHED_POSTS](state, { posts }) {
+  [types.STORE_FETCHED_POSTS](state, { posts, limit, page }) {
     state.recent = posts;
   },
 

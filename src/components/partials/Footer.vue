@@ -1,12 +1,12 @@
 <template>
-  <footer class="site-footer bg-black text-white flex items-center justify-between flex-wrap px-2 py-3">
+  <footer class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3 mt-5">
 
     <!-- Footer Menu -->
-    <nav class="flex items-center justify-between w-full">
+    <nav class="flex flex-wrap items-center justify-between w-full whitespace-no-wrap">
         <!-- Header Menu lg-->
         <ul v-if="footerMenu.length > 0" 
             id="footerMenu" 
-            class="flex flex-col sm:flex-row items-start w-full justify-between">
+            class="flex flex-wrap flex-col sm:flex-row items-start w-full justify-between">
           <li v-for="(fmi, index) in footerMenu" 
               :key="'footerMenu-' + index" 
               class="block w-full sm:w-auto flex flex-row sm:flex-col lg:flex-row">
@@ -103,40 +103,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
-  computed: {
-    ...mapGetters({
-      allCustomLogo:       'allCustomLogo',
-      allMenus:            'allMenus',
-      allMenusLoaded:      'allMenusLoaded'
-    }),
-  },
-
   data() {
     return {
-      footerMenu: false,
+      footerMenu: this.$root.allMenus.footer,
       site_url: location.origin,
     };
   },
 
-  beforeMount(){
-    this.footerMenu = this.allMenus.footer
-  },
-  
-  mounted() {
-
-  },
-
   methods: {
     setPageTitle: function(){
-      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
+      document.title = this.$root.allCustomLogo.site_name + " | " + this.$root.allCustomLogo.site_tagline;
     },
   },
 }
 </script>
-<style type="postcss" scoped>
-  .site-footer {
-  }
-</style>

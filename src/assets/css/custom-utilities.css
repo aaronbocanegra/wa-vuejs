@@ -1,3 +1,9 @@
+/** line Hight **/
+.line-height-8{
+  line-height: 2rem;
+}
+
+/** Rotate by Degrees **/
 .rotate-deg-0{
   transform: rotate(0deg);
 }

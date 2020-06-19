@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--category pt-5">
+  <div class="page page--category">
     <transition name="fade" mode="out-in">
       <category-posts-widget  v-if="this.prevSlug == this.$route.params.categorySlug"
                               v-bind:catid="this.category.id" 
@@ -15,12 +15,10 @@ import axios from "axios";
 import SETTINGS from "../settings";
 
 import CategoryPostsWidget from '../components/widgets/CategoryPosts.vue';
-import TransitionPage from '../components/partials/TransitionPage.vue';
 
 export default {
   components: {
     CategoryPostsWidget,
-    TransitionPage,
   },
 
   data() {

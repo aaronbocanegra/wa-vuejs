@@ -1,5 +1,6 @@
 <template>
-    <div v-if="post && isAllLoaded" class="page page--post pt-5">
+  <div class="page page--post">
+    <div v-if="post && isAllLoaded">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
         <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-green-900">
@@ -69,6 +70,7 @@
       </div>
     </div>  
     <Loader v-else/>
+  </div>
 </template>
 
 <script>
@@ -106,9 +108,6 @@ export default {
     this.getPost()
   },
   // End beforeMount
-
-  mounted() {
-  },
 
   methods: {
     // Assign Post JSON and call to getPortfolio

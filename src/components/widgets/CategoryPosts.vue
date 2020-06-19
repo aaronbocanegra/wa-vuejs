@@ -5,14 +5,13 @@
     </h1>
     <div v-if="categoryPostsLoaded">
       <div v-for="post in categoryPosts(catid)" :key="post.id">
-        <router-link 
-          v-bind:catid="catid" 
-          :to="post.slug"
-          :title="post.title.rendered"
-          tag="div" 
-          class="w-full flex flex-row cursor-pointer">
+        <router-link v-bind:catid="catid" 
+                     :to="post.slug"
+                     :title="post.title.rendered"
+                     tag="div" 
+                     class="w-full flex flex-row cursor-pointer">
           <img v-if="post._embedded['wp:featuredmedia'] != undefined"
-            class="w-1/2 object-contain flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+            class="w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
             :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
             :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
           <div
@@ -26,7 +25,7 @@
               <img
                 class="w-10 h-10 rounded-full mr-4"
                 :src="post._embedded['author'][0].avatar_urls[96]"
-                alt="post._embedded['author'][0].name"
+                :alt="post._embedded['author'][0].name"
               />
               <div class="text-sm">
                 <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
@@ -61,7 +60,6 @@ export default {
 
   data() {
     return {
-      category: false,
       prevID: false,
     };
   },

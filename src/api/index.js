@@ -27,7 +27,8 @@ export default {
       });
   },
 
-  async getSomePages(limit = 1, pager = 1, cb) {
+  /*
+  async getSomePages(limit = 5, pager = 1, cb) {
     await axios
       .get(
          SETTINGS.API_BASE_PATH + 'pages?_embed&per_page=' + limit + '&page=' + pager
@@ -39,6 +40,7 @@ export default {
         cb(e);
       });
   },
+  */
 
   async getPage(id, cb) {
     if(!Number.isInteger(id) || !id)
@@ -67,7 +69,7 @@ export default {
         });
     },
 
-  async getPostCount(cb) {
+  async getPostsCount(cb) {
       await axios
         .get(
           SETTINGS.API_VENDOR_PATH + "post_count"
