@@ -32,6 +32,7 @@
       <!-- Overlay -->
       <div id="overlay"
            v-if="isLightbox"
+           v-touch:swipe="swipeLightbox"
            v-bind:class="[isLightbox ? 'flex' : 'hidden']"
            class="overlay fixed w-screen h-screen inset-0 bg-black bg-opacity-90 items-center justify-between z-max">
         
@@ -78,7 +79,6 @@
         <transition name="slide-bounce" mode="out-in">
           <div id="media-content" 
                v-if="!toggleThumbnails"
-               v-touch:swipe="swipeLightbox"
                v-bind:class="[toggleThumbnails ? 'hidden' : 'flex']"
                class="w-full lg:h-full sm:h-90full cursor-pointer">
 
