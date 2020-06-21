@@ -12,7 +12,7 @@
 </template>
 
 <script>
-const DEFAULT_TRANSITION = 'fade';
+const DEFAULT_TRANSITION = 'fade-route';
 const DEFAULT_TRANSITION_MODE = 'out-in';
 
 export default {
@@ -31,22 +31,22 @@ export default {
     this.$router.beforeEach((to, from, next) => {
       let transitionName = to.meta.transitionName || from.meta.transitionName || DEFAULT_TRANSITION;
 
-      if (transitionName === 'slide') {
+      if (transitionName === 'slide-route') {
         const toDepth = to.path.split('/').length;
         const fromDepth = from.path.split('/').length;
-        transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+        transitionName = toDepth < fromDepth ? 'slide-route-right' : 'slide-route-left';
       }
 
       this.transitionMode = DEFAULT_TRANSITION_MODE;
       this.transitionEnterActiveClass = '${transitionName}-enter-active';
 
-      if (to.meta.transitionName === 'zoom') {
+      if (to.meta.transitionName === 'zoom-route') {
         this.transitionMode = 'in-out';
-        this.transitionEnterActiveClass = 'zoom-enter-active';
+        this.transitionEnterActiveClass = 'zoom-route-enter-active';
         document.body.style.overflow = 'hidden';
       }
 
-      if (from.meta.transitionName === 'zoom') {
+      if (from.meta.transitionName === 'zoom-route') {
         this.transitionMode = null;
         this.transitionEnterActiveClass = null;
         document.body.style.overflow = null;
@@ -60,74 +60,85 @@ export default {
 
   methods: {
     beforeLeave(element) {
-      this.prevHeight = getComputedStyle(element).height;
+      setTimeout(() => {
+        this.prevHeight = getComputedStyle(element).height;
+        // console.log("this.prevHeight: " + this.prevHeight);
+      },125);
     },
 
     enter(element) {
-      const { height } = getComputedStyle(element);
-      element.style.height = this.prevHeight;
       setTimeout(() => {
+        const { height } =  getComputedStyle(element);
+        element.style.height = this.prevHeight;
         element.style.height = height;
-      });
+        // console.log( "enter height: " + element.style.height );
+      },500);
     },
 
     afterEnter(element) {
-      element.style.height = 'auto';
+      setTimeout(() => {
+        // console.log( "After: " + element.style.height);
+        element.style.height = 'auto';
+      },625);
     },
   },
 };
 </script>
 
 <style type="postcss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.3s;
+.fade-route-enter-active,
+.fade-route-leave-active {
+  transition-duration: 0.5s;
   transition-property: height, opacity;
   transition-timing-function: ease;
-  overflow: hidden;
+/*  overflow: hidden; */
 }
 
-.fade-enter,
-.fade-leave-active {
-  opacity: 0
+.fade-route-enter,
+.fade-route-leave-active {
+  opacity: 0;
+  transition-delay: 0.125s;
 }
 
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
+.slide-route-left-enter-active,
+.slide-route-left-leave-active,
+.slide-route-right-enter-active,
+.slide-route-right-leave-active {
   transition-duration: 0.5s;
   transition-property: height, opacity, transform;
   transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
-  overflow: hidden;
+/*  overflow: hidden; */
 }
 
-.slide-left-enter,
-.slide-right-leave-active {
+.slide-route-left-enter,
+.slide-route-right-leave-active {
   opacity: 0;
-  overflow: hidden;
   transform: translate(2em, 0);
+  transition-delay: 0.125s;
+/*  overflow: hidden; */
 }
 
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  overflow: hidden;
+.slide-route-left-leave-active,
+.slide-route-right-enter {
+  opacity: 0; 
   transform: translate(-2em, 0);
+  transition-delay: 0.125s;
+/*  overflow: hidden; */
 }
 
-.zoom-enter-active,
-.zoom-leave-active {
+.zoom-route-enter-active,
+.zoom-route-leave-active {
   animation-duration: 0.5s;
   animation-fill-mode: both;
-  animation-name: zoom;
+  animation-name: zoom-route;
 }
 
-.zoom-leave-active {
+.zoom-route-leave-active {
+  transition-delay: 0.125s;
   animation-direction: reverse;
 }
 
-@keyframes zoom {
+@keyframes zoom-route {
   from {
     opacity: 0;
     transform: scale3d(0.3, 0.3, 0.3);

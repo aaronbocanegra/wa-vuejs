@@ -1,6 +1,8 @@
 @import "tailwindcss/base";
 @import "./custom-base-styles.css";
 @import './components/progress-bar.css';
+@import './components/transitions.css';
+@import './components/wa-lightbox.css';
 
 @import "tailwindcss/components";
 @import "./custom-components.css";

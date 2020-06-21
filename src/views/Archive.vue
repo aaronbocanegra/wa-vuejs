@@ -1,7 +1,7 @@
 <template>
   <div class="page page--archive">
     <!-- Tags Archive -->
-    <div v-if="taxonomy === 'tags'" class="wa-vuejs-taxonomy__tags" >
+    <div v-if="taxonomy === 'tags'" class="wa-vuejs-taxonomy__tags relative" >
       <tags-archive v-if="taxonomy === 'tags'" :mode="selectTagMode">{{ title }}</tags-archive>
     </div>
 

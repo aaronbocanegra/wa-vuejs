@@ -1,5 +1,5 @@
 <template>
-  <footer class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3 mt-5">
+  <footer class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3">
 
     <!-- Footer Menu -->
     <nav class="flex flex-wrap items-center justify-between w-full whitespace-no-wrap">
@@ -115,6 +115,7 @@ export default {
     setPageTitle: function(){
       document.title = this.$root.allCustomLogo.site_name + " | " + this.$root.allCustomLogo.site_tagline;
     },
+
   },
 }
 </script>

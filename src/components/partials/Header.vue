@@ -1,5 +1,5 @@
 <template>
-  <header class="site-header flex w-full items-center justify-between flex-wrap bg-black p-2 mb-5">
+  <header class="site-header flex w-full items-center justify-between flex-wrap bg-black p-2">
       <!-- Main Navigation -->
     <nav class="flex items-center justify-between w-full whitespace-no-wrap">
 
@@ -128,7 +128,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+  computed: {
+    ...mapGetters({
+      allCustomLogo: 'allCustomLogo',
+      allCustomLogo: 'allCustomLogoLoaded',
+      allMenus: 'allMenus',
+      allMenusLoaded: 'allMenusLoaded',
+    }),
+  },
+
+
   data() {
     return {
       headerMenu: this.$root.allMenus.header,
@@ -137,14 +149,12 @@ export default {
     };
   },
 
-  beforeMount(){
-    console.log(this);
-    //this.headerMenu = this.allMenus.header
-    // console.log("Custom Logo")
-    // console.log(this.$root.allCustomLogo)
-    // console.log("Menus")
-    // console.log(this.allMenus)
-  },
+  beforeCreate(){
+    this.$store.getters.allMenus;
+    this.$store.getters.allMenusLoaded;
+    this.$store.getters.allCustomLogo;
+    this.$store.getters.allCustomLogoLoaded;
+  }, 
 
   mounted() {
      this.setIsActive()

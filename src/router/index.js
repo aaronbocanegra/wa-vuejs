@@ -16,7 +16,7 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-route' },
     },
     {
       // Assuming you're using the default permalink structure for posts
@@ -24,28 +24,28 @@ const router = new Router({
       name: 'Post',
       linkExactActiveClass: 'active',
       component: Post,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-route' },
     },
     {
       path: '/:pageSlug',
       name: 'Page',
       linkExactActiveClass: 'active',
       component: Page,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-route' },
     },
     {
       path: '/category/:categorySlug',
       name: 'Category',
       linkExactActiveClass: 'active',
       component: Category,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-route' },
     },
     {
       path: '/archive/:taxSlug',
       name: 'Archive',
       linkExactActiveClass: 'active',
       component: Archive,
-      meta: { transitionName: 'slide' },
+      meta: { transitionName: 'slide-route' },
     },
   ],
   mode: 'history',
@@ -63,13 +63,25 @@ const router = new Router({
 });
 
 router.afterEach((to) => { // (to, from)
-  // Add a body class specific to the route we're viewing
-  let body = document.querySelector('body');
-
-  const slug = !(to.params.postSlug)
-    ? to.params.pageSlug
-    : to.params.postSlug;
-  body.classList.add('vue--page--' + slug);
+  // Swaich the body id specific to the route we're viewing
+  let bodyID = to.name;
+  switch(bodyID) {
+    case 'Home':
+      break;
+    case 'Post':
+      bodyID = bodyID + '__' + to.params.postSlug;
+      break;
+    case 'Page':
+      bodyID = bodyID + '__' + to.params.pageSlug;
+      break;
+    case 'Category':
+      bodyID = bodyID + '__' + to.params.categorySlug;
+      break;
+    case 'Archive':
+      bodyID = bodyID + '__' + to.params.taxSlug;
+      break;
+  }
+  document.body.id = 'wa-vuejs--' + bodyID.toLowerCase();
 });
 
 export default router;

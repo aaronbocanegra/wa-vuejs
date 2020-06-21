@@ -23,21 +23,28 @@ new Vue({
   store,
   router,
   render: h => h(App),
+
   data() {
     return {
-      allCategories: [],
-      allPages: [],
-      allMenus: [],
-      allCustomLogo: [],
-      allCategoriesLoaded: false,
-      allPagesLoaded: false,
-      allCustomLogoLoaded: false,
-      allMenusLoaded: false,
-      recentPostsCount: false,
-      allPagesCount: false,
+      allMenus: this.$store.getters.allMenus,
+      allMenusLoaded: this.$store.getters.allMenusLoaded,
+      allCustomLogo: this.$store.getters.allCustomLogo,
+      allCustomLogoLoaded: this.$store.getters.allCustomLogoLoaded,
+      allPages: this.$store.getters.allPages,
+      allPagesLoaded: this.$store.getters.allPagesLoaded,
+      allPagesCount: this.$store.getters.allPagesCount,
+      recentPostsCount: this.$store.getters.recentPostsCount,
+      allCategories: this.$store.getters.allCategories,
+      allCategoriesLoaded: this.$store.getters.allCategoriesLoaded,
+      // Store Pagination Values and Set Defaults
+      storedPostsPerPage: 5,
+      storedPostsPageNum: 1,
+      storedPagesPerPage: 5,
+      storedPagesPageNum: 1,
     };
   },
-  created() {
+
+  beforeCreate() {
     this.$store.commit(types.RESET_LOADING_PROGRESS);
     this.$store.dispatch('getAllCategories');
     this.$store.dispatch('getAllPages');

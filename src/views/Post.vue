@@ -1,6 +1,6 @@
 <template>
   <div class="page page--post">
-    <div v-if="post && isAllLoaded">
+    <div v-if="post && isAllLoaded" class="relative">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
         <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-green-900">

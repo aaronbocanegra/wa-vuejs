@@ -1,0 +1,23 @@
+.overlay-details{
+  @apply left-0;
+}
+
+.overlay-desc p{
+  @apply mb-0 m-0 font-light;
+}
+
+.slideLeft{
+  transform: translateX(-400%);
+  @apply opacity-0 w-0; 
+}
+
+.slideRight{
+  transform: translateX(400%);
+  @apply opacity-0 w-0; 
+}
+
+.slideLeft .overlay-details, 
+.slideRight .overlay-details{
+  @apply opacity-0 hidden;
+}
+

@@ -1,17 +1,20 @@
 <template>
-  <div id="app">
-    <app-header />
+  <div id="app" class="min-h-screen">
     <transition name="loader-animation" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <progress-bar :show-loader="showLoader" :loader-style="loaderStyle" />
     </transition>
 
-    <main :style="'min-height: ' + pageHeight + 'px;'"
-          class="site-content mx-auto h-full py-2 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
+    <!-- Header Section -->
+    <app-header />
+
+    <!-- Main Content -->
+    <main id="wa-vuejs__main" class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
       <transition-page>
         <router-view></router-view>
       </transition-page>
     </main>
 
+    <!-- Footer Section -->
     <app-footer />
   </div>
 </template>
@@ -25,24 +28,25 @@ import TransitionPage from './components/partials/TransitionPage.vue';
 
 
 export default {
-  data() {
-    return {
-      showLoader: true,
-      pageHeight: 0,
-      mBottom: 0,
-      mTop: 0,
-    };
-  },
-
   computed: {
     ...mapGetters({
       isLoading: 'isLoading',
       loadingProgress: 'loadingProgress',
+      allMenus: 'allMenus',
+      allMenusLoaded: 'allMenusLoaded',
+      allCustomLogo: 'allCustomLogo',
+      allCustomLogoLoaded: 'allCustomLogoLoaded',
     }),
 
     loaderStyle() {
       return `width: ${this.loadingProgress}%;`;
     },
+  },
+
+  data() {
+    return {
+      showLoader: true,
+    };
   },
 
   components: {
@@ -53,10 +57,10 @@ export default {
   },
 
   mounted() {
-    this.setPageHeight();
-    window.addEventListener('resize', this.setPageHeight);
+    /* Adjust minimum main element height */
+    this.$el.childNodes[4].style.minHeight = window.innerHeight - (this.$el.childNodes[2].clientHeight + this.$el.childNodes[6].clientHeight) + 'px';
   },
-
+  
   watch: {
     // watch the value of isLoading and once it's false hide the loader
     isLoading(val) {
@@ -69,24 +73,5 @@ export default {
     },
   },
 
-  methods: {
-    setPageHeight(){
-      document.getElementsByTagName('body')[0].classList.add('overflow-auto');
-      if(document.getElementsByTagName('header').length > 0 && document.getElementsByTagName('footer').length > 0){
-        this.mTop = document.getElementsByTagName('header')[0].clientHeight;
-        this.mBottom = document.getElementsByTagName('footer')[0].clientHeight;
-        var sHeight = window.innerHeight;
-        if( sHeight < 800 ){
-          this.pageHeight = ( sHeight - ( this.mTop + this.mBottom ) -40 );
-        }else{
-          this.pageHeight = ( sHeight - ( this.mTop + this.mBottom ) );
-        }
-      }
-    },
-  },
-
 };
 </script>
-
-<style type="postcss" scoped>
-</style>

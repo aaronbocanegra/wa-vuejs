@@ -1,7 +1,7 @@
 <template>
   <div class="page page--home">
-    <recent-posts-widget v-bind:limit="5">Portfolio</recent-posts-widget>
-    <pages-widget v-bind:limit="5">Pages</pages-widget>
+    <recent-posts-widget v-bind:limit="this.$root.storedPostsPerPage">Portfolio</recent-posts-widget>
+    <pages-widget v-bind:limit="this.$root.storedPagesPerPage">Pages</pages-widget>
   </div>
 </template>
 

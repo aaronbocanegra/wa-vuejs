@@ -39,9 +39,9 @@
             <div class="px-1 line-height-8">Per Page</div>
             <input type="range" min="1" :max="numTotalPages" step="1"
                    @change="getNumPages()"
-                   v-model="perPageSlide"
+                   v-model="$root.storedPagesPerPage"
                    class="h-8 w-10 sm:w-20" />
-            <div v-text="perPageSlide" class="px-1 line-height-8"></div>
+            <div v-text="$root.storedPagesPerPage" class="px-1 line-height-8"></div>
           </div>
         </li>
         <li v-if="prevPage != 0" @click="switchPage(prevPage)"
@@ -100,8 +100,7 @@ export default {
   data() {
     return {
       perPage: this.limit,
-      perPageSlide: this.limit,
-      pageNum: 1,
+      pageNum: this.$root.storedPagesPageNum,
       prevPage: 0,
       nextPage: 2,
       numTotalPages: false,
@@ -129,13 +128,12 @@ export default {
     },
 
     getNumPages: function() {
-      this.pageNum = 1;
       this.numTotalPages = this.$root.allPagesCount;
-      if(this.perPageSlide > this.numTotalPages){
-        this.perPageSlide = this.numTotalPages
-        this.perPage = this.perPageSlide;
+      if(this.$root.storedPagesPerPage > this.numTotalPages){
+        this.$root.storedPagesPerPage = this.numTotalPages
+        this.perPage = this.$root.storedPagesPerPage;
       }else{
-        this.perPage = this.perPageSlide;
+        this.perPage = this.$root.storedPagesPerPage;
       }
       this.numPages = Math.ceil( this.numTotalPages / this.perPage );
       this.isPagesChanged = true;
@@ -143,7 +141,8 @@ export default {
 
     switchPage: function(i){
       if( i > 0 && i <= this.numPages ){
-        this.pageNum = i;
+        this.$root.storedPagesPageNum = i;
+        this.pageNum = this.$root.storedPagesPageNum;
         this.isPagesChanged = true;
       }
     },
