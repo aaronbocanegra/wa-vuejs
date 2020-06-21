@@ -63,7 +63,7 @@
             </router-link>
             <!-- Archive Link -->
             <router-link v-else-if="hmi.url.includes('archive/')"
-                         :to="hmi.url"
+                         :to="{name: 'Archive', params: { taxSlug: hmi.url.split('/')[2] }}"
                          :title="hmi.title" 
                          class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
@@ -103,7 +103,7 @@
                 </router-link>
                  <!-- Archive Sub Link -->
                  <router-link v-else-if="cmi.url.includes('archive/')"
-                              :to="cmi.title"
+                              :to="{name: 'Archive', params: { taxSlug: cmi.url.split('/')[2] }}"
                               :title="cmi.title" 
                               class="block font-semibold lg:mt-4 lg:inline-block lg:mt-0 text-green-600 hover:text-white
                                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right pr-1"

@@ -34,11 +34,11 @@ h4 {
 }
 
 a {
-  @apply text-green-900;
+  @apply text-green-600;
 }
 
 a:hover{
-  @apply text-green-600;
+  @apply text-blue-600;
 }
 
 li a.router-link-exact-active, a.active, li.active a{

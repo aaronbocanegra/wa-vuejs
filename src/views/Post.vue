@@ -3,7 +3,7 @@
     <div v-if="post && isAllLoaded" class="relative">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
-        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-green-900">
+        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-gray-400 pl-2">
           <li v-for="category in categoriesArr" 
               :key="category.id" 
               class="categoryLI font-semibold mr-1 pr-2" 
@@ -17,10 +17,12 @@
         </ul>
         
         <!-- Tags -->
-        <ul v-if="tagsArr.length > 0" class="tagsUL flex flex-wrap">
+        <ul v-if="tagsArr.length > 0" class="tagsUL flex flex-wrap pl-2">
           <li v-for="tag in tagsArr" :key="tag.id" class="tagLI mr-1 pr-2 font-semibold" :id="tag.slug" >
-            <a :href="tag.description" :title="'External Link -> ' + tag.name" rel="external" target="_blank">
+            <router-link :to="{name: 'Tag', params: { tagSlug: tag.slug }}"
+                         :title="tag.name">
               {{ tag.name }}
+            </router-link>
             </a>
           </li>
         </ul>

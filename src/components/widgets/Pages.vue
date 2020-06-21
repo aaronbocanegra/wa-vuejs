@@ -14,7 +14,7 @@
             <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400
                     bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-full object-contain">   
               <div class="mb-8">
-                <div class="text-gray-900 font-bold text-xl mb-2" v-html="page.title.rendered"></div>
+                <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2" v-html="page.title.rendered"></div>
                 <p class="text-gray-700 text-base" v-html="page.excerpt.rendered"></p>
               </div>
               <div class="flex items-center">

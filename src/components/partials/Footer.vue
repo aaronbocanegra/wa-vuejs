@@ -37,7 +37,7 @@
                 </router-link>
             <!-- Archive Link -->
             <router-link v-else-if="fmi.url.includes('archive/')"
-               :to="fmi.url"
+               :to="{name: 'Archive', params: { taxSlug: fmi.url.split('/')[2] }}"
                :title="fmi.title" 
               class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
@@ -78,7 +78,7 @@
                  </router-link>
                  <!-- Archive Sub Link -->
                  <router-link v-else-if="cmi.url.includes('archive/')"
-                   :to="cmi.url"
+                   :to="{name: 'Archive', params: { taxSlug: cmi.url.split('/')[2] }}"
                    :title="cmi.title" 
                    class="block font-semibold inline-block text-green-600 hover:text-white
                           border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right px-5" 

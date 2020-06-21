@@ -6,6 +6,7 @@ import Home from '../views/Home.vue';
 import Post from '../views/Post.vue';
 import Page from '../views/Page.vue';
 import Category from '../views/Category.vue';
+import Tag from '../views/Tag.vue';
 import Archive from '../views/Archive.vue';
 
 Vue.use(Router);
@@ -38,6 +39,13 @@ const router = new Router({
       name: 'Category',
       linkExactActiveClass: 'active',
       component: Category,
+      meta: { transitionName: 'slide-route' },
+    },
+    {
+      path: '/tag/:tagSlug',
+      name: 'Tag',
+      linkExactActiveClass: 'active',
+      component: Tag,
       meta: { transitionName: 'slide-route' },
     },
     {
@@ -76,6 +84,9 @@ router.afterEach((to) => { // (to, from)
       break;
     case 'Category':
       bodyID = bodyID + '__' + to.params.categorySlug;
+      break;
+    case 'Tag':
+      bodyID = bodyID + '__' + to.params.tagSlug;
       break;
     case 'Archive':
       bodyID = bodyID + '__' + to.params.taxSlug;

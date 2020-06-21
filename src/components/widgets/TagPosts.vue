@@ -1,11 +1,12 @@
 <template>
-  <div class="widget category-posts">
+  <div class="widget tag-posts">
     <h1>
-      Category&nbsp;|&nbsp;<slot></slot>
+      <router-link :to="{name: 'Archive', params: { taxSlug: 'tags' }}" title="Tags Archive">Tags</router-link>&nbsp;|&nbsp;<slot></slot>
     </h1>
-    <div v-if="categoryPostsLoaded">
-      <div v-for="post in categoryPosts(catid)" :key="post.id">
-        <router-link v-bind:catid="catid" 
+    <wa-link-prevue class="border-b-2 border-gray-400 mb-3" :url="tag.description" :title="tag.name" :slug="tag.slug" :count="tag.count" mode="cards"></wa-link-prevue>
+    <div v-if="tagPostsLoaded" class="mt-5">
+      <div v-for="post in tagPosts(tagid)" :key="post.id">
+        <router-link v-bind:tagid="tagid" 
                      :to="post.slug"
                      :title="post.title.rendered"
                      tag="div" 
@@ -44,39 +45,41 @@ import axios from "axios";
 import SETTINGS from "../../settings";
 import { mapGetters } from 'vuex';
 import Loader from '../partials/Loader.vue';
+import WaLinkPrevue from '../WaLinkPrevue.vue';
 
 export default {
-  props: [ 'catid', ],
+  props: [ 'tagid', 'tag'],
   computed: {
     ...mapGetters({
-      categoryPosts: 'categoryPosts',
-      categoryPostsLoaded: 'categoryPostsLoaded',
+      tagPosts: 'tagPosts',
+      tagPostsLoaded: 'tagPostsLoaded',
     }),
   },
   
   components: {
+    WaLinkPrevue,
     Loader, 
   },
 
   data() {
     return {
-      prevID: false,
+      prevSlug: false,
     };
   },
   // End Data
 
   mounted() {
-    this.getCategory();
+    this.getTag();
   },
 
   beforeUpdate() {
-    this.getCategory();
+    this.getTag();
   },
   methods: {
-    getCategory: function() {
-      if( this.prevID != this.catid ){
-        this.$store.dispatch('getCategoryPosts', { catid: this.catid });
-        this.prevID = this.catid;
+    getTag: function() {
+      if( this.prevSlug != this.tagid ){
+        this.$store.dispatch('getTagPosts', { tagid: this.tagid });
+        this.prevSlug = this.tagid;
       }
     },
   },

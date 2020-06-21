@@ -106,6 +106,17 @@ export default {
       });
   },
 
+  async getTagPosts(tagid = 0, cb) {
+    await axios
+      .get(SETTINGS.API_BASE_PATH + 'posts?_embed&tags=' + tagid)
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => {
+        cb(e);
+      });
+  },
+
   async getCustomLogo(cb) {
       await axios
         .get(

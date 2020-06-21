@@ -25,12 +25,11 @@
          :id="'wa-link-prevue__card-' + index"
          class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full">
       <transition name="fade" mode="out-in">
-        <a v-if="urlExists" 
+        <router-link v-if="urlExists" 
            class="wa-link-prevue_response w-full flex flex-rows flex-wrap cursor-pointer hover:text-black text-black"
-           :href="url"
-           target="_blank"  
-           :title="'Go To: ' + title">
-          <h4 class="pl-3 w-full">{{ title }}</h4>
+           :to="{ name: 'Tag', params: { tagSlug: slug } }"
+           :title="title">
+          <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
             <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
               <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
@@ -40,11 +39,12 @@
 	        <div class="wa-link-prevue__card-text px-4 text-center">
 	          <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
 	          <p v-if="response.description.length" v-html="response.description"></p>
+                  <a :href="url" :title="'Visit: ' + title" target="_blank" class="wa-link-prevue_external-link">Visit Site</a>
 	        </div>
              </div>
             </div>
           </slot>
-        </a>
+        </router-link>
         <!-- Defunct -->
         <div v-else-if="!urlExists">
           <h4 class="pl-3 w-full">{{ title }}</h4>
@@ -175,6 +175,10 @@ export default {
       default: ''
     },
     title: {
+      type: String,
+      default: ''
+    },
+    slug: {
       type: String,
       default: ''
     },

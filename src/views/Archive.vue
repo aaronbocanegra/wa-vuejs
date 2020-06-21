@@ -39,6 +39,8 @@ export default {
   },
 
   beforeMount() {
+    console.log( "Archive");
+    console.log(this.$route.params);
     this.setPageTitle();
   }, // End beforeMount
  

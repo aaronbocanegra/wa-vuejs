@@ -3,8 +3,7 @@
     <transition name="fade" mode="out-in">
       <category-posts-widget  v-if="this.prevSlug == this.$route.params.categorySlug"
                               v-bind:catid="this.category.id" 
-                              class="mb-10">
-        {{ this.category.name }}
+                              class="mb-10">{{ this.category.name }}
       </category-posts-widget>
     </transition>
   </div>

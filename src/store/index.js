@@ -7,6 +7,7 @@ import hub from './modules/hub'
 import user from './modules/user'
 import post from './modules/post'
 import categoryPosts from './modules/category_posts'
+import tagPosts from './modules/tag_posts'
 import page from './modules/page'
 import categories from './modules/categories'
 import customLogo from './modules/custom_logo'
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     user,
     post,
     categoryPosts,
+    tagPosts,
     page,
     categories,
     customLogo,
