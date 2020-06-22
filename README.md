@@ -23,6 +23,22 @@ and oEmbed videos are utilzed in a custom touchable lightbox component in the Vu
 
 Webpack is utilized to create a logical file structure and for development watch functionality. 
 
+##### Custom Menus
+The the has enabled 2 custom wordpress themes: header, footer. Both are designed to allow for at least 1 child 
+level for dtop down capabilities.
+
+The menu capabilities:
+|       Menu Item      |         Menu Link       |    Rendered Method    | Route Name |            Notes            |
+| -------------------- | ----------------------- | --------------------- | ---------- | --------------------------- |
+| Page                 | :pageSlug               | router-link           | Page       |                             |
+| Post                 | :YYYY/:MM/:DD/:postSlug | router-link           | Post       |                             |
+| Category             | category/:categorySlug  | router-link           | Category   |                             |
+| Tags Archive         | archive/tags            | router-link           | Archive    |                             |
+| Categories Archive   | archive/category        | router-link           | Archive    |                             |
+| Categories - Custom  | #                       | a/javascript:void(0); |            | Dropdown Category Sub-Links |
+| &copy; Home - Custom | site_url                | router-link           | Home       | Converts site_url to Route  |
+
+
 #### Vuejs Frontend
 The frontend is built in Vuejs. Making use of Router-Link functionality and transitions it is an animated SPA.
 

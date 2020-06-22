@@ -45,6 +45,14 @@
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600">
                           v-html="hmi.title">
             </router-link> 
+            <!-- Post Link -->
+            <router-link v-else-if="hmi.object == 'post'"
+                         :to="{name: 'Post', params: { postSlug: hmi.slug }}"
+                         :title="hmi.title" 
+                         class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
+                                border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
+                         v-html="hmi.title">
+            </router-link>
             <!-- Page Link -->
             <router-link v-else-if="hmi.object == 'page'"
                          :to="{name: 'Page', params: { pageSlug: hmi.slug }}"

@@ -29,7 +29,13 @@
         <li v-for="(tag, index) in tags" :key="index" 
             v-bind:class="[ selectTagMode === 'cloud' ? ['relative', 'h-full', 'w-auto', 'px-3', 'min-h-10'] : '' ]"
             class="">
-          <wa-link-prevue :url="tag.description" :index="index" :title="tag.name" :slug="tag.slug" :count="tag.count" :mode="selectTagMode"></wa-link-prevue>
+          <wa-link-prevue :url="tag.description" 
+                          :index="tag.id" 
+                          :title="tag.name" 
+                          :slug="tag.slug" 
+                          :count="tag.count" 
+                          :taxonomy="tag.taxonomy" 
+                          :mode="selectTagMode"></wa-link-prevue>
         </li>
       </ul>
     </div>

@@ -3,7 +3,14 @@
     <h1>
       <router-link :to="{name: 'Archive', params: { taxSlug: 'tags' }}" title="Tags Archive">Tags</router-link>&nbsp;|&nbsp;<slot></slot>
     </h1>
-    <wa-link-prevue class="border-b-2 border-gray-400 mb-3" :url="tag.description" :title="tag.name" :slug="tag.slug" :count="tag.count" mode="cards"></wa-link-prevue>
+    <wa-link-prevue class="border-b-2 border-gray-400 mb-3" 
+                    :url="tag.description" 
+                    :title="tag.name" 
+                    :index="tag.id"
+                    :slug="tag.slug"
+                    :taxonomy="tag.taxonomy" 
+                    :count="tag.count" 
+                    mode="filter-card"></wa-link-prevue>
     <div v-if="tagPostsLoaded" class="mt-5">
       <div v-for="post in tagPosts(tagid)" :key="post.id">
         <router-link v-bind:tagid="tagid" 

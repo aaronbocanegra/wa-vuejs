@@ -46,7 +46,6 @@ export default {
           )
           .then(response => {
             this.tag = response.data[0];
-            console.log(this.tag);
             this.prevSlug = this.$route.params.tagSlug;
           })
           .catch(e => {
