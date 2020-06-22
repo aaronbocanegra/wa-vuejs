@@ -1,60 +1,47 @@
 <template>
   <div class="page page--category">
     <transition name="fade" mode="out-in">
-      <category-posts-widget  v-if="this.prevSlug == this.$route.params.categorySlug"
-                              v-bind:catid="this.category.id" 
-                              class="mb-10">{{ this.category.name }}
+      <category-posts-widget v-if="allCategoriesLoaded"
+                             v-bind:category="filterCategory()"
+                             v-bind:parent="this.parentCategory"
+                             class="mb-10">
       </category-posts-widget>
     </transition>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import SETTINGS from "../settings";
-
+import { mapGetters } from 'vuex';
 import CategoryPostsWidget from '../components/widgets/CategoryPosts.vue';
 
 export default {
-  components: {
-    CategoryPostsWidget,
+  computed: {
+    ...mapGetters({
+      allCategoriesLoaded: 'allCategoriesLoaded',
+      activeCategory: 'activeCategory',
+    }),
   },
 
   data() {
     return {
       category: [],
-      prevSlug: false,
+      parentCategory: [],
     };
   },
   // End data
 
-  mounted() {
-    this.getCategory();
+  components: {
+    CategoryPostsWidget,
   },
 
-  beforeUpdate() {
-    this.getCategory();
-  }, 
- 
   methods: {
-    async getCategory() {
-      if( this.category == undefined || this.$route.params.categorySlug != this.prevSlug ){
-        await axios
-          .get(
-            SETTINGS.API_BASE_PATH + "categories?slug=" + this.$route.params.categorySlug
-          )
-          .then(response => {
-            this.category = response.data[0];
-            this.prevSlug = this.$route.params.categorySlug;
-          })
-          .catch(e => {
-            console.log(e);
-          });
+    filterCategory: function() {
+      this.category = this.activeCategory( this.$route.params.categorySlug );
+      if( this.category.parent ){
+        this.parentCategory = this.activeCategory( this.category.parent );
       }
-    }
+      return this.category;
+    },
   },
 };
 </script>
-
-<style type="postcss" scoped>
-</style>

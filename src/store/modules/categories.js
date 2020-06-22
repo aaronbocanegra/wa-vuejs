@@ -12,6 +12,12 @@ const getters = {
   // Returns an array all categories
   allCategories: state => state.all,
   allCategoriesLoaded: state => state.loaded,
+  activeCategory: state => id => {
+    let field = typeof id === 'number' ? 'id' : 'slug';
+    let category = state.all.filter(category => category[field] === id);
+    return (category[0]) ? category[0] : false;
+  },
+
 }
 
 // actions

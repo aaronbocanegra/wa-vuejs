@@ -1,7 +1,10 @@
 <template>
   <div class="widget tag-posts">
-    <h1>
-      <router-link :to="{name: 'Archive', params: { taxSlug: 'tags' }}" title="Tags Archive">Tags</router-link>&nbsp;|&nbsp;<slot></slot>
+    <h1 class="w-full flex flex-wrap flex-rows">
+      <router-link :to="{name: 'Archive', params: { taxSlug: 'tags' }}" 
+                   title="Tags Archive">Tags</router-link>
+      <div>&nbsp;|&nbsp;</div>
+      <slot :tag="tag">{{ tag.name }}</slot>
     </h1>
     <wa-link-prevue class="border-b-2 border-gray-400 mb-3" 
                     :url="tag.description" 
@@ -12,8 +15,8 @@
                     :count="tag.count" 
                     mode="filter-card"></wa-link-prevue>
     <div v-if="tagPostsLoaded" class="mt-5">
-      <div v-for="post in tagPosts(tagid)" :key="post.id">
-        <router-link v-bind:tagid="tagid" 
+      <div v-for="post in tagPosts(tag.id)" :key="post.id">
+        <router-link v-bind:tagid="tag.id" 
                      :to="post.slug"
                      :title="post.title.rendered"
                      tag="div" 
@@ -48,14 +51,12 @@
 </template>
 
 <script>
-import axios from "axios";
-import SETTINGS from "../../settings";
 import { mapGetters } from 'vuex';
 import Loader from '../partials/Loader.vue';
 import WaLinkPrevue from '../WaLinkPrevue.vue';
 
 export default {
-  props: [ 'tagid', 'tag'],
+  props: [ 'tag'],
   computed: {
     ...mapGetters({
       tagPosts: 'tagPosts',
@@ -82,15 +83,14 @@ export default {
   beforeUpdate() {
     this.getTag();
   },
+
   methods: {
     getTag: function() {
-      if( this.prevSlug != this.tagid ){
-        this.$store.dispatch('getTagPosts', { tagid: this.tagid });
-        this.prevSlug = this.tagid;
+      if( this.prevSlug != this.tag.id ){
+        this.$store.dispatch('getTagPosts', { tagid: this.tag.id });
+        this.prevSlug = this.tag.id;
       }
     },
   },
-
-
 };
 </script>

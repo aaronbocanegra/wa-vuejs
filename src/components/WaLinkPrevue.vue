@@ -28,8 +28,9 @@
         <div v-if="urlExists" 
              class="wa-link-prevue_response w-full flex flex-rows flex-wrap text-black">
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
-              <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
+            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+              <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
+              <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">
 	        <img v-if="response.image.length" :src="response.image" :alt="response.title" />
               </div>
 	      <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
@@ -63,7 +64,8 @@
            :title="'Filter Posts by: ' + title">
           <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
+            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+              <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
               <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
 	        <img v-if="response.image.length" :src="response.image" :alt="response.title" />
               </div>
@@ -116,7 +118,7 @@
          :id="'list-item' + index"
          @mouseenter="showCardInfo(index)"
          @mouseleave="hideCardInfo(index)"
-         class="wa-link-prevue__icon-main relative flex flex-rows flex-wrap items-center justify-center h-full">
+         class="wa-link-prevue__icon-main relative flex flex-rows flex-wrap items-center justify-center h-full border-2 border-gray-200 p-1">
       <transition name="fade" mode="out-in">
         <router-link v-if="taxonomy === 'post_tag'"
            :to="{ name: 'Tag', params: { tagSlug: slug } }" 
@@ -124,7 +126,9 @@
            :title="'Filter Posts by: ' + title">
           <slot :img="response.image" :title="response.title" :description="response.description" 
                 :url="url">
-            <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
+            <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20 relative">
+              <div v-if="count" 
+                   class="wa-link-prevue__card-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
               <div class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
 	        <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
@@ -132,7 +136,7 @@
             </div>
 	    <div :id="'wa-link-prevue__icon-card-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__icon-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__icon-card-text pt-2 top-0 left-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
 	      <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
 	         <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>

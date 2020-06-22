@@ -1,29 +1,22 @@
 <template>
   <div class="page page--archive">
+
     <!-- Tags Archive -->
-    <div v-if="taxonomy === 'tags'" class="wa-vuejs-taxonomy__tags relative" >
-      <tags-archive v-if="taxonomy === 'tags'" :mode="selectTagMode">{{ title }}</tags-archive>
+    <div v-if="filterTax() === 'tags'" class="wa-vuejs-taxonomy__tags relative" >
+      <tags-archive :mode="selectTagMode">{{ setPageTitle() }}</tags-archive>
     </div>
 
     <!-- Categories Archive -->
-    <div v-if="taxonomy === 'categories'" class="wa-vuejs-taxonomy__categories">
-      <nav class="wa-vuejs_taxonomy__nav">
-        <button type="button"
-                @click="selectTagMode = 'cards'"
-                value="Cards">Cards</button>
-        <button type="button"
-                @click="selectTagMode = 'icons'"
-                value="Cards">Cards</button>
-      </nav> 
-      <categories-archive v-if="taxonomy === 'categories'" :mode="selectTagMode">{{ title }}</categories-archive>
+    <div v-if="filterTax() === 'categories'" class="wa-vuejs-taxonomy__categories">
+      <categories-archive>{{ setPageTitle() }}</categories-archive>
     </div>
 
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import TagsArchive from "../components/widgets/TagsArchive.vue"
+import CategoriesArchive from "../components/widgets/CategoriesArchive.vue"
 
 export default {
   data() {
@@ -36,15 +29,21 @@ export default {
  
   components: {
     TagsArchive,
+    CategoriesArchive,
   },
 
   beforeMount() {
-    console.log( "Archive");
-    console.log(this.$route.params);
     this.setPageTitle();
   }, // End beforeMount
  
-  methods: {
+   methods: {
+    filterTax: function() {
+      if( this.taxonomy != this.$route.params.taxSlug ){
+        this.taxonomy = this.$route.params.taxSlug;
+      }
+        return this.taxonomy;
+    },
+
     setPageTitle: function(){
       var origPageTitle = this.$route.params.taxSlug;
       var uppercaseFirstLetter = origPageTitle.charAt(0).toUpperCase();
@@ -53,6 +52,7 @@ export default {
       var baseName = this.$root.allCustomLogo.site_name;
       var pageTitle = this.title + " | " + baseName;
       document.title = pageTitle;
+      return this.title;
     },
   },
 

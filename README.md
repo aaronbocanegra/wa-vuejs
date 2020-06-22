@@ -28,15 +28,15 @@ The the has enabled 2 custom wordpress themes: header, footer. Both are designed
 level for dtop down capabilities.
 
 The menu capabilities:
-|       Menu Item      |         Menu Link       |    Rendered Method    | Route Name |            Notes            |
-| -------------------- | ----------------------- | --------------------- | ---------- | --------------------------- |
-| Page                 | :pageSlug               | router-link           | Page       |                             |
-| Post                 | :YYYY/:MM/:DD/:postSlug | router-link           | Post       |                             |
-| Category             | category/:categorySlug  | router-link           | Category   |                             |
-| Tags Archive         | archive/tags            | router-link           | Archive    |                             |
-| Categories Archive   | archive/category        | router-link           | Archive    |                             |
-| Categories - Custom  | #                       | a/javascript:void(0); |            | Dropdown Category Sub-Links |
-| &copy; Home - Custom | site_url                | router-link           | Home       | Converts site_url to Route  |
+|       Menu Item      |           Menu Link          |    Rendered Method    | Route Name |            Notes            |
+| -------------------- | ---------------------------- | --------------------- | ---------- | --------------------------- |
+| Page                 | :pageSlug                    | router-link           | Page       |                             |
+| Post                 | :year/:month/:day/:postSlug  | router-link           | Post       | url is split to slugs       |
+| Category             | category/:categorySlug       | router-link           | Category   |                             |
+| Tags Archive         | archive/tags                 | router-link           | Archive    | url is split to :taxSlug    |
+| Categories Archive   | archive/category             | router-link           | Archive    | url is split to :taxSlug    |
+| Categories - Custom  | #                            | a/javascript:void(0); |            | Dropdown Category Sub-Links |
+| &copy; Home - Custom | site_url                     | router-link           | Home       | Converts site_url to Route  |
 
 
 #### Vuejs Frontend

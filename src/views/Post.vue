@@ -10,7 +10,7 @@
               :id="category.slug" >
             <router-link :to="{name: 'Category', params: { categorySlug: category.slug }}"
                          v-bind:catid="catid" 
-                         :title="category.name" replace>
+                         :title="'Filter Posts by category: ' + category.name" replace>
               {{ category.name }}
             </router-link>
           </li>
@@ -20,7 +20,7 @@
         <ul v-if="tagsArr.length > 0" class="tagsUL flex flex-wrap pl-2">
           <li v-for="tag in tagsArr" :key="tag.id" class="tagLI mr-1 pr-2 font-semibold" :id="tag.slug" >
             <router-link :to="{name: 'Tag', params: { tagSlug: tag.slug }}"
-                         :title="tag.name">
+                         :title="'Filter Posts by tag: ' + tag.name">
               {{ tag.name }}
             </router-link>
             </a>
@@ -43,10 +43,10 @@
       <transition name="fade" mode="out-in">
         <div class="portfolio mt-3 mb-3"
              v-if="isVideosLoaded">
-          <WaLightbox 
+          <wa-lightbox
              v-bind:gallery="videos"
              v-bind:effect="'fade'">
-          </WaLightbox>
+          </wa-lightbox>
         </div>
       </transition>
 
@@ -54,10 +54,10 @@
       <transition name="fade" mode="out-in">
         <div class="portfolio mt-3 mb-3"
              v-if="isGalleryLoaded">
-          <WaLightbox 
+          <wa-lightbox
              v-bind:gallery="gallery"
              v-bind:effect="'slide'">
-          </WaLightbox>
+          </wa-lightbox>
         </div>
       </transition>
 
@@ -80,8 +80,18 @@ import axios from "axios";
 import Loader from "../components/partials/Loader.vue";
 import SETTINGS from "../settings";
 import WaLightbox from "../components/WaLightbox.vue";
+import { mapGetters } from 'vuex';
 
 export default {
+  computed: {
+    ...mapGetters({
+      activeCategory:      'activeCategory',
+      allCategoriesLoaded: 'allCategoriesLoaded',
+      activeTag:           'activeTag',
+      allTagsLoaded:       'allTagsLoaded',
+    }),
+  },
+
   data() {
     return {
       post: false,
@@ -134,7 +144,9 @@ export default {
 
     // Assign Portfolio JSON data to array
     getPortfolio: function(ps) {
-      if(ps.metadata.vuejs_custom_gallery != undefined){
+      this.isGalleryLoaded = false;
+      this.isVideosLoaded = false;
+      if(ps.metadata.vuejs_custom_gallery != ""){
         this.portA = ps.metadata.vuejs_custom_gallery[0].split(",");
         // Loop through portfolio array
         var i = 0;
@@ -165,10 +177,14 @@ export default {
              console.log(e);
           });
         });
-        this.isGalleryLoaded = true;
+        setTimeout(() => {
+          if(this.gallery.length > 0){
+            this.isGalleryLoaded = true;
+          }
+        },250);
       }
 
-      if(ps.metadata.vuejs_custom_videos != undefined){
+      if(ps.metadata.vuejs_custom_videos != ""){
         axios.get(
           SETTINGS.API_VENDOR_PATH + "vuejs_videos?postid=" + this.post.id
         )
@@ -178,7 +194,11 @@ export default {
         .catch(e => {
            console.log(e);
         });
-        this.isVideosLoaded = true;
+        setTimeout(() => {
+          if(this.videos.length > 0){
+            this.isVideosLoaded = true;
+          }
+        },250);
       }
     },
 
@@ -186,15 +206,7 @@ export default {
     getTags: function(tags) {
       // Loop through tags array
       tags.forEach((t) => {
-        axios.get(
-          SETTINGS.API_BASE_PATH + "tags/" + t
-        )
-        .then(response => {
-          this.tagsArr.push(response.data);
-        })
-        .catch(e => {
-           console.log(e);
-        });
+        this.tagsArr.push( this.activeTag( t ) );
       });
     },
 
@@ -202,15 +214,7 @@ export default {
     getCategories: function(cats) {
       // Loop through tags array
       cats.forEach((c) => {
-        axios.get(
-          SETTINGS.API_BASE_PATH + "categories/" + c
-        )
-        .then(response => {
-          this.categoriesArr.push(response.data);
-        })
-        .catch(e => {
-           console.log(e);
-        });
+          this.categoriesArr.push( this.activeCategory( c ) );
       });
     }
   }

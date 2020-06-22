@@ -24,7 +24,8 @@ const getters = {
       return state.category;
     }
     let category = state.category;
-    return category.slice(0, catid);
+    return category;
+    //return category.slice(0, catid);
   },
   categoryPostsLoaded: state => state.loaded,
 };

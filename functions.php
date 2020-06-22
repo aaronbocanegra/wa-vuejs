@@ -618,9 +618,11 @@ function vuejs_gallery_save( $post_id ) {
 	if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
 		return $post_id;
 	$meta_key = 'vuejs_custom_gallery';
-        $imageArr = ltrim( $_POST[$meta_key], ',' );
-	update_post_meta( $post_id, $meta_key, $imageArr );
-	return $post_id;
+        if( isset( $_POST[$meta_key] ) ){
+          $imageArr = ltrim( $_POST[$meta_key], ',' );
+  	  update_post_meta( $post_id, $meta_key, $imageArr );
+  	  return $post_id;
+        }
 }
 
 add_action('save_post', 'vuejs_videos_save');
@@ -633,12 +635,13 @@ function vuejs_videos_save( $post_id ) {
 		return $post_id;
 	// New
 	$meta_key = 'vuejs_custom_videos';
-	if ( !empty( $_POST[$meta_key] ) )
+	if ( isset( $_POST[$meta_key] ) && !empty( $_POST[$meta_key] ) ){
 		update_post_meta( $post_id, $meta_key, $_POST[$meta_key] );
-	elseif ( empty( $_POST[$meta_key] ) )
+        	return $post_id;
+	}else if( isset( $_POST[$meta_key] ) &&  empty( $_POST[$meta_key] ) ){
 		delete_post_meta( $post_id, $meta_key, $_POST[$meta_key] );
-
-       	return $post_id;
+        	return $post_id;
+        }
 }
 
 /*

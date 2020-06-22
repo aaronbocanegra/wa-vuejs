@@ -1,12 +1,20 @@
 <template>
   <div class="widget category-posts">
-    <h1>
-      Category&nbsp;|&nbsp;<slot></slot>
+    <h1 class="flex flex-wrap flex-rows w-full">
+      <router-link :to="{name: 'Archive', params: { taxSlug: 'categories' }}"
+                   title="View Categories Archive">Categories</router-link>
+      <div>&nbsp;|&nbsp;</div>
+      <slot :parent="this.parent" :category="this.category">
+        <router-link v-if="category.parent"
+                     :to="{name: 'Category', params: { categorySlug: parent.slug }}"
+                     :title="'Filter Posts by: ' + parent.name">{{ parent.name }}</router-link>
+        <div v-if="category.parent">&nbsp;>&nbsp;</div>
+        <div>{{ category.name }}</div>
+      </slot>
     </h1>
     <div v-if="categoryPostsLoaded">
-      <div v-for="post in categoryPosts(catid)" :key="post.id">
-        <router-link v-bind:catid="catid" 
-                     :to="post.slug"
+      <div v-for="post in categoryPosts(category.id)" :key="post.id">
+        <router-link :to="post.slug"
                      :title="post.title.rendered"
                      tag="div" 
                      class="w-full flex flex-row cursor-pointer">
@@ -40,13 +48,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import SETTINGS from "../../settings";
 import { mapGetters } from 'vuex';
 import Loader from '../partials/Loader.vue';
 
 export default {
-  props: [ 'catid', ],
+  props: [ 'category', 'parent', ],
   computed: {
     ...mapGetters({
       categoryPosts: 'categoryPosts',
@@ -60,27 +66,22 @@ export default {
 
   data() {
     return {
-      prevID: false,
+      prevSlug: false,
     };
   },
   // End Data
 
-  mounted() {
-    this.getCategory();
-  },
-
-  beforeUpdate() {
-    this.getCategory();
+  updated() {
+    this.filterPosts();
   },
   methods: {
-    getCategory: function() {
-      if( this.prevID != this.catid ){
-        this.$store.dispatch('getCategoryPosts', { catid: this.catid });
-        this.prevID = this.catid;
+    filterPosts: function() {
+      if( this.prevSlug != this.category.id ){
+        this.$store.dispatch('getCategoryPosts', { catid: this.category.id });
+        this.prevSlug = this.category.id;
+        return this.categoryPosts( this.category.id );
       }
-    },
+    }
   },
-
-
 };
 </script>

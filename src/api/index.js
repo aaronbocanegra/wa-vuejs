@@ -6,10 +6,24 @@ export default {
     await axios
       .get(
         SETTINGS.API_BASE_PATH +
-          'categories?sort=name&hide_empty=true&per_page=50'
+          'categories?sort=name&hide_empty=true'
       )
       .then(response => {
         cb(response.data.filter(c => c.name !== 'Uncategorized'));
+      })
+      .catch(e => {
+        cb(e);
+      });
+  },
+
+  async getTags(cb) {
+    await axios
+      .get(
+        SETTINGS.API_BASE_PATH +
+          'tags?sort=name&hide_empty=true'
+      )
+      .then(response => {
+        cb(response.data);
       })
       .catch(e => {
         cb(e);

@@ -10,6 +10,7 @@ import categoryPosts from './modules/category_posts'
 import tagPosts from './modules/tag_posts'
 import page from './modules/page'
 import categories from './modules/categories'
+import tags from './modules/tags'
 import customLogo from './modules/custom_logo'
 import menus from './modules/menus'
 
@@ -18,7 +19,7 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 
 let localStorage = createPersist({
-    namespace: 'YOUR_APP_NAMESPACE',
+    namespace: 'WA_VUEJS',
     initialState: {},
     expires: 1.21e+9 // Two Weeks
 })
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     tagPosts,
     page,
     categories,
+    tags,
     customLogo,
     menus
   },

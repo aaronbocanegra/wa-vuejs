@@ -36,6 +36,8 @@ new Vue({
       recentPostsCount: this.$store.getters.recentPostsCount,
       allCategories: this.$store.getters.allCategories,
       allCategoriesLoaded: this.$store.getters.allCategoriesLoaded,
+      allTags: this.$store.getters.allTags,
+      allTagsLoaded: this.$store.getters.allTagsLoaded,
       // Store Pagination Values and Set Defaults
       storedPostsPerPage: 5,
       storedPostsPageNum: 1,
@@ -47,6 +49,7 @@ new Vue({
   beforeCreate() {
     this.$store.commit(types.RESET_LOADING_PROGRESS);
     this.$store.dispatch('getAllCategories');
+    this.$store.dispatch('getAllTags');
     this.$store.dispatch('getAllPages');
     this.$store.dispatch('getPagesCount');
     this.$store.dispatch('getPostsCount');
@@ -54,6 +57,8 @@ new Vue({
     this.$store.dispatch('getAllMenus');
     this.allCategories = this.$store.getters.allCategories;
     this.allCategoriesLoaded = this.$store.getters.allCategoriesLoaded;
+    this.allTags = this.$store.getters.allTags;
+    this.allTagsLoaded = this.$store.getters.allTagsLoaded;
     this.allPagesCount = this.$store.getters.allPagesCount;
     this.allPages = this.$store.getters.allPages;
     this.allPagesLoaded = this.$store.getters.allPagesLoaded;

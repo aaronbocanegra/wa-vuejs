@@ -1,4 +1,7 @@
 /** line Hight **/
+.line-height-3{
+  line-height: 0.75rem;
+}
 .line-height-8{
   line-height: 2rem;
 }

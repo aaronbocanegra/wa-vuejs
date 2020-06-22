@@ -19,6 +19,17 @@
                      border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
               v-html="fmi.title">
             </router-link>
+            <!-- Post Link -->
+            <router-link v-else-if="fmi.object === 'post'"
+              :to="{name: 'Post', params: { year:     fmi.url.split('/')[3],
+                                            month:    fmi.url.split('/')[4],
+                                            day:      fmi.url.split('/')[5],
+                                            postSlug: fmi.url.split('/')[6] }}"
+              :title="fmi.title"
+              class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
+                     border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
+              v-html="fmi.title">
+            </router-link>
             <!-- Page Link -->
             <router-link v-else-if="fmi.object === 'page'"
               :to="{name: 'Page', params: { pageSlug: fmi.slug }}"
@@ -60,6 +71,17 @@
                <li v-for="cmi in fmi.children" 
                   :key="cmi.title" 
                   class="w-full">
+                 <!-- Post Sub Link -->
+                 <router-link v-if="cmi.object === 'post'"
+                             :to="{name: 'Post', params: { year:     cmi.url.split('/')[3],
+                                                           month:    cmi.url.split('/')[4],
+                                                           day:      cmi.url.split('/')[5],
+                                                           postSlug: cmi.url.split('/')[6] }}"
+                    :title="cmi.title"
+                   class="block font-semibold inline-block text-green-600 hover:text-white
+                          border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right px-5" 
+                    v-html="cmi.title">
+                 </router-link>
                  <!-- Page Sub Link -->
                  <router-link v-if="cmi.object === 'page'"
                     :to="{name: 'Page', params: { pageSlug: cmi.slug }}"

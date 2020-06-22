@@ -47,7 +47,10 @@
             </router-link> 
             <!-- Post Link -->
             <router-link v-else-if="hmi.object == 'post'"
-                         :to="{name: 'Post', params: { postSlug: hmi.slug }}"
+                         :to="{name: 'Post', params: { year:     hmi.url.split('/')[3], 
+                                                       month:    hmi.url.split('/')[4], 
+                                                       day:      hmi.url.split('/')[5],  
+                                                       postSlug: hmi.url.split('/')[6] }}"
                          :title="hmi.title" 
                          class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
@@ -69,7 +72,7 @@
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600" 
                          v-html="hmi.title" replace>
             </router-link>
-            <!-- Archive Link -->
+            <!-- Archive Link archive/:taxSlug -->
             <router-link v-else-if="hmi.url.includes('archive/')"
                          :to="{name: 'Archive', params: { taxSlug: hmi.url.split('/')[2] }}"
                          :title="hmi.title" 
@@ -93,6 +96,17 @@
                <li v-for="cmi in hmi.children" 
                   :key="cmi.title" 
                   class="w-full">
+                 <!-- Post Sub Link -->
+                 <router-link v-if="cmi.object == 'post'"
+                              :to="{name: 'Post', params: { year:     cmi.url.split('/')[3],
+                                                            month:    cmi.url.split('/')[4],
+                                                            day:      cmi.url.split('/')[5],
+                                                            postSlug: cmi.url.split('/')[6] }}"
+                              :title="cmi.title" 
+                              class="block font-semibold lg:mt-4 lg:inline-block lg:mt-0 text-green-600 hover:text-white
+                                     border-transparent border-b-2 hover:border-green-600 active:border-blue-600 w-full text-right pr-1"
+                              v-html="cmi.title">
+                 </router-link>
                  <!-- Page Sub Link -->
                  <router-link v-if="cmi.object == 'page'"
                               :to="{name: 'Page', params: { pageSlug: cmi.slug }}"

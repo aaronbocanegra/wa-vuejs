@@ -1,34 +1,32 @@
 <template>
-  <transition name="wa-lightbox-modal">
-    <div v-if="gallery.length > 0" id="gallery-wrap" class="relative">
-
-      <!-- Thumbs -->
-      <div id="thumbnails">
-        <ul class="grid grid-cols-3 lg:grid-cols-4 gap-2">
-          <li v-for="(item, index) in gallery"
+  <div v-if="gallery.length > 0" id="gallery-wrap" class="relative">
+    <!-- Thumbs -->
+    <div id="thumbnails">
+      <ul class="grid grid-cols-3 lg:grid-cols-4 gap-2">
+        <li v-for="(item, index) in gallery"
             @click="openLightbox(index)"
             class="flex hover:m-2 relative cursor-pointer">
-            <img v-if="item.type === 'image'"
-              :src="item.thumbnail"
-              :alt="item.alt" 
-              class="w-full object-cover" />
-            <img v-if="item.vuejs_video_type === 'oembed'"
-              :src="item.vuejs_video_thumbnail"
-              :alt="item.vuejs_video_title" 
-              class="w-full object-cover" />
-            <div v-if="item.type === 'image'" 
-                 class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-25">
-              {{ item.title }}
-            </div>
-            <div v-if="item.vuejs_video_type === 'oembed'" 
-                 class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-10000">
-              {{ item.vuejs_video_title }}
-            </div>
-          </li>
-        </ul>
-      </div>
+          <img v-if="item.type === 'image'"
+               :src="item.thumbnail"
+               :alt="item.alt" 
+               class="w-full object-cover" />
+          <img v-if="item.vuejs_video_type === 'oembed'"
+               :src="item.vuejs_video_thumbnail"
+               :alt="item.vuejs_video_title" 
+               class="w-full object-cover" />
+          <div v-if="item.type === 'image'" 
+               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-25">
+            {{ item.title }}
+          </div>
+          <div v-if="item.vuejs_video_type === 'oembed'" 
+               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-10000">
+            {{ item.vuejs_video_title }}
+          </div>
+        </li>
+      </ul>
+    </div>
 
-      <transition name="fade" mode="out-in">
+    <transition name="fade" mode="out-in">
       <!-- Overlay -->
       <div id="overlay"
            v-if="isLightbox"
@@ -39,12 +37,12 @@
         <!-- Previous -->
         <div id="swipe-left" class="z-max">
           <button type="button" 
-                 @click="loadPreviousItem();"
-                 id="wa-lightbox-button--prev" 
-                 v-bind:class="[toggleThumbnails ? 'hidden' : 'flex',
+                  @click="loadPreviousItem();"
+                  id="wa-lightbox-button--prev" 
+                  v-bind:class="[toggleThumbnails ? 'hidden' : 'flex',
                                 this.imgIndex > 0 ? 'opacity-100' : 'opacity-0']"
-                 class="wa-lightbox-button"
-                 title="Previous">
+                  class="wa-lightbox-button"
+                  title="Previous">
             <svg xmlns="http://www.w3.org/2000/svg" 
                  viewBox="0 0 24 24" 
                  class="text-white hover:text-green-600 fill-current h-10">
@@ -52,6 +50,7 @@
             </svg>
           </button>
         </div>
+        <!-- End Previous -->
 
         <!-- Thumbs -->
         <transition name="slide-bounce" mode="out-in">
@@ -61,20 +60,21 @@
                class="w-full justify-center">
             <ul class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-1 p-3 ">
               <li v-for="(item, index) in gallery"
-                @click="switchLightbox(index)"
-                class="relative cursor-pointer" >
+                  @click="switchLightbox(index)"
+                  class="relative cursor-pointer" >
                 <!-- Thumbnail -->
                 <img v-if="item.type == 'image'"
-                  :src="item.thumbnail"
-                  :alt="item.alt"/>
-	       <img v-if="item.vuejs_video_type == 'oembed'"
-                :src="item.vuejs_video_thumbnail"
-                :alt="item.vuejs_video_title"/>
+                     :src="item.thumbnail"
+                     :alt="item.alt"/>
+                <img v-if="item.vuejs_video_type == 'oembed'"
+                    :src="item.vuejs_video_thumbnail"
+                    :alt="item.vuejs_video_title"/>
               </li>
             </ul>
           </div>
         </transition>
-        
+        <!-- End Thumbs -->
+
         <!-- Lightbox Media Placeholder -->
         <transition name="slide-bounce" mode="out-in">
           <div id="media-content" 
@@ -103,7 +103,7 @@
                               class="object-cover p-3 w-full h-auto sm:w-auto sm:h-90screen lg:h-screen">
                 </picture>
 
-		<div v-if="item.vuejs_video_type === 'oembed'" 
+                <div v-if="item.vuejs_video_type === 'oembed'" 
                      v-html="item.vuejs_video_oembed"
                      class="object-cover w-full h-16:9 sm:w-16:9 sm:h-screen sm:py-3 sm:px-3 sm:max-h-screen flex justify-center items-center"> 
                 </div>
@@ -154,13 +154,14 @@
             </ul>
           </div>
         </transition>
+        <!-- End Lightbox Media Placeholder -->
 
         <!-- Next -->
         <div id="swipe-right" class="z-max">
           <button type="button" 
-                 @click="loadNextItem();"
-                 id="wa-lightbox-button--next"
-                 v-bind:class="[toggleThumbnails ? 'hidden' : 'flex',
+                  @click="loadNextItem();"
+                  id="wa-lightbox-button--next"
+                  v-bind:class="[toggleThumbnails ? 'hidden' : 'flex',
                                 this.imgIndex != this.gallery.length -1 ? 'opacity-100' : 'opacity-0']"
                  class="wa-lightbox-button" 
                  title="Next">
@@ -171,10 +172,11 @@
              </svg>
           </button>
         </div>
+        <!-- End Next -->
 
         <!-- Toolbar -->
         <div class="wa-lightbox-toolbar fixed bg-black bg-opacity-50 top-0 right-0">
-
+ 
           <!-- Play Slideshow -->
           <button type="button" 
                   title="Play slideshow" 
@@ -198,9 +200,9 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                  class="h-10 fill-current text-white hover:text-green-600">
               <path d="M14.59 14.59h3.76v3.76h-3.76v-3.76zm-4.47 
-              0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76v-3.76zm-4.47 
-              0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76V5.65zm-4.47 
-              0h3.76v3.76h-3.76V5.65zm-4.47 0h3.76v3.76H5.65V5.65z">
+                    0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76v-3.76zm-4.47 
+                    0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76V5.65zm-4.47 
+                    0h3.76v3.76h-3.76V5.65zm-4.47 0h3.76v3.76H5.65V5.65z">
               </path>
             </svg>
           </button>
@@ -252,15 +254,12 @@
               </svg>
             </slot>
           </button>
-
-        </div>
-        <!--/wa-lightbox--toolbar-->
+        </div> 
+        <!-- End Toolbar -->
       </div>
-      </transition>
-    </div>
-  </transition>
-
-  <!-- End wa-lightbox modal -->
+      <!-- End Overlay -->
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -268,10 +267,16 @@
 // https://github.com/lucaspulliese/vue-cool-lightbox
 // https://vue-cool-lightbox.lucaspulliese.com/
 export default {
-  props: [
-           'gallery',
-           'effect',
-         ],
+  props: {
+         gallery: {
+           type: Array,
+           default: () => []
+         },
+         effect: {
+           type: String,
+           default: ''
+           },
+         },
 
   data() {
     return {
