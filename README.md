@@ -93,15 +93,25 @@ The theme has an API route to receive the following options. Some are made avail
 The frontend is built in Vuejs. Making use of Router-Link functionality and transitions it is an animated SPA.
 
 Some of the built in functionality includes:
-- Post View using YYYY/MM/DD/SLUG permalink which can be edited in the route
+- Desgined to allow for Home page as Posts or as Page with Posts Page.
+- Post View using :year/:month/:day/:postname
+  - Permalink which can be edited in wordpress and updates in the route. 
+  - Some Editing to menus may be needed if a post is to be added to menu.
 - Page View
-- Category View
-- Home View with Posts pagination and Pages Pagination - selectable per page range
-- Tags as external links to references using tag description
+- Archives View
+  - Defaults to Categories and Tags, custom taxonomies extensible
+- Filter Posts by Tag or Category
+- Home View with Posts pagination - selectable per page range
+  - Range and Page number stored throughout site
+- Tags Archives load icon title and description via wa-link-prevue component
+  - allows for loading external links to references using tag description
+  - Modes are Cards, Icons, Cloud
+- Category Archives shows name, description, and count
 - Lightbox component: Touch enabled functionality with fade and slide animations 
 as well as swipe functionality.
   - oEmbed Video Enabled
   - Portfolio Gallery Enabled
+- Dropdown Menus, automatic switch to mobile menu as well.
 - Mobile first design via Tailwindscss for fully responsive design
 
 
