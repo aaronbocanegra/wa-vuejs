@@ -21,25 +21,25 @@
       </slot>
     </div>
     <!-- Filter Card -->
-    <div v-else-if="mode === 'filter-card'" 
-         :id="'wa-link-prevue__card-' + index"
+    <div v-else-if="mode === 'filter-card' && this.response" 
+         :id="'wa-link-prevue__filter-card-' + index"
          class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full">
       <transition name="fade" mode="out-in">
         <div v-if="urlExists" 
              class="wa-link-prevue_response w-full flex flex-rows flex-wrap text-black">
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
-              <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
-              <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+            <div :id="'wa-link-prevue__filter-card-wrapper-' + index" class="wa-link-prevue__filter-card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+              <div v-if="count" class="wa-link-prevue__filter-card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
+              <div v-if="response.image != undefined" class="wa-link-prevue__filter-card-img flex w-1/4 justify-center items-center">
+                <img :src="response.image" :alt="response.title" />
               </div>
-              <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
-                <div class="wa-link-prevue__card-text px-4 text-center">
+              <div :id="'wa-link-prevue__filter-card-info-' + index" class="wa-link-prevue__filter-card-info flex w-3/4 justify-center items-center">
+                <div class="wa-link-prevue__filter-card-text px-4 text-center">
                   <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
                   <p v-if="response.description.length" v-html="response.description"></p>
                   <p v-if="urlExists">
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
-                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:shadow-inner hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
                 </div>
               </div>
@@ -52,8 +52,9 @@
         </div>
       </transition>
     </div>
+
     <!-- Cards -->
-    <div v-else-if="mode === 'cards'" 
+    <div v-else-if="mode === 'cards' && this.response" 
          :id="'wa-link-prevue__card-' + index"
          class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full">
       <transition name="fade" mode="out-in">
@@ -64,18 +65,18 @@
            :title="'Filter Posts by: ' + title">
           <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+            <div :id="'wa-link-prevue__card-wrapper-' + index" class="wa-link-prevue__card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
               <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
-              <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+              <div v-if="response.image != undefined" class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
+                <img :src="response.image" :alt="response.title" />
               </div>
-                <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
+                <div :id="'wa-link-prevue__card-info-' + index" class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
                 <div class="wa-link-prevue__card-text px-4 text-center">
                   <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
                   <p v-if="response.description.length" v-html="response.description"></p>
                   <p>
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
-                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:shadow-inner hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
                 </div>
               </div>
@@ -90,9 +91,9 @@
            :title="title">
           <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
-              <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+            <div class="wa-link-prevue__card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
+              <div v-if="response.image != undefined"  class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
+                <img :src="response.image" :alt="response.title" />
               </div>
               <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
                 <div class="wa-link-prevue__card-text px-4 text-center">
@@ -100,7 +101,7 @@
                   <p v-if="response.description.length" v-html="response.description"></p>
                   <p>
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
-                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:shadow-inner hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
                 </div>
               </div>
@@ -113,29 +114,28 @@
         </div>
       </transition>
     </div>
+
     <!-- Icons -->
-    <div v-else-if="mode === 'icons'" 
-         :id="'list-item' + index"
-         @mouseenter="showCardInfo(index)"
-         @mouseleave="hideCardInfo(index)"
+    <div v-else-if="mode === 'icons' && this.response" 
+         :id="'icon-list-item-' + index"
+         @mouseenter="showCardInfo()"
+         @mouseleave="hideCardInfo()"
+         v-touch:longtap="this.iconToggle" 
          class="wa-link-prevue__icon-main relative flex flex-rows flex-wrap items-center justify-center h-full border-2 border-gray-200 p-1">
       <transition name="fade" mode="out-in">
         <router-link v-if="taxonomy === 'post_tag'"
            :to="{ name: 'Tag', params: { tagSlug: slug } }" 
            class="wa-link-prevue__icon-response flex flex-cols w-full flex-wrap cursor-pointer hover:text-blue-600 text-green-600"
            :title="'Filter Posts by: ' + title">
-          <slot :img="response.image" :title="response.title" :description="response.description" 
-                :url="url">
-            <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20 relative">
-              <div v-if="count" 
-                   class="wa-link-prevue__card-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
-              <div class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+          <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
+            <div class="wa-link-prevue__icon-wrapper flex flex-row w-full min-h-20 relative">
+              <div v-if="count" class="wa-link-prevue__icon-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>
+              <div v-if="response.image != undefined" class="wa-link-prevue__icon-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
+                <img :src="this.response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
               <div class="flex font-bold justify-center items-center h-full w-2/3">{{ title }}</div>
             </div>
-            <div :id="'wa-link-prevue__icon-card-info-' + index"
-                  v-bind:class="[]"
+            <div :id="'wa-link-prevue__icon-info-' + index"
                   class="wa-link-prevue__icon-card-text pt-2 top-0 left-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
               <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
@@ -143,12 +143,13 @@
                 <p v-if="response.description.length" v-html="response.description"></p>
                 <p v-if="urlExists">
                    <a :href="url" :title="'Visit: ' + title" target="_blank"
-                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:shadow-inner hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                 </p>
               </div>
             </div>
           </slot>
         </router-link>
+
         <a v-else-if="taxonomy === 'custom' && urlExists"
            :href="url" 
            class="wa-link-prevue__icon-response flex flex-cols w-full flex-wrap cursor-pointer hover:text-black text-black"
@@ -157,12 +158,12 @@
           <slot :img="response.image" :title="response.title" :description="response.description" 
                 :url="url">
             <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
-              <div class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+              <div v-if="response.image != undefined" class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
+                <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
               <div class="flex font-bold justify-center items-center h-full w-2/3">{{ title }}</div>
             </div>
-            <div :id="'wa-link-prevue__icon-card-info-' + index"
+            <div :id="'wa-link-prevue__icon-info-' + index"
                   v-bind:class="[]"
                   class="wa-link-prevue__icon-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
@@ -171,25 +172,29 @@
                 <p v-if="response.description.length" v-html="response.description"></p>
                 <p v-if="urlExists">
                   <a :href="url" :title="'Visit: ' + title" target="_blank"
-                     class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                     class="wa-link-prevue_external-link rounded-full bg-green-600 hover:shadow-inner hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                 </p>
               </div>
             </div>
           </slot>
         </a>
+
         <!-- Defunct -->
         <div v-else-if="!urlExists">
           <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
             <div class="flex font-bold justify-center items-center h-full w-full">{{ title }}</div>
           </div>
         </div>
+
       </transition>
     </div>
+
     <!-- Cloud -->
-    <div v-else-if="mode === 'cloud'"
+    <div v-else-if="mode === 'cloud' && this.response"
          @mouseenter="cloudEnter" 
-         @mouseleave="cloudLeave" 
-         :id="'list-item' + index"
+         @mouseleave="cloudLeave"
+         v-touch:longtap="this.cloudToggle" 
+         :id="'cloud-list-item-' + index"
          class="wa-link-prevue__cloud-main flex h-full items-center justify-center">
 
       <transition name="fade" mode="out-in">
@@ -211,23 +216,23 @@
                                    testCount == 8  ? ['text-4xl' , 'rotate-deg-0']  : '',
                                    testCount == 9  ? ['text-5xl' , 'rotate-deg-0']  : '',
                                    testCount >= 10 ? ['text-6xl' , 'rotate-deg-0']  : '']"
-                   class="font-bold whitespace-no-wrap">
+                   class="font-bold whitespace-normal">
                 {{ title }}
               </div>
             </div>
-            <div :id="'wa-link-prevue__cloud-card-info-' + index"
+            <div :id="'wa-link-prevue__cloud-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__cloud-card-text flex flex-col pt-2 bottom-0 w-64 max-h-72 left-0 bg-white text-black z-50 shadow-black fixed shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__cloud-text flex flex-col pt-2 bottom-0 w-64 max-h-72 left-0 bg-white text-black z-50 shadow-black fixed shadow-xl px-4 text-center hidden
                          transition-all opacity-95 duration-500">
               <div v-if="count" 
-                   class="wa-link-prevue__card-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
-              <div class="wa-link-prevue__cloud-card-img flex h-full w-full min-h-20 object-contain justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+                   class="wa-link-prevue__cloud-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
+              <div v-if="response.image != undefined" class="wa-link-prevue__cloud-img flex h-full w-full min-h-20 object-contain justify-center items-center">	
+                <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
-              <div class="wa-link-prevue__cloud-card-text px-4 text-center w-full">
+              <div class="wa-link-prevue__cloud-text px-4 text-center w-full">
                 <p v-if="urlExists" class="pt-3">
                   <a :href="url" :title="'Visit: ' + title" target="_blank"
-                     class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black hover:shadow-inner px-4 py-1">Visit Site</a>
+                     class="wa-link-prevue_external-cloud-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black hover:shadow-inner px-4 py-1">Visit Site</a>
                 </p>
               </div>
             </div>
@@ -256,14 +261,14 @@
                 {{ title }}
               </div>
             </div>
-            <div :id="'wa-link-prevue__cloud-card-info-' + index"
+            <div :id="'wa-link-prevue__cloud-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__cloud-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__cloud-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
-              <div class="wa-link-prevue__cloud-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+              <div v-if="response.image != undefined" class="wa-link-prevue__cloud-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
+                <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
-              <div class="wa-link-prevue__cloud-card-text px-4 text-center">
+              <div class="wa-link-prevue__cloud-text px-4 text-center">
                 <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
                 <p v-if="response.description.length" v-html="response.description"></p>
               </div>
@@ -336,8 +341,9 @@ export default {
       response: null,
       validUrl: false,
       urlExists: false,
-      hover: false,
       testCount: Math.floor(Math.random() * 10) + 1,
+      isIconHover: false,
+      isCloudHover: false,
     }
   },
 
@@ -373,8 +379,8 @@ export default {
       return this.validUrl;
     },
     
-    showCardInfo: function(i){
-      var el = document.getElementById('wa-link-prevue__icon-card-info-' + i);
+    showCardInfo: function(){
+      var el = document.getElementById('wa-link-prevue__icon-info-' + this.index);
       if(el != undefined){
         el.classList.remove('hidden');
         setTimeout(() => {
@@ -384,8 +390,8 @@ export default {
       }
     },
 
-    hideCardInfo: function(i){
-      var el = document.getElementById('wa-link-prevue__icon-card-info-' + i);
+    hideCardInfo: function(){
+      var el = document.getElementById('wa-link-prevue__icon-info-' + this.index);
       if(el != undefined){
         setTimeout(() => {
           el.classList.remove('opacity-98');
@@ -397,20 +403,81 @@ export default {
       } 
     },
 
+    iconToggle: function() {
+      this.isIconHover = !this.isIconHover;
+      var el = document.getElementById('wa-link-prevue__icon-info-' + this.index);
+      if( this.isIconHover ){
+        el.classList.remove('hidden');
+        setTimeout(() => {
+          el.classList.remove('opacity-0');
+          el.classList.add('opacity-98');
+        },50);
+      }else{
+        setTimeout(() => {
+          el.classList.remove('opacity-98');
+          el.classList.add('opacity-0');
+          setTimeout(() => {
+            el.classList.add('hidden');
+          },500);
+        },25);
+      }
+    },
+
     cloudEnter: function(event){
-      var el = event.target.childNodes[0].lastChild;
+      var el = document.getElementById( 'wa-link-prevue__cloud-info-' + this.index);
       el.classList.remove('hidden');
       var pos = [];
       pos.x = event.layerX;
-      pos.y = event.layerY;
-      el.style.left = pos.x + "px";
-      el.style.top  = pos.y + "px"
+      pos.y = event.layerY
+      if( (pos.x - (el.clientWidth/2)) < 0){
+        el.style.left = (el.clientWidth/4)+ "px";
+      }else if( pos.x + (el.clientWidth/2) > window.innerWidth ){
+        el.style.left = (window.innerWidth - (el.clientWidth/2)) + "px";
+      }else{
+        el.style.left = pos.x + "px"
+      }
+      if( pos.y - (el.clientHeight/2) < 0 ){
+        el.style.top = (el.clientHeight/4) + "px";
+      }else if( pos.y + (el.clientHeight/2) > window.innerHeight ){
+        el.style.top = (window.innerHeight - ( el.clientHeight/2) ) + 'px';
+      }else{
+        el.style.top = pos.y + "px";
+      }
     },
 
-    cloudLeave: function(event){
-      var el = event.target.childNodes[0].lastChild;
+    cloudLeave: function(){
+      var el = document.getElementById( 'wa-link-prevue__cloud-info-' + this.index );
       el.classList.add('hidden');
     },
+
+    cloudToggle: function(event){
+      this.isCloudHover = !this.isCloudHover;
+      var el = document.getElementById( 'wa-link-prevue__cloud-info-' + this.index);
+      if(this.isCloudHover){
+        el.classList.remove('hidden');
+        var pos = [];
+        pos.x = event.changedTouches[0].clientX - (el.clientWidth/2);
+        pos.y = event.changedTouches[0].clientY - (el.clientHeight/2);
+        if( pos.x < 0 ){
+          el.style.left = (el.clientWidth/4) + "px";
+        }else if( pos.x + el.clientWidth > window.innerWidth){
+          el.style.left = (window.innerWidth - el.clientWidth) + 'px';
+        }else{
+          el.style.left = pos.x + "px";
+        }
+
+        if( pos.y < 0 ){
+          el.style.top = (el.clientHeight/4) + "px";
+        }else if( pos.y + el.clientHeight > window.innerHeight ){
+          el.style.top = (window.innerHeight - el.clientHeight) + 'px';
+        }else{
+          el.style.top  = pos.y + "px";
+        }
+      }else{
+        el.classList.add('hidden');
+      }
+    },
+
   }, // End Methods
 }
 </script>
