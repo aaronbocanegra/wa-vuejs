@@ -90,9 +90,10 @@ The theme has an API route to receive the following options. Some are made avail
 | tag_base                   | used in router    |         x         |
 
 ### Vuejs Frontend
-The frontend is built in Vuejs. Making use of Router-Link functionality and transitions it is an animated SPA.
+The frontend is built in Vuejs. Making use of Router-Link and Vuex functionality and transitions. It is an animated SPA.
+Using tailwindcss the design approach is mobile first. 
 
-Some of the built in functionality includes:
+#### Basic Functionality
 - Desgined to allow for Home page as Posts or as Page with Posts Page.
 - Post View using :year/:month/:day/:postname
   - Permalink which can be edited in wordpress and updates in the route. 

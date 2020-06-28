@@ -25,9 +25,9 @@
       <ul class="w-full wa-vuejs-taxonomy__tags"
           v-bind:class="[ selectTagMode === 'cards' ? 'w-full' : '',
                           selectTagMode === 'icons' ? ['grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-3'] : '',
-                          selectTagMode === 'cloud' ? ['flex', 'flex-rows', 'flex-wrap', 'min-h-64', 'relative'] : '']">
+                          selectTagMode === 'cloud' ? ['flex', 'flex-rows', 'flex-wrap', 'leading-tight'] : '']">
         <li v-for="(tag, index) in allTags" :key="index" 
-            v-bind:class="[ selectTagMode === 'cloud' ? ['relative', 'h-full', 'w-auto', 'px-3', 'min-h-10'] : '' ]"
+            v-bind:class="[ selectTagMode === 'cloud' ? ['leading-tight', 'whitespace-no-wrap', 'w-auto', 'px-3'] : '' ]"
             class="">
           <wa-link-prevue :url="tag.description" 
                           :index="tag.id" 

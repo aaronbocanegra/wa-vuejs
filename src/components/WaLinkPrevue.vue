@@ -186,44 +186,49 @@
       </transition>
     </div>
     <!-- Cloud -->
-    <div v-else-if="mode === 'cloud'" 
+    <div v-else-if="mode === 'cloud'"
+         @mouseenter="cloudEnter" 
+         @mouseleave="cloudLeave" 
          :id="'list-item' + index"
-         class="wa-link-prevue__cloud-main relative flex h-full items-center justify-center">
+         class="wa-link-prevue__cloud-main flex h-full items-center justify-center">
 
       <transition name="fade" mode="out-in">
         <router-link v-if="taxonomy === 'post_tag' && response && urlExists" 
-           class="wa-link-prevue__cloud-response cursor-pointer"
-           :to="{ name: 'Tag', params: { tagSlug: slug } }"
-           :title="'Filter Posts by: ' + title">
+                     class="wa-link-prevue__cloud-response cursor-pointer"
+                     :to="{ name: 'Tag', params: { tagSlug: slug } }"
+                     :title="'Filter Posts by: ' + title">
           <slot :img="response.image" :title="response.title" :description="response.description" 
                 :url="url">
-            <div class="wa-link-prevue__cloud-wrapper relative">
+            <div class="wa-link-prevue__cloud-wrapper">
               <div 
                    v-bind:class="[ testCount == 1  ? ['text-xs'  , 'rotate-deg-0']  : '',
                                    testCount == 2  ? ['text-s'   , 'rotate-deg-0']  : '',
-                                   testCount == 3  ? ['text-base',  'rotate-deg-0']  : '',
-                                   testCount == 4  ? ['text-lg'  ,  'rotate-deg-0']  : '',
+                                   testCount == 3  ? ['text-base', 'rotate-deg-0']  : '',
+                                   testCount == 4  ? ['text-lg'  , 'rotate-deg-0']  : '',
                                    testCount == 5  ? ['text-xl'  , 'rotate-deg-0']  : '',
                                    testCount == 6  ? ['text-2xl' , 'rotate-deg-0']  : '',
-                                   testCount == 7  ? ['text-3xl' ,  'rotate-deg-0']  : '',
-                                   testCount == 8  ? ['text-4xl' ,  'rotate-deg-0']  : '',
+                                   testCount == 7  ? ['text-3xl' , 'rotate-deg-0']  : '',
+                                   testCount == 8  ? ['text-4xl' , 'rotate-deg-0']  : '',
                                    testCount == 9  ? ['text-5xl' , 'rotate-deg-0']  : '',
-                                   testCount >= 10 ? ['text-6xl' ,   'rotate-deg-0']  : '']"
+                                   testCount >= 10 ? ['text-6xl' , 'rotate-deg-0']  : '']"
                    class="font-bold whitespace-no-wrap">
                 {{ title }}
               </div>
             </div>
             <div :id="'wa-link-prevue__cloud-card-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__cloud-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
-                         transition-all duration-500">
-            
-              <div class="wa-link-prevue__cloud-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
+                  class="wa-link-prevue__cloud-card-text flex flex-col pt-2 bottom-0 w-64 max-h-72 left-0 bg-white text-black z-50 shadow-black fixed shadow-xl px-4 text-center hidden
+                         transition-all opacity-95 duration-500">
+              <div v-if="count" 
+                   class="wa-link-prevue__card-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
+              <div class="wa-link-prevue__cloud-card-img flex h-full w-full min-h-20 object-contain justify-center items-center">	
                 <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
-              <div class="wa-link-prevue__cloud-card-text px-4 text-center">
-                <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-                <p v-if="response.description.length" v-html="response.description"></p>
+              <div class="wa-link-prevue__cloud-card-text px-4 text-center w-full">
+                <p v-if="urlExists" class="pt-3">
+                  <a :href="url" :title="'Visit: ' + title" target="_blank"
+                     class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black hover:shadow-inner px-4 py-1">Visit Site</a>
+                </p>
               </div>
             </div>
           </slot>
@@ -255,7 +260,6 @@
                   v-bind:class="[]"
                   class="wa-link-prevue__cloud-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
-            
               <div class="wa-link-prevue__cloud-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
                 <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
@@ -393,10 +397,20 @@ export default {
       } 
     },
 
+    cloudEnter: function(event){
+      var el = event.target.childNodes[0].lastChild;
+      el.classList.remove('hidden');
+      var pos = [];
+      pos.x = event.layerX;
+      pos.y = event.layerY;
+      el.style.left = pos.x + "px";
+      el.style.top  = pos.y + "px"
+    },
+
+    cloudLeave: function(event){
+      var el = event.target.childNodes[0].lastChild;
+      el.classList.add('hidden');
+    },
   }, // End Methods
 }
 </script>
-
-<style type="postcss" scoped>
-
-</style>
