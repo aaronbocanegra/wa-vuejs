@@ -1,5 +1,6 @@
 <template>
   <div class="loading w-full flex flex-rows items-center justify-center  text-black font-hairline text-3xl">
+    <slot></slot>
     <div>LOADING...</div>
     <div>
       <svg xmlns:svg="http://www.w3.org/2000/svg"

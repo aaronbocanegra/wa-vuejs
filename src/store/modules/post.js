@@ -23,7 +23,6 @@ const getters = {
     ) {
       return state.recent;
     }
-
     if (
       !page ||
       !Number.isInteger(page) ||
@@ -36,7 +35,6 @@ const getters = {
   },
 
   recentPostsCount: state => state.post_count,
-
   recentPostsLoaded: state => state.loaded,
 };
 
@@ -52,6 +50,13 @@ const actions = {
       commit(types.POSTS_LOADED, true);
       commit(types.INCREMENT_LOADING_PROGRESS);
     });
+  },
+
+  clearPosts({ commit }) {
+    let posts = [];
+    commit(types.STORE_FETCHED_POSTS, { posts });
+    commit(types.POSTS_LOADED, false);
+    commit(types.INCREMENT_LOADING_PROGRESS);
   },
 
   getPostsCount({ commit }) {

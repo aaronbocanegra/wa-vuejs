@@ -10,17 +10,17 @@
                :src="item.thumbnail"
                :alt="item.alt" 
                class="w-full object-cover" />
-          <img v-if="item.vuejs_video_type === 'oembed'"
-               :src="item.vuejs_video_thumbnail"
-               :alt="item.vuejs_video_title" 
+          <img v-if="item.type === 'oembed'"
+               :src="item.thumbnail"
+               :alt="item.title" 
                class="w-full object-cover" />
           <div v-if="item.type === 'image'" 
                class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-25">
             {{ item.title }}
           </div>
-          <div v-if="item.vuejs_video_type === 'oembed'" 
+          <div v-if="item.type === 'oembed'" 
                class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-10000">
-            {{ item.vuejs_video_title }}
+            {{ item.title }}
           </div>
         </li>
       </ul>
@@ -66,9 +66,9 @@
                 <img v-if="item.type == 'image'"
                      :src="item.thumbnail"
                      :alt="item.alt"/>
-                <img v-if="item.vuejs_video_type == 'oembed'"
-                    :src="item.vuejs_video_thumbnail"
-                    :alt="item.vuejs_video_title"/>
+                <img v-if="item.type == 'oembed'"
+                    :src="item.thumbnail"
+                    :alt="item.title"/>
               </li>
             </ul>
           </div>
@@ -93,7 +93,7 @@
                                   index === imgIndex - 1 ? 'slideLeft' : '',
                                   index === imgIndex + 1 ? 'slideRight' : '',
                                   index  >  imgIndex + 1 || index < imgIndex - 1 ? 'wa-lightbox__slide ' : '',
-                                  item.vuejs_video_type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
+                                  item.type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
                   class="flex absolute inset-0 min-w-full h-full justify-center items-center content-overlay transition-all ease-in duration-500">
                 <picture v-if="item.type === 'image'" class="">
                          <source media="(min-width:1280px)" :srcset="item.md">
@@ -103,8 +103,8 @@
                               class="object-cover p-3 w-full h-auto sm:w-auto sm:h-90screen lg:h-screen">
                 </picture>
 
-                <div v-if="item.vuejs_video_type === 'oembed'" 
-                     v-html="item.vuejs_video_oembed"
+                <div v-if="item.type === 'oembed'" 
+                     v-html="item.iframe"
                      class="object-cover w-full h-16:9 sm:w-16:9 sm:h-screen sm:py-3 sm:px-3 sm:max-h-screen flex justify-center items-center"> 
                 </div>
 
@@ -126,7 +126,7 @@
               <li v-for="(item, index) in gallery" :key="item.id"
                   :id="'item-' + item.id"
                    v-bind:class="[ index === imgIndex ? 'wa-lightbox-fade__slide--current'  : 'wa-lightbox-fade__slide',
-                                  item.vuejs_video_type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
+                                  item.type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
                   class="flex absolute inset-0 min-w-full h-full justify-center items-center content-overlay transition ease-in-out duration-300">
 
                 <picture v-if="item.type === 'image'" class="">
@@ -137,8 +137,8 @@
                               class="object-cover p-3 w-full h-auto sm:w-auto sm:h-90screen lg:h-screen">
                 </picture>
 
-                <div v-if="item.vuejs_video_type === 'oembed'"
-                     v-html="item.vuejs_video_oembed"
+                <div v-if="item.type === 'oembed'"
+                     v-html="item.iframe"
                      class="object-cover w-full h-16:9 sm:w-16:9 sm:h-screen sm:py-3 sm:px-3 sm:max-h-screen flex justify-center items-center">
                 </div>
 

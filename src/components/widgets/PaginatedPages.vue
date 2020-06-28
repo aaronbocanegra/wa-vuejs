@@ -17,7 +17,7 @@
                 <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2" v-html="page.title.rendered"></div>
                 <p class="text-gray-700 text-base" v-html="page.excerpt.rendered"></p>
               </div>
-              <div class="flex items-center">
+              <div v-if="$root.show_author_avatar" class="flex items-center">
                 <img
                   class="w-10 h-10 rounded-full mr-4"
                   :src="page._embedded['author'][0].avatar_urls[96]"
@@ -38,14 +38,14 @@
           <div class="flex flex-row line-height-8 h-full text-black px-2">
             <div class="px-1 line-height-8">Per Page</div>
             <input type="range" min="1" :max="numTotalPages" step="1"
-                   @change="getNumPages()"
+                   @change="setNumPages()"
                    v-model="$root.storedPagesPerPage"
                    class="h-8 w-10 sm:w-20" />
             <div v-text="$root.storedPagesPerPage" class="px-1 line-height-8"></div>
           </div>
         </li>
         <li v-if="prevPage != 0" @click="switchPage(prevPage)"
-            class="h-full w-8 bg-green-600 hover:bg-green-300">
+            class="h-full w-8 bg-green-600 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:(0);" :title="'page-' + prevPage">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
@@ -56,8 +56,8 @@
         </li>
         <li v-if="numPages > 1" v-for="i in numPages"
             @click="switchPage(i)"
-            :class="[ i == pageNum ? 'bg-green-300' : 'bg-green-600' ]"
-            class="h-full leading-8 hover:bg-green-300">
+            :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner']  : 'bg-green-600' ]"
+            class="h-full leading-8 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:void(0)"
              :title="'Page-' + i"
              :class="[ i == pageNum ? 'text-black' : 'text-white' ]"
@@ -66,7 +66,7 @@
           </a>
         </li>
         <li v-if="nextPage != numPages+1" @click="switchPage(nextPage)"
-            class="h-full w-8 bg-green-600 hover:bg-green-300">
+            class="h-full w-8 bg-green-600 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:(0);" :title="'page-' + nextPage">
              <svg xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -82,27 +82,29 @@
 </template>
 
 <script>
-import axios from "axios";
-import SETTINGS from "../../settings";
 import Loader from "../partials/Loader.vue";
-
 import { mapGetters } from 'vuex';
 
 export default {
-  props: [ 'limit', 'pager' ],
+  props: [ 'page_id', 'limit', 'pager' ],
   computed: {
     ...mapGetters({
       somePages: 'somePages',
+      page: 'page',
+      allPagesCount: 'allPagesCount',
       allPagesLoaded: 'allPagesLoaded',
     }),
+    pageContent() {
+      return this.page( parseInt(this.page_id) );
+    },
   },
 
   data() {
     return {
       perPage: this.limit,
       pageNum: this.$root.storedPagesPageNum,
-      prevPage: 0,
-      nextPage: 2,
+      prevPage: this.pager - 1,
+      nextPage: this.pager + 1,
       numTotalPages: false,
       numPages: false,
       isPageChanged: true,
@@ -114,6 +116,9 @@ export default {
   },  // End components
 
   mounted() {
+    console.log( "pageContent: "  );
+    console.log( this.pageContent );
+    console.log( "Page ID: " + this.page_id );
     this.getNumPages();
   },
  
@@ -127,8 +132,14 @@ export default {
        return this.somePages( parseInt( this.perPage ), parseInt( this.pageNum ) );
     },
 
+    setNumPages: function() {
+      this.$root.storedPagesPageNum = 1;
+      this.getNumPages();
+    },
+
     getNumPages: function() {
-      this.numTotalPages = this.$root.allPagesCount;
+      this.pageNum = this.$root.storedPagesPageNum;
+      this.numTotalPages = this.allPagesCount;
       if(this.$root.storedPagesPerPage > this.numTotalPages){
         this.$root.storedPagesPerPage = this.numTotalPages
         this.perPage = this.$root.storedPagesPerPage;

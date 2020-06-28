@@ -177,6 +177,51 @@ add_filter('upload_mimes', 'add_file_types_to_uploads');
  *
  * @return string $JSON
  */
+function vuejs_wordpress_get_theme_mods( WP_REST_Request $request ){
+   return get_theme_mod($request['name']);
+}
+add_filter( 'get_theme_mods', 'vuejs_wordpress_get_theme_mods' );
+
+function vuejs_wordpress_get_option( WP_REST_Request $request ){
+   return get_option($request['name']);
+}
+add_filter( 'get_option', 'vuejs_wordpress_get_option' );
+
+function vuejs_wordpress_get_options( WP_REST_Request $request ){
+   $re = '/(?<=\/)(\%)/m';
+   $postRouterPermalink = preg_replace( $re, ':', get_option('permalink_structure') );
+   $re = '/(\%)/m';
+   $postRouterPermalink = preg_replace( $re, '', $postRouterPermalink );
+   $postRouterPermalink = rtrim($postRouterPermalink, '/');
+   $options = array(
+                   'blogname'            => get_option('blogname'),
+                   'blogdescription'     => get_option('blogdescription'),
+                   'home'                => get_option('home'),
+                   'siteurl'             => get_option('siteurl'),
+                   'show_avatars'        => intval( get_option('show_avatars') ),
+                   'posts_per_page'      => intval( get_option('posts_per_page') ),
+                   'posts_per_rss'       => intval( get_option('posts_per_rss') ),
+                   'show_on_front'       => get_option('show_on_front'),
+                   'page_on_front'       => intval( get_option('page_on_front') ),
+                   'page_for_posts'      => intval( get_option('page_for_posts') ),
+                   'time_format'         => get_option('time_format'),
+                   'timezone_string'     => get_option('timezone_string'),
+                   'thumbnail_size_w'    => intval( get_option('thumbnail_size_w') ),
+                   'thumbnail_size_h'    => intval( get_option('thumbnail_size_h') ),
+                   'medium_size_w'       => intval( get_option('medium_size_w') ),
+                   'medium_size_h'       => intval( get_option('medium_size_h') ),
+                   'large_size_w'        => intval( get_option('large_size_w') ),
+                   'large_size_h'        => intval( get_option('large_size_h') ),
+                   'permalink_structure' => get_option('permalink_structure'),
+                   'permalink_router_structure' => $postRouterPermalink,
+                   'category_base'       => get_option('category_base'),
+                   'tag_base'            => get_option('tag_base'),
+              );
+   return $options;
+}
+add_filter( 'get_options', 'vuejs_wordpress_get_options' );
+
+
 function vuejs_wordpress_get_custom_logo( ) {
         $logo_id = get_theme_mod( 'custom_logo' );
 
@@ -265,13 +310,6 @@ function vuejs_wordpress_get_wa_link_prevue( ) {
 }
 add_filter( 'get_wa_link_prevue', 'vuejs_wordpress_get_wa_link_prevue' );
 
-function vuejs_wordpress_get_videos() {
-        $videos = get_post_meta($_GET['postid'], 'vuejs_custom_videos' );
-        return $videos;
-
-}
-add_filter( 'get_videos', 'vuejs_wordpress_get_videos' );
-
 
 function vuejs_wordpress_get_menus()
 {
@@ -314,6 +352,55 @@ function vuejs_wordpress_get_menus()
     return $menus;
 }
 add_filter( 'get_menus', 'vuejs_wordpress_get_menus' );
+
+function vuejs_wordpress_get_vuejs_custom_videos( WP_REST_Request $request ) {
+    $videos = get_post_meta($request['post_id'], 'vuejs_custom_videos' );
+    $videoItems = array();
+    foreach( $videos[0] as $key=>$value ){
+        $vid = array(
+                     'id'  	        => $value['id'],
+                     'title'            => $value['vuejs_video_title'],
+                     'type'             => $value['vuejs_video_type'],
+                     'thumbnail'        => $value['vuejs_video_thumbnail'],
+                     'thumbnail_width'  => $value['vuejs_video_thumbnail_width'],
+                     'thumbnail_height' => $value['vuejs_video_thumbnail_height'],
+                     'iframe'           => $value['vuejs_video_oembed'],
+                     'author'           => $value['vuejs_video_author_name'],
+                     'url'              => $value['vuejs_video_url'],
+               );
+        array_push( $videoItems, $vid );
+    }
+    return $videoItems;
+
+}
+add_filter( 'get_videos', 'vuejs_wordpress_get_vuejs_custom_videos' );
+
+
+function vuejs_wordpress_get_vuejs_custom_gallery( WP_REST_Request $request ){
+  $galleryIDs = explode( ",", $request['vuejs_custom_gallery'] );
+  $galleryItems = array();
+  foreach($galleryIDs as $key=>$gid){
+    $request = new WP_REST_Request( 'GET', '/wp/v2/media/' . $gid );
+    $response = rest_do_request( $request );
+    $server = rest_get_server();
+    $data = $server->response_to_data( $response, false );
+    $image = array(
+                    'id'           => $data['id'],
+                    'xl'           => $data['media_details']['sizes']['vuejs_wordpress-4k']['source_url'],
+                    'lg'           => $data['media_details']['sizes']['vuejs_wordpress-1080']['source_url'],
+                    'md'           => $data['media_details']['sizes']['vuejs_wordpress-720']['source_url'],
+                    'src'          => $data['media_details']['sizes']['vuejs_wordpress-480']['source_url'],
+                    'thumbnail'    => $data['media_details']['sizes']['thumbnail']['source_url'],
+                    'type'         => $data['media_type'],
+                    'title'        => $data['title']['rendered'],
+                    'alt'          => $data['alt_text'],
+                    'description'  => $data['caption']['rendered'],
+                  );
+    array_push( $galleryItems, $image );
+  }
+  return $galleryItems;
+}
+add_filter( 'get_vuejs_custom_gallery', 'vuejs_wordpress_get_vuejs_custom_gallery' );
 
 /**
  * Modification of "Build a tree from a flat array in PHP"
@@ -374,15 +461,26 @@ function wpse170033_nav_menu_object_tree( $nav_menu_items_array ) {
 /** Custom Routes **/
 function vuejs_wordpress_register_rest_routes() {
     // For retrieving all theme mods.
-    // Sample request URL: http://example.com/wp-json/vujs_wordpress/v2/settings
     register_rest_route( 'vuejs_wordpress/v2', '/settings', [
         'methods'  => 'GET',
-        'callback' => function () {
-            return get_theme_mods();
-        },
-        //'permission_callback' => function () {
-        //    return current_user_can( 'manage_options' );
-        //},
+        'callback' => 'get_theme_mods',
+    ] );
+
+    // Sample request URL: http://example.com/wp-json/vujs_wordpress/v2/settings/nav_menu_locations
+    register_rest_route( 'vuejs_wordpress/v2', '/settings/(?P<name>[a-zA-Z0-9\-_]+)', [
+        'methods'  => 'GET',
+        'callback' => 'vuejs_wordpress_get_theme_mods',
+    ] );
+
+    register_rest_route( 'vuejs_wordpress/v2', '/options', [
+        'methods'  => 'GET',
+        'callback' => 'vuejs_wordpress_get_options',
+    ] );
+
+    // Sample request URL: http://example.com/wp-json/vujs_wordpress/v2/options/home
+    register_rest_route( 'vuejs_wordpress/v2', '/options/(?P<name>[a-zA-Z0-9\-_]+)', [
+        'methods'  => 'GET',
+        'callback' => 'vuejs_wordpress_get_option',
     ] );
 
     register_rest_route( 'vuejs_wordpress/v2', '/post_count', [
@@ -390,9 +488,6 @@ function vuejs_wordpress_register_rest_routes() {
         'callback' => function () {
             return wp_count_posts()->publish;
         },
-        //'permission_callback' => function () {
-        //    return current_user_can( 'manage_options' );
-        //},
     ] );
 
     register_rest_route( 'vuejs_wordpress/v2', '/page_count', [
@@ -403,16 +498,22 @@ function vuejs_wordpress_register_rest_routes() {
     ] );
 
     // For retrieving a specific theme mod.
-    // Sample request URL: http://example.com/wp-json/vuejs_wordpress/v2/settings/custom_logo
-    register_rest_route( 'vuejs_wordpress/v2', '/settings/(?P<name>[a-zA-Z0-9\-_]+)', [
+    // Sample request URL: http://example.com/wp-json/vuejs_wordpress/v2/custom_logo
+    register_rest_route( 'vuejs_wordpress/v2', '/custom_logo', [
         'methods'  => 'GET',
-        'callback' => function ( $request ) {
-            return vuejs_wordpress_get_custom_logo();
-        },
-        //'permission_callback' => function () {
-        //    return current_user_can( 'managec_options' );
-        //},
+        'callback' => 'vuejs_wordpress_get_custom_logo'
     ] );
+
+    // Sample request URL: http://example.com/wp-json/vuejs_wordpress/v2/vuejs_videos?postid=1
+    register_rest_route( 'vuejs_wordpress/v2', '/vuejs_custom_videos/(?P<post_id>[\d+])', [
+        'methods'  => 'GET',
+        'callback' => 'vuejs_wordpress_get_vuejs_custom_videos'
+    ] );
+
+    register_rest_route( 'vuejs_wordpress/v2', '/vuejs_custom_gallery/(?P<vuejs_custom_gallery>([\d+]\,?)+)', array(
+        'methods' => 'GET',
+        'callback' => 'vuejs_wordpress_get_vuejs_custom_gallery',
+    ) );
 
     register_rest_route( 'vuejs_wordpress/v2', '/wa-link-prevue', [
         'methods'  => 'GET',
@@ -428,12 +529,6 @@ function vuejs_wordpress_register_rest_routes() {
         'callback' => function () {
             return vuejs_wordpress_get_menus();
         },
-    ] );
-
-    // Sample request URL: http://example.com/wp-json/vuejs_wordpress/v2/vuejs_videos?postid=1
-    register_rest_route( 'vuejs_wordpress/v2', '/vuejs_videos', [
-        'methods'  => 'GET',
-        'callback' => 'vuejs_wordpress_get_videos'
     ] );
 
     register_rest_field( 'post', 'metadata', array(
@@ -456,7 +551,7 @@ function vuejs_gallery_field( $name, $value = '', $post ) {
 	/* array with image IDs for hidden field */
 	$hidden = array();
 
-	if( $images = get_posts( array(
+	if( isset($value) && $value != "" && $images = get_posts( array(
 		'post_type' => 'attachment',
 		'orderby' => 'post__in', /* we have to save the order */
 		'order' => 'ASC',
@@ -517,7 +612,7 @@ function vuejs_videos_field( $name, $value = '', $post_id, $post ) {
         </br>This function is designed to swap fixed width and height to <code>style="width:100%; height:100%;"</code> If this fails, please change in textarea.
 	<ul id="vuejs_videos_form" post-id="<?=$post_id?>">
 	<?php
-            if( $value[0] != NULL && $value[0] != "" ){
+            if( isset($value[0]) && $value[0][0]["vuejs_video_url"] != "" ){
 		$i = 0;
                 foreach( $value[0] as $val){
 	            $oembed_video_url 	           = $val['vuejs_video_url'];

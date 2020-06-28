@@ -43,7 +43,7 @@
       <transition name="fade" mode="out-in">
         <div class="portfolio mt-3 mb-3"
              v-if="isVideosLoaded">
-          <wa-lightbox
+          <wa-lightbox v-if="this.videos.length > 0"
              v-bind:gallery="videos"
              v-bind:effect="'fade'">
           </wa-lightbox>
@@ -54,7 +54,7 @@
       <transition name="fade" mode="out-in">
         <div class="portfolio mt-3 mb-3"
              v-if="isGalleryLoaded">
-          <wa-lightbox
+          <wa-lightbox v-if="this.gallery.length > 0"
              v-bind:gallery="gallery"
              v-bind:effect="'slide'">
           </wa-lightbox>
@@ -95,7 +95,6 @@ export default {
   data() {
     return {
       post: false,
-      portfolioArr: [],
       galleryItem: [],
       gallery: [],
       videos: [],
@@ -117,7 +116,7 @@ export default {
   // End components
 
   beforeMount() {
-    this.getPost()
+    this.getPost();
   },
   // End beforeMount
 
@@ -126,12 +125,14 @@ export default {
     async getPost() {
       await axios
         .get(
-          SETTINGS.API_BASE_PATH + "posts?_embed&slug=" + this.$route.params.postSlug
+          SETTINGS.API_BASE_PATH + "posts?_embed&slug=" + this.$route.params.postname
         )
         .then(response => {
           this.post = response.data[0];
+          this.setPageTitle();
           // Get JSON from Arrays
-          this.getPortfolio(this.post);
+          this.getVideos();
+          this.getGallery();
           this.catid = this.post.categories[0];
           this.getTags(this.post.tags);
           this.getCategories(this.post.categories);
@@ -143,62 +144,38 @@ export default {
     },
 
     // Assign Portfolio JSON data to array
-    getPortfolio: function(ps) {
-      this.isGalleryLoaded = false;
-      this.isVideosLoaded = false;
-      if(ps.metadata.vuejs_custom_gallery != ""){
-        this.portA = ps.metadata.vuejs_custom_gallery[0].split(",");
-        // Loop through portfolio array
-        var i = 0;
-        this.portA.forEach((p) => {
-          axios.get(
-            SETTINGS.API_BASE_PATH + "media/" + p
-          )
-          .then(response => {
-            this.portfolioArr.push(response.data);
-            //Create Portfolio Items List
-            this.galleryItem = [];
-            this.galleryItem.id = i;
-            this.galleryItem.object_id = response.data.id;
-            this.galleryItem.xl = response.data.media_details.sizes["vuejs_wordpress-4k"].source_url;
-            this.galleryItem.lg = response.data.media_details.sizes["vuejs_wordpress-1080"].source_url;
-            this.galleryItem.md = response.data.media_details.sizes["vuejs_wordpress-720"].source_url;
-            this.galleryItem.src = response.data.media_details.sizes["vuejs_wordpress-480"].source_url;
-            this.galleryItem.thumbnail = response.data.media_details.sizes.thumbnail.source_url;
-            this.galleryItem.type = response.data.media_type;
-            this.galleryItem.title = response.data.title.rendered;
-            this.galleryItem.alt = response.data.alt_text;
-            this.galleryItem.description = response.data.caption.rendered;
-            this.galleryItem.htmldesc = response.data.description.rendered;
-            this.gallery.push(this.galleryItem);
-            i++;
-          })
-          .catch(e => {
-             console.log(e);
-          });
-        });
-        setTimeout(() => {
+    getGallery: function() {
+      if(this.post.metadata.vuejs_custom_gallery[0] != "" && this.post.metadata.vuejs_custom_gallery[0] != undefined){ 
+        this.portA = this.post.metadata.vuejs_custom_gallery[0];
+        axios.get(
+          SETTINGS.API_VENDOR_PATH + "vuejs_custom_gallery/" + this.portA
+        )
+        .then(response => {
+          this.gallery = response.data;
           if(this.gallery.length > 0){
             this.isGalleryLoaded = true;
           }
-        },250);
-      }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      } // End if not empty
+    },
 
-      if(ps.metadata.vuejs_custom_videos != ""){
+    getVideos: function( ) {
+      if(this.post.metadata.vuejs_custom_videos != undefined && this.post.metadata.vuejs_custom_videos[0].includes('oembed') && this.post.metadata.vuejs_custom_videos != "" && !this.videos.length){
         axios.get(
-          SETTINGS.API_VENDOR_PATH + "vuejs_videos?postid=" + this.post.id
+          SETTINGS.API_VENDOR_PATH + "vuejs_custom_videos/" + this.post.id
         )
         .then(response => {
-          this.videos = response.data[0];
+          this.videos = response.data;
+          if( this.videos.length > 0 ){
+            this.isVideosLoaded = true;
+          }
         })
         .catch(e => {
            console.log(e);
         });
-        setTimeout(() => {
-          if(this.videos.length > 0){
-            this.isVideosLoaded = true;
-          }
-        },250);
       }
     },
 
@@ -216,7 +193,14 @@ export default {
       cats.forEach((c) => {
           this.categoriesArr.push( this.activeCategory( c ) );
       });
-    }
+    },
+
+    setPageTitle: function(){
+      var baseName = this.$store.state.customLogo.all.site_name;
+      var pageTitle = this.post.title.rendered + " | " + baseName;
+      document.title = pageTitle;
+      return this.title;
+    },
   }
   // End methods
 };

@@ -41,7 +41,7 @@ export default {
       if( this.taxonomy != this.$route.params.taxSlug ){
         this.taxonomy = this.$route.params.taxSlug;
       }
-        return this.taxonomy;
+      return this.taxonomy;
     },
 
     setPageTitle: function(){
@@ -49,7 +49,7 @@ export default {
       var uppercaseFirstLetter = origPageTitle.charAt(0).toUpperCase();
       var stringWithoutFirstLetter = origPageTitle.slice(1);
       this.title = uppercaseFirstLetter + stringWithoutFirstLetter + " " + this.$route.name;
-      var baseName = this.$root.allCustomLogo.site_name;
+      var baseName = this.$store.state.customLogo.all.site_name;
       var pageTitle = this.title + " | " + baseName;
       document.title = pageTitle;
       return this.title;

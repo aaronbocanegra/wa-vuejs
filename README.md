@@ -25,18 +25,20 @@ Webpack is utilized to create a logical file structure and for development watch
 
 ##### Custom Menus
 The the has enabled 2 custom wordpress themes: header, footer. Both are designed to allow for at least 1 child 
-level for dtop down capabilities.
+level for drop-down capabilities.
 
 The menu capabilities:
-|       Menu Item      |           Menu Link          |    Rendered Method    | Route Name |            Notes            |
-| -------------------- | ---------------------------- | --------------------- | ---------- | --------------------------- |
-| Page                 | :pageSlug                    | router-link           | Page       |                             |
-| Post                 | :year/:month/:day/:postSlug  | router-link           | Post       | url is split to slugs       |
-| Category             | category/:categorySlug       | router-link           | Category   |                             |
-| Tags Archive         | archive/tags                 | router-link           | Archive    | url is split to :taxSlug    |
-| Categories Archive   | archive/category             | router-link           | Archive    | url is split to :taxSlug    |
-| Categories - Custom  | #                            | a/javascript:void(0); |            | Dropdown Category Sub-Links |
-| &copy; Home - Custom | site_url                     | router-link           | Home       | Converts site_url to Route  |
+|       Menu Item      |           Menu Link          |    Rendered Method    | Route Name |            Notes             |
+| -------------------- | ---------------------------- | --------------------- | ---------- | ---------------------------- |
+| Page                 | :pageSlug                    | router-link           | Page       |                              |
+| Post                 | :year/:month/:day/:postSlug  | router-link           | Post       | url is split to slugs        |
+| Category             | category/:categorySlug       | router-link           | Category   |                              |
+| Tags Archive         | archive/tags                 | router-link           | Archive    | url is split to :taxSlug     |
+| Categories Archive   | archive/category             | router-link           | Archive    | url is split to :taxSlug     |
+| Categories - Custom  | #                            | a/javascript:void(0); |            | Dropdown Category Sub-Links  |
+| &copy; Home - Custom | site_url                     | router-link           | Home       | Converts site_url to Route   |
+| Custom Links         | custom url                   | a target=_blank       |            | External Links or Sub-Links  |
+| *Tag                 | tag/:tagSlug                 | router-link           | Tag        | Functional Route Not in Menu |
 
 
 #### Vuejs Frontend

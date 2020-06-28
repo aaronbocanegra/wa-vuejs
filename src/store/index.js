@@ -4,6 +4,7 @@ import createPersist from 'vuex-localstorage'
 import * as actions from './actions'
 import * as getters from './getters'
 import hub from './modules/hub'
+import options from './modules/options'
 import user from './modules/user'
 import post from './modules/post'
 import categoryPosts from './modules/category_posts'
@@ -29,6 +30,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     hub,
+    options,
     user,
     post,
     categoryPosts,

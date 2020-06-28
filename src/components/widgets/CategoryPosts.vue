@@ -4,7 +4,7 @@
       <router-link :to="{name: 'Archive', params: { taxSlug: 'categories' }}"
                    title="View Categories Archive">Categories</router-link>
       <div>&nbsp;|&nbsp;</div>
-      <slot :parent="this.parent" :category="this.category">
+      <slot :parent="parent" :category="category">
         <router-link v-if="category.parent"
                      :to="{name: 'Category', params: { categorySlug: parent.slug }}"
                      :title="'Filter Posts by: ' + parent.name">{{ parent.name }}</router-link>
@@ -12,11 +12,10 @@
         <div>{{ category.name }}</div>
       </slot>
     </h1>
-    <div v-if="categoryPostsLoaded">
-      <div v-for="post in categoryPosts(category.id)" :key="post.id">
+    <ul v-if="categoryPostsLoaded">
+      <li v-for="post in filterPosts()" :key="post.id">
         <router-link :to="post.slug"
                      :title="post.title.rendered"
-                     tag="div" 
                      class="w-full flex flex-row cursor-pointer">
           <img v-if="post._embedded['wp:featuredmedia'] != undefined"
             class="w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
@@ -29,7 +28,7 @@
               <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
               <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
             </div>
-            <div class="flex items-center">
+            <div v-if="$root.show_author_avatar" class="flex items-center">
               <img
                 class="w-10 h-10 rounded-full mr-4"
                 :src="post._embedded['author'][0].avatar_urls[96]"
@@ -41,8 +40,8 @@
             </div>
           </div>
         </router-link>
-      </div>
-    </div>
+      </li>
+    </ul>
     <Loader v-else />
   </div>
 </template>
@@ -71,17 +70,28 @@ export default {
   },
   // End Data
 
-  updated() {
+  beforeMount() {
     this.filterPosts();
+    this.setPageTitle();
   },
+
   methods: {
     filterPosts: function() {
       if( this.prevSlug != this.category.id ){
+        this.$store.dispatch('clearCategoryPosts');
         this.$store.dispatch('getCategoryPosts', { catid: this.category.id });
         this.prevSlug = this.category.id;
-        return this.categoryPosts( this.category.id );
       }
-    }
+      return this.categoryPosts( this.category.id );
+    },
+
+    setPageTitle: function(){
+      var baseName = this.$store.state.customLogo.all.site_name;
+      var pageTitle = "Category - " + this.category.name + " | " + baseName;
+      document.title = pageTitle;
+      return this.title;
+    },
+
   },
 };
 </script>

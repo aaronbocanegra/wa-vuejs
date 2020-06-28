@@ -26,28 +26,21 @@ new Vue({
 
   data() {
     return {
-      allMenus: this.$store.getters.allMenus,
-      allMenusLoaded: this.$store.getters.allMenusLoaded,
-      allCustomLogo: this.$store.getters.allCustomLogo,
-      allCustomLogoLoaded: this.$store.getters.allCustomLogoLoaded,
-      allPages: this.$store.getters.allPages,
-      allPagesLoaded: this.$store.getters.allPagesLoaded,
-      allPagesCount: this.$store.getters.allPagesCount,
-      recentPostsCount: this.$store.getters.recentPostsCount,
-      allCategories: this.$store.getters.allCategories,
-      allCategoriesLoaded: this.$store.getters.allCategoriesLoaded,
-      allTags: this.$store.getters.allTags,
-      allTagsLoaded: this.$store.getters.allTagsLoaded,
       // Store Pagination Values and Set Defaults
-      storedPostsPerPage: 5,
+      storedPostsPerPage: this.$store.state.options.all.posts_per_page,
       storedPostsPageNum: 1,
-      storedPagesPerPage: 5,
+      storedPagesPerPage: this.$store.state.options.all.posts_per_page,
       storedPagesPageNum: 1,
+      show_author_avatar: this.$store.state.options.all.show_avatars,
+      show_on_front:      this.$store.state.options.all.show_on_front,
+      page_on_front:      this.$store.state.options.all.page_on_front,
+      page_for_posts:     this.$store.state.options.all.page_for_posts,
     };
   },
 
   beforeCreate() {
     this.$store.commit(types.RESET_LOADING_PROGRESS);
+    this.$store.dispatch('getAllOptions');
     this.$store.dispatch('getAllCategories');
     this.$store.dispatch('getAllTags');
     this.$store.dispatch('getAllPages');
@@ -55,18 +48,20 @@ new Vue({
     this.$store.dispatch('getPostsCount');
     this.$store.dispatch('getAllCustomLogo');
     this.$store.dispatch('getAllMenus');
-    this.allCategories = this.$store.getters.allCategories;
-    this.allCategoriesLoaded = this.$store.getters.allCategoriesLoaded;
-    this.allTags = this.$store.getters.allTags;
-    this.allTagsLoaded = this.$store.getters.allTagsLoaded;
-    this.allPagesCount = this.$store.getters.allPagesCount;
-    this.allPages = this.$store.getters.allPages;
-    this.allPagesLoaded = this.$store.getters.allPagesLoaded;
-    this.recentPostsCount = this.$store.getters.recentPostsCount;
-    this.allCustomLogo = this.$store.getters.allCustomLogo;
-    this.allCustomLogoLoaded = this.$store.getters.allCustomLogoLoaded;
-    this.allMenus = this.$store.getters.allMenus;
-    this.allMenusLoaded = this.$store.getters.allMenusLoaded;
+  },
+  created(){
+    this.$store.dispatch('getAllOptions');
+    this.storedPostsPerPage = this.$store.state.options.all.posts_per_page;
+    this.storedPagesPerPage = this.$store.state.options.all.posts_per_page;
+    this.show_author_avatar = this.$store.state.options.all.show_avatars;
+    this.show_on_front      = this.$store.state.options.all.show_on_front;
+    this.page_on_front      = this.$store.state.options.all.page_on_front;
+    this.page_for_posts     = this.$store.state.options.all.page_for_posts;
+/*
+   console.log("LIMIT: " + this.storedPostsPerPage);
+   console.log(this.$store.state);
+   console.log( this.$store.getters.allOptions );
+*/
   },
 }).$mount('#app')
 

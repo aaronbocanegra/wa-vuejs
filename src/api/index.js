@@ -2,6 +2,19 @@ import axios from 'axios';
 import SETTINGS from '../settings';
 
 export default {
+  async getOptions(cb) {
+    await axios
+      .get(
+        SETTINGS.API_VENDOR_PATH + 'options'
+      )
+      .then(response => {
+        cb(response.data);
+      })
+      .catch(e => {
+        cb(e);
+      });
+  },
+
   async getCategories(cb) {
     await axios
       .get(
@@ -134,7 +147,7 @@ export default {
   async getCustomLogo(cb) {
       await axios
         .get(
-          SETTINGS.API_VENDOR_PATH + "settings/custom_logo"
+          SETTINGS.API_VENDOR_PATH + "custom_logo"
         )
         .then(response => {
           cb(response.data);

@@ -1,5 +1,5 @@
 <template>
-  <footer class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3">
+  <footer v-if="allMenusLoaded" class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3">
 
     <!-- Footer Menu -->
     <nav class="flex flex-wrap items-center justify-between w-full whitespace-no-wrap">
@@ -125,17 +125,42 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+computed: {
+    ...mapGetters({
+      allMenus: 'allMenus',
+      allMenusLoaded: 'allMenusLoaded',
+      allCustomLogo: 'allCustomLogo',
+      allCustomLogoLoaded: 'allCustomLogoLoaded',
+    }),
+
+    menus_loaded () {
+      /* Fix for first load on no cache, specifically on mobile browsers */
+      this.$store.getters.allMenus;
+      this.$store.getters.allMenusLoaded;
+      this.$store.dispatch('getAllMenus');
+      this.allMenusLoaded;
+      this.footerMenu = this.allMenus.footer;
+      return this.$store.state.menus.loaded;
+    }
+  },
+
   data() {
     return {
-      footerMenu: this.$root.allMenus.footer,
+      footerMenu: [],
       site_url: location.origin,
     };
   },
 
+  mounted() {
+    this.menus_loaded;
+  },
+
   methods: {
     setPageTitle: function(){
-      document.title = this.$root.allCustomLogo.site_name + " | " + this.$root.allCustomLogo.site_tagline;
+      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
     },
 
   },

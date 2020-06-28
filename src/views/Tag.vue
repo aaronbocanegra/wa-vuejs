@@ -29,7 +29,6 @@ export default {
       tag: [],
       prevSlug: false,
     };
-  },
-  // End data
+  }, // End data
 };
 </script>

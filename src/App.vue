@@ -8,7 +8,7 @@
     <app-header />
 
     <!-- Main Content -->
-    <main id="wa-vuejs__main" class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
+    <main class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
       <transition-page>
         <router-view></router-view>
       </transition-page>
@@ -20,13 +20,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
 import Header from './components/partials/Header.vue';
 import Footer from './components/partials/Footer.vue';
 import ProgressBar from './components/partials/ProgressBar.vue';
 import TransitionPage from './components/partials/TransitionPage.vue';
 
-
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   computed: {
     ...mapGetters({

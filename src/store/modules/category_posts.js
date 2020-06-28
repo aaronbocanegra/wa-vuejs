@@ -25,7 +25,6 @@ const getters = {
     }
     let category = state.category;
     return category;
-    //return category.slice(0, catid);
   },
   categoryPostsLoaded: state => state.loaded,
 };
@@ -42,6 +41,13 @@ const actions = {
       commit(types.CATEGORY_POSTS_LOADED, true);
       commit(types.INCREMENT_LOADING_PROGRESS);
     });
+  },
+
+  clearCategoryPosts({ commit }) {
+      let posts = [];
+      commit(types.STORE_FETCHED_CATEGORY_POSTS, { posts });
+      commit(types.CATEGORY_POSTS_LOADED, false);
+      commit(types.INCREMENT_LOADING_PROGRESS);
   },
 };
 

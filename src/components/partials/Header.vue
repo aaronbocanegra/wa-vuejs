@@ -1,16 +1,16 @@
 <template>
-  <header class="site-header flex w-full items-center justify-between flex-wrap bg-black p-2">
-      <!-- Main Navigation -->
+  <header v-if="allMenusLoaded" class="site-header flex w-full min-h-16 items-center justify-between flex-wrap bg-black p-2">
+    <!-- Main Navigation -->
     <nav class="flex items-center justify-between w-full whitespace-no-wrap">
 
       <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
-      <div id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
+      <div v-if="logo_loaded" id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
         <router-link to="/" class="" 
                      @click.native="setPageTitle()"
                      :title="site_url">
-          <img class="h-16 md:h-24 lg:h-28"
-            :src="this.$root.allCustomLogo.image.src"
-            :alt="this.$root.allCustomLogo.site_name" />
+          <img class="h-16 md:h-25 lg:h-28"
+            :src="this.allCustomLogo.image.src"
+            :alt="this.allCustomLogo.site_name" />
         </router-link>
       </div>
 
@@ -147,46 +147,64 @@
       </div>
     </nav>
   </header>
+  <Loader v-else></Loader>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import Loader from "./Loader.vue";
 
 export default {
   computed: {
     ...mapGetters({
-      allCustomLogo: 'allCustomLogo',
-      allCustomLogo: 'allCustomLogoLoaded',
       allMenus: 'allMenus',
       allMenusLoaded: 'allMenusLoaded',
+      allCustomLogo: 'allCustomLogo',
+      allCustomLogoLoaded: 'allCustomLogoLoaded',
     }),
+
+    logo_loaded () {
+      /* Fix for first load on no cache, specifically on mobile browsers */
+      this.$store.getters.allCustomLogo;
+      this.$store.getters.allCustomLogoLoaded;
+      this.$store.dispatch('getAllCustomLogo');
+      this.allCustomLogoLoaded;
+      return this.$store.state.customLogo.loaded;
+    },
+
+    menus_loaded () {
+      /* Fix for first load on no cache, specifically on mobile browsers */
+      this.$store.getters.allMenus;
+      this.$store.getters.allMenusLoaded;
+      this.$store.dispatch('getAllMenus');
+      this.allMenusLoaded;
+      this.headerMenu = this.allMenus.header;
+      return this.$store.state.menus.loaded;
+    }
   },
 
+  components: {
+    Loader,
+  },  // End components
 
   data() {
     return {
-      headerMenu: this.$root.allMenus.header,
+      headerMenu: [],
       activeMobileMenu: false,
       site_url: location.origin,
     };
   },
-
-  beforeCreate(){
-    this.$store.getters.allMenus;
-    this.$store.getters.allMenusLoaded;
-    this.$store.getters.allCustomLogo;
-    this.$store.getters.allCustomLogoLoaded;
-  }, 
-
+ 
   mounted() {
-     this.setIsActive()
+    this.menus_loaded;
+    this.logo_loaded;
+    this.setIsActive();
   },
 
   methods: {
     setIsActive: function(){
       // Add active class to active dropdown and toggle active hidden 
       var url = window.location.href;
-
       if(document.getElementsByClassName('router-link-exact-active').length > 0){
         var mainActiveLink = document.getElementsByClassName('router-link-exact-active');
         if(mainActiveLink[0].parentNode.parentNode.classList.contains('hidden')){
@@ -225,13 +243,9 @@ export default {
     },
 
     setPageTitle: function(){
-      document.title = this.$root.allCustomLogo.site_name + " | " + this.$root.allCustomLogo.site_tagline;
+      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
     },
 
   }
 };
 </script>
-
-
-<style type="postcss" scoped>
-</style>

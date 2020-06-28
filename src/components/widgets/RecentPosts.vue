@@ -6,49 +6,48 @@
     <div v-if="recentPostsLoaded">
       <!-- Posts -->
       <ul class="mb-5">
-        <router-link v-for="post in filteredPosts()" :key="post.id"
-                     tag="li"
-                     :to="post.slug" 
-                     :title="post.title.rendered"
-                     class="w-full flex flex-row cursor-pointer">
-          <img v-if="post._embedded['wp:featuredmedia'] != undefined"
-            class="w-1/4 md:w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-            :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
-            :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
-          <div
-            class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
-                  bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-3/4 md:w-1/2 object-contain">
-            <div class="mb-8">
-              <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
-              <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
-            </div>
-            <div class="flex items-center">
-              <img
-                class="w-10 h-10 rounded-full mr-4"
-                :src="post._embedded['author'][0].avatar_urls[96]"
-                :alt="post._embedded['author'][0].name"
-              />
-              <div class="text-sm">
-                <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
+        <li v-for="post in filteredPosts()" :key="post.id">
+          <router-link :to="post.slug" 
+                       :title="post.title.rendered"
+                       class="w-full flex flex-row cursor-pointer">
+            <img v-if="post._embedded['wp:featuredmedia'] != undefined"
+              class="w-1/4 md:w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+              :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
+              :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
+            <div
+              class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
+                    bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-3/4 md:w-1/2 object-contain">
+              <div class="mb-8">
+                <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
+                <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
+              </div>
+              <div v-if="$root.show_author_avatar" class="flex items-center">
+                <img
+                  class="w-10 h-10 rounded-full mr-4"
+                  :src="post._embedded['author'][0].avatar_urls[96]"
+                  :alt="post._embedded['author'][0].name"/>
+                <div class="text-sm">
+                  <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </li>
       </ul>
       <!-- Pagination -->
-      <ul class="flex flex-row justify-end my-2 w-full h-8 text-green-600 hover:text-green-300">
+      <ul class="flex flex-row justify-end my-2 w-full h-8 text-green-600 hover:text-blue-600">
         <li>
           <div class="flex flex-row line-height-8 h-full text-black px-2">
             <div class="px-1 line-height-8">Per Page</div>
-            <input type="range" min="1" :max="numPosts" step="1"
-                   @change="getNumPages()" 
+            <input type="range" min="1" :max="numTotalPosts" step="1"
+                   @change="setNumPages()" 
                    v-model="$root.storedPostsPerPage"
                    class="h-8 w-10 sm:w-20" /> 
             <div v-text="$root.storedPostsPerPage" class="px-1 line-height-8"></div>
           </div>
         </li>
         <li v-if="prevPage != 0" @click="switchPage(prevPage)"
-            class="h-full w-8 bg-green-600 hover:bg-green-300">
+            class="h-full w-8 bg-green-600 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:(0);" :title="'page-' + prevPage">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
@@ -59,8 +58,8 @@
         </li>
         <li v-if="numPages > 1" v-for="i in numPages" 
             @click="switchPage(i)"
-            :class="[ i == pageNum ? 'bg-green-300' : 'bg-green-600' ]"
-            class="h-full leading-8 hover:bg-green-300">
+            :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600' ]"
+            class="h-full leading-8 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:void(0)" 
              :title="'Page-' + i"
              :class="[ i == pageNum ? 'text-black' : 'text-white' ]"
@@ -69,7 +68,7 @@
           </a>
         </li> 
         <li v-if="nextPage != numPages+1" @click="switchPage(nextPage)"
-            class="h-full w-8 bg-green-600 hover:bg-green-300">
+            class="h-full w-8 bg-green-600 hover:bg-blue-600 hover:shadow-inner">
           <a href="javascript:(0);" :title="'page-' + nextPage">
              <svg xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -85,8 +84,6 @@
 </template>
 
 <script>
-import axios from "axios";
-import SETTINGS from "../../settings";
 import { mapGetters } from 'vuex';
 import Loader from "../partials/Loader.vue";
 
@@ -96,18 +93,24 @@ export default {
   computed: {
     ...mapGetters({
       recentPosts: 'recentPosts',
+      recentPostsCount: 'recentPostsCount',
       recentPostsLoaded: 'recentPostsLoaded',
     }),
+
+    posts_count () {
+      this.$store.dispatch('getPostsCount');
+      return this.$store.state.post.post_count;
+    },
   },
 
   data() {
     return {
       perPage: this.limit,
       pageNum: this.$root.storedPostsPageNum,
-      prevPage: 0,
-      nextPage: 2,
-      numPosts: false,
+      prevPage: this.page - 1,
+      nextPage: this.page + 1,
       numPages: false,
+      numTotalPosts: this.limit,
       isPagesChanged: true,
     };
   }, // End data
@@ -117,12 +120,15 @@ export default {
   },  // End components
 
   mounted() {
+    this.numTotalPosts = this.$store.state.post.post_count;
     this.getNumPages();
+    this.setPageTitle();
   },
 
   methods: {
     filteredPosts: function () {
        if( this.isPagesChanged ){
+         this.$store.dispatch('clearPosts');
          this.prevPage = this.pageNum - 1;
          this.nextPage = this.pageNum + 1;
          this.$store.dispatch('getPosts', { limit: parseInt( this.perPage ), page: parseInt( this.pageNum ) });
@@ -131,16 +137,22 @@ export default {
        return this.recentPosts( parseInt( this.perPage ), parseInt( this.pageNum ) );
     },
 
+    setNumPages: function() {
+      this.$root.storedPostsPageNum = 1;
+      this.getNumPages();      
+    },
+
     getNumPages: function() {
-      this.numPosts = this.$root.recentPostsCount;
-      if(this.$root.storedPostsPerPage > this.numPosts){
-        this.$root.storedPostsPerPage = this.numPosts;
+      this.pageNum = this.$root.storedPostsPageNum;
+      this.numTotalPosts = this.posts_count;
+      if( this.$root.storedPostsPerPage > this.numTotalPosts ){
+        this.$root.storedPostsPerPage = this.numTotalPosts;
         this.perPage = this.$root.storedPostsPerPage;
       }else{
         this.perPage = this.$root.storedPostsPerPage;
       }
+      this.numPages = Math.ceil( this.numTotalPosts / this.perPage );
       this.isPagesChanged = true;
-      this.numPages = Math.ceil( this.numPosts / this.perPage );
     },
 
     switchPage: function(i){
@@ -150,6 +162,14 @@ export default {
         this.isPagesChanged = true;
       }
     },
+
+    setPageTitle: function(){
+      var pageTitle;
+      if( this.$root.page_for_posts != 0 ){
+        pageTitle = this.$slots.default[0].text + " | " + this.$store.state.customLogo.all.site_name;
+        document.title = pageTitle;
+      }
+    }
 
   },
 };

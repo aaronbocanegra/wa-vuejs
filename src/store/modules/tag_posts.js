@@ -43,6 +43,13 @@ const actions = {
       commit(types.INCREMENT_LOADING_PROGRESS);
     });
   },
+
+  clearTagPosts({ commit }) {
+      let posts = [];
+      commit(types.STORE_FETCHED_TAG_POSTS, { posts });
+      commit(types.TAG_POSTS_LOADED, false);
+      commit(types.INCREMENT_LOADING_PROGRESS);
+  },
 };
 
 // mutations

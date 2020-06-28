@@ -14,12 +14,11 @@
                     :taxonomy="tag.taxonomy" 
                     :count="tag.count" 
                     mode="filter-card"></wa-link-prevue>
-    <div v-if="tagPostsLoaded" class="mt-5">
-      <div v-for="post in tagPosts(tag.id)" :key="post.id">
+    <ul v-if="tagPostsLoaded" class="mt-5">
+      <li v-for="post in filterPosts()" :key="post.id">
         <router-link v-bind:tagid="tag.id" 
                      :to="post.slug"
                      :title="post.title.rendered"
-                     tag="div" 
                      class="w-full flex flex-row cursor-pointer">
           <img v-if="post._embedded['wp:featuredmedia'] != undefined"
             class="w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
@@ -32,7 +31,7 @@
               <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
               <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
             </div>
-            <div class="flex items-center">
+            <div v-if="$root.show_author_avatar" class="flex items-center">
               <img
                 class="w-10 h-10 rounded-full mr-4"
                 :src="post._embedded['author'][0].avatar_urls[96]"
@@ -44,8 +43,8 @@
             </div>
           </div>
         </router-link>
-      </div>
-    </div>
+      </li>
+    </ul>
     <Loader v-else />
   </div>
 </template>
@@ -76,21 +75,28 @@ export default {
   },
   // End Data
 
-  mounted() {
-    this.getTag();
-  },
-
-  beforeUpdate() {
-    this.getTag();
+  beforeMount() {
+    this.filterPosts();
+    this.setPageTitle();
   },
 
   methods: {
-    getTag: function() {
+    filterPosts: function() {
       if( this.prevSlug != this.tag.id ){
+        this.$store.dispatch('clearTagPosts');
         this.$store.dispatch('getTagPosts', { tagid: this.tag.id });
         this.prevSlug = this.tag.id;
       }
+      return this.tagPosts( this.tag.id );
     },
+
+    setPageTitle: function(){
+      var baseName = this.$store.state.customLogo.all.site_name;
+      var pageTitle = "Tag - " + this.tag.name + " | " + baseName;
+      document.title = pageTitle;
+      return this.title;
+    },
+
   },
 };
 </script>

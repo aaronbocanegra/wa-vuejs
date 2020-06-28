@@ -23,9 +23,8 @@ const router = new Router({
     },
     {
       ///:year/:month/:day/:postSlug',
-      //store.getters.allOptions.permalink_router_structure,
       // Assuming you're using the default permalink structure for posts
-      path: '' + [ store.getters.allOptions.permalink_router_structure != undefined ? store.getters.allOptions.permalink_router_structure : '/:year/:month/:day/:postname' ],
+      path: store.getters.allOptions.permalink_router_structure,
       name: 'Post',
       linkExactActiveClass: 'active',
       component: Post,
@@ -39,8 +38,7 @@ const router = new Router({
       meta: { transitionName: 'slide-route' },
     },
     {
-      path: '/' +  [store.getters.allOptions.category_base != undefined ? store.getters.allOptions.category_base : 'category' ] + '/:categorySlug',
-      //path: '/cateogry/:categorySlug',
+      path: '/' + [store.getters.allOptions.category_base != undefined ? store.getters.allOptions.category_base : 'category' ] + '/:categorySlug',
       name: 'Category',
       linkExactActiveClass: 'active',
       component: Category,
@@ -48,7 +46,6 @@ const router = new Router({
     },
     {
       path: '/' + [store.getters.allOptions.tag_base != undefined ? store.getters.allOptions.tag_base : 'tag' ] + '/:tagSlug',
-//      path: '/tag/:tagSlug',
       name: 'Tag',
       linkExactActiveClass: 'active',
       component: Tag,
