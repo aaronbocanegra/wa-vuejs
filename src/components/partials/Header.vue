@@ -178,7 +178,6 @@ export default {
       this.$store.getters.allMenusLoaded;
       this.$store.dispatch('getAllMenus');
       this.allMenusLoaded;
-      this.headerMenu = this.allMenus.header;
       return this.$store.state.menus.loaded;
     }
   },
@@ -198,6 +197,7 @@ export default {
   mounted() {
     this.menus_loaded;
     this.logo_loaded;
+    this.headerMenu = this.allMenus.header;
     this.setIsActive();
   },
 
@@ -205,14 +205,15 @@ export default {
     setIsActive: function(){
       // Add active class to active dropdown and toggle active hidden 
       var url = window.location.href;
+      var mainActiveLink;
       if(document.getElementsByClassName('router-link-exact-active').length > 0){
-        var mainActiveLink = document.getElementsByClassName('router-link-exact-active');
+        mainActiveLink = document.getElementsByClassName('router-link-exact-active');
         if(mainActiveLink[0].parentNode.parentNode.classList.contains('hidden')){
           mainActiveLink[0].parentNode.parentNode.classList.remove('hidden');
           mainActiveLink[0].parentNode.parentNode.parentNode.firstChild.classList.add('active');
         }
       }else if(document.querySelectorAll('#headerMenu>li>a[href^="' + url  + '"]')[0] != undefined){
-        var mainActiveLink = document.querySelectorAll('#headerMenu>li>a[href^="' + url  + '"]')[0];
+        mainActiveLink = document.querySelectorAll('#headerMenu>li>a[href^="' + url  + '"]')[0];
         var subActiveLink  = document.querySelectorAll('#headerMenu>li>ul>li>a[href^="' + url  + '"]')[0];
         if(subActiveLink != undefined){
           subActiveLink.parentNode.classList.add('active');

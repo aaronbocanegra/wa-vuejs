@@ -13,10 +13,10 @@
               version="1.0" viewBox="0 0 128 128"
               xml:space="preserve"
               class="text-black fill-current flex h-10 w-10">
-		  <path d="M64.4 16a49 49 0 0 0-50 48 51 51 0 0 0 50 52.2 53 53 0 0 0 54-52c-.7-48-45-55.7-45-55.7s45.3 3.8 49 55.6c.8 32-24.8 59.5-58 60.2-33 .8-61.4-25.7-62-60C1.3 29.8 28.8.6 64.3 0c0 0 8.5 0 8.7 8.4 0 8-8.6 7.6-8.6 7.6z">
-                  <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="1800ms" repeatCount="indefinite"></animateTransform>
-                </path>
-            </svg>
+            <path d="M64.4 16a49 49 0 0 0-50 48 51 51 0 0 0 50 52.2 53 53 0 0 0 54-52c-.7-48-45-55.7-45-55.7s45.3 3.8 49 55.6c.8 32-24.8 59.5-58 60.2-33 .8-61.4-25.7-62-60C1.3 29.8 28.8.6 64.3 0c0 0 8.5 0 8.7 8.4 0 8-8.6 7.6-8.6 7.6z">
+              <animateTransform attributeName="transform" type="rotate" from="0 64 64" to="360 64 64" dur="1800ms" repeatCount="indefinite"></animateTransform>
+            </path>
+          </svg>
         </div>
       </slot>
     </div>
@@ -31,17 +31,17 @@
             <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
               <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
               <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
               </div>
-	      <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
-	        <div class="wa-link-prevue__card-text px-4 text-center">
-	          <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	          <p v-if="response.description.length" v-html="response.description"></p>
+              <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
+                <div class="wa-link-prevue__card-text px-4 text-center">
+                  <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                  <p v-if="response.description.length" v-html="response.description"></p>
                   <p v-if="urlExists">
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
                        class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
-	        </div>
+                </div>
               </div>
             </div>
           </slot>
@@ -67,17 +67,17 @@
             <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
               <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
               <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
               </div>
-	      <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
-	        <div class="wa-link-prevue__card-text px-4 text-center">
-	          <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	          <p v-if="response.description.length" v-html="response.description"></p>
+                <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
+                <div class="wa-link-prevue__card-text px-4 text-center">
+                  <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                  <p v-if="response.description.length" v-html="response.description"></p>
                   <p>
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
                        class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
-	        </div>
+                </div>
               </div>
             </div>
           </slot>
@@ -92,17 +92,17 @@
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
             <div class="wa-link-prevue__wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
               <div class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" />
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" />
               </div>
-	      <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
-	        <div class="wa-link-prevue__card-text px-4 text-center">
-	          <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	          <p v-if="response.description.length" v-html="response.description"></p>
+              <div class="wa-link-prevue__card-info flex w-3/4 justify-center items-center">
+                <div class="wa-link-prevue__card-text px-4 text-center">
+                  <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                  <p v-if="response.description.length" v-html="response.description"></p>
                   <p>
                     <a :href="url" :title="'Visit: ' + title" target="_blank" 
                        class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
                   </p>
-	        </div>
+                </div>
               </div>
             </div>
           </slot>
@@ -130,22 +130,22 @@
               <div v-if="count" 
                    class="wa-link-prevue__card-count absolute z-25 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-1 rounded-full">{{ count }}</div>	
               <div class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
               <div class="flex font-bold justify-center items-center h-full w-2/3">{{ title }}</div>
             </div>
-	    <div :id="'wa-link-prevue__icon-card-info-' + index"
+            <div :id="'wa-link-prevue__icon-card-info-' + index"
                   v-bind:class="[]"
                   class="wa-link-prevue__icon-card-text pt-2 top-0 left-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
-	      <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
-	         <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	         <p v-if="response.description.length" v-html="response.description"></p>
-                  <p v-if="urlExists">
-                    <a :href="url" :title="'Visit: ' + title" target="_blank"
+              <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
+                <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                <p v-if="response.description.length" v-html="response.description"></p>
+                <p v-if="urlExists">
+                   <a :href="url" :title="'Visit: ' + title" target="_blank"
                        class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
-                  </p>
-	      </div>
+                </p>
+              </div>
             </div>
           </slot>
         </router-link>
@@ -158,22 +158,22 @@
                 :url="url">
             <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
               <div class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
               <div class="flex font-bold justify-center items-center h-full w-2/3">{{ title }}</div>
             </div>
-	    <div :id="'wa-link-prevue__icon-card-info-' + index"
+            <div :id="'wa-link-prevue__icon-card-info-' + index"
                   v-bind:class="[]"
                   class="wa-link-prevue__icon-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
-	      <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
-	         <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	         <p v-if="response.description.length" v-html="response.description"></p>
-                  <p v-if="urlExists">
-                    <a :href="url" :title="'Visit: ' + title" target="_blank"
-                       class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
-                  </p>
-	      </div>
+              <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
+                <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                <p v-if="response.description.length" v-html="response.description"></p>
+                <p v-if="urlExists">
+                  <a :href="url" :title="'Visit: ' + title" target="_blank"
+                     class="wa-link-prevue_external-link rounded-full bg-green-600 hover:bg-blue-600 text-white hover:text-black px-4 py-1">Visit Site</a>
+                </p>
+              </div>
             </div>
           </slot>
         </a>
@@ -186,7 +186,7 @@
       </transition>
     </div>
     <!-- Cloud -->
-    <div v-else="mode === 'cloud'" 
+    <div v-else-if="mode === 'cloud'" 
          :id="'list-item' + index"
          class="wa-link-prevue__cloud-main relative flex h-full items-center justify-center">
 
@@ -213,18 +213,18 @@
                 {{ title }}
               </div>
             </div>
-	    <div :id="'wa-link-prevue__cloud-card-info-' + index"
+            <div :id="'wa-link-prevue__cloud-card-info-' + index"
                   v-bind:class="[]"
                   class="wa-link-prevue__cloud-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
             
               <div class="wa-link-prevue__cloud-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
-	      <div class="wa-link-prevue__cloud-card-text px-4 text-center">
-	         <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	         <p v-if="response.description.length" v-html="response.description"></p>
-	      </div>
+              <div class="wa-link-prevue__cloud-card-text px-4 text-center">
+                <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                <p v-if="response.description.length" v-html="response.description"></p>
+              </div>
             </div>
           </slot>
         </router-link>
@@ -251,18 +251,18 @@
                 {{ title }}
               </div>
             </div>
-	    <div :id="'wa-link-prevue__cloud-card-info-' + index"
+            <div :id="'wa-link-prevue__cloud-card-info-' + index"
                   v-bind:class="[]"
                   class="wa-link-prevue__cloud-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
             
               <div class="wa-link-prevue__cloud-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
-	        <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
+                <img v-if="response.image.length" :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
-	      <div class="wa-link-prevue__cloud-card-text px-4 text-center">
-	         <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
-	         <p v-if="response.description.length" v-html="response.description"></p>
-	      </div>
+              <div class="wa-link-prevue__cloud-card-text px-4 text-center">
+                <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
+                <p v-if="response.description.length" v-html="response.description"></p>
+              </div>
             </div>
           </slot>
         </a>
@@ -341,14 +341,6 @@ export default {
     this.isValidUrl(this.url);
     this.getLink();
   },
-
-  watch: {
-    url: function(value) {
-      this.response = null
-      this.getLink();
-    }
-  },
-
 
   methods: {
     async getLink() {

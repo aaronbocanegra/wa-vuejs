@@ -10,6 +10,26 @@ The main APIs and Platforms used are:
 - [Postcss](https://postcss.org/)
 - [Tailwindcss](https://tailwindcss.com/) Mobile First CSS
 
+## Project setup
+```
+npm install
+```
+
+#### Compiles and hot-reloads for development
+```
+npm run watch
+```
+#### Compiles and minifies for production
+```
+npm run build
+```
+#### Lints and fixes files
+```
+npm run lint
+```
+#### Install Theme
+Download to wp-content/themes and enable in wordpress. Then add custom logo: svg, jpg, png, and add site name and description.
+
 ### Wordpress Custom Theme
 
 #### Backend
@@ -38,7 +58,7 @@ The menu capabilities:
 | Categories - Custom  | #                            | a/javascript:void(0); |            | Dropdown Category Sub-Links  |
 | &copy; Home - Custom | site_url                     | router-link           | Home       | Converts site_url to Route   |
 | Custom Links         | custom url                   | a target=_blank       |            | External Links or Sub-Links  |
-| *Tag                 | tag/:tagSlug                 | router-link           | Tag        | Functional Route Not in Menu |
+| Tag - Custom link    | tag/:tagSlug                 | router-link           | Tag        | Functional Route Not in Menu |
 
 
 ##### Integrated Wordpress Options - Desgined for Versatile Extensibility
@@ -84,25 +104,6 @@ as well as swipe functionality.
   - Portfolio Gallery Enabled
 - Mobile first design via Tailwindscss for fully responsive design
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run watch
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

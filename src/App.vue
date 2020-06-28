@@ -24,8 +24,8 @@ import Header from './components/partials/Header.vue';
 import Footer from './components/partials/Footer.vue';
 import ProgressBar from './components/partials/ProgressBar.vue';
 import TransitionPage from './components/partials/TransitionPage.vue';
+import { mapGetters } from 'vuex';
 
-import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   computed: {
     ...mapGetters({

@@ -56,16 +56,18 @@
             </svg>
           </a>
         </li>
-        <li v-if="numPages > 1" v-for="i in numPages" 
-            @click="switchPage(i)"
-            :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600' ]"
-            class="h-full leading-8 hover:bg-blue-600 hover:shadow-inner">
-          <a href="javascript:void(0)" 
-             :title="'Page-' + i"
-             :class="[ i == pageNum ? 'text-black' : 'text-white' ]"
-             class="font-bold leading-8 text-xl px-2 h-full hover:text-black">
-            {{ i }}
-          </a>
+        <li v-if="numPages > 1" class="flex flex-rows">
+          <ul class="flex flex-rows">
+            <li v-for="i in numPages" :key="i" 
+                @click="switchPage(i)"
+                :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600' ]"
+                class="h-full leading-8 hover:bg-blue-600 hover:shadow-inner">
+              <a href="javascript:void(0)" 
+                 :title="'Page-' + i"
+                 :class="[ i == pageNum ? 'text-black' : 'text-white' ]"
+                 class="font-bold leading-8 text-xl px-2 h-full hover:text-black">{{ i }}</a>
+            </li>
+          </ul>
         </li> 
         <li v-if="nextPage != numPages+1" @click="switchPage(nextPage)"
             class="h-full w-8 bg-green-600 hover:bg-blue-600 hover:shadow-inner">

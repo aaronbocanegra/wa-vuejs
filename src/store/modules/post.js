@@ -71,7 +71,7 @@ const actions = {
 
 // mutations
 const mutations = {
-  [types.STORE_FETCHED_POSTS](state, { posts, limit, page }) {
+  [types.STORE_FETCHED_POSTS](state, { posts }) {
     state.recent = posts;
   },
 

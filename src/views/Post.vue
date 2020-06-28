@@ -23,7 +23,6 @@
                          :title="'Filter Posts by tag: ' + tag.name">
               {{ tag.name }}
             </router-link>
-            </a>
           </li>
         </ul>
       </div>

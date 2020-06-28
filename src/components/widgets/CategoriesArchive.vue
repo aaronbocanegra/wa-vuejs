@@ -4,9 +4,8 @@
       <slot></slot>
     </h1>
     <div v-if="allCategoriesLoaded" class="categories-archive__content">
-      <ul class="w-full wa-vuejs-taxonomy__categories"
-        <li v-for="(category, index) in allCategories" :key="category.id" 
-            class="w-full list-none">
+      <ul class="w-full wa-vuejs-taxonomy__categories">
+        <li v-for="category in allCategories" :key="category.id" class="w-full list-none">
           <router-link :to="{ name: 'Category', params: { categorySlug: category.slug } }"
                        :title="'Filter Posts by Category: ' + category.name"
                        class="wa-vuejs-taxonomy__wrapper w-full flex flex-rows cursor-pointer hover:text-black text-black p-3 mb-6 shadow-lg hover:shadow-2xl relative">

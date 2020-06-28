@@ -3,7 +3,7 @@
     <!-- Thumbs -->
     <div id="thumbnails">
       <ul class="grid grid-cols-3 lg:grid-cols-4 gap-2">
-        <li v-for="(item, index) in gallery"
+        <li v-for="(item, index) in gallery" :key="item.id"
             @click="openLightbox(index)"
             class="flex hover:m-2 relative cursor-pointer">
           <img v-if="item.type === 'image'"
@@ -59,7 +59,7 @@
                v-bind:class="[toggleThumbnails ? 'flex' : 'hidden']"
                class="w-full justify-center">
             <ul class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-1 p-3 ">
-              <li v-for="(item, index) in gallery"
+              <li v-for="(item, index) in gallery" :key="item.id"
                   @click="switchLightbox(index)"
                   class="relative cursor-pointer" >
                 <!-- Thumbnail -->
