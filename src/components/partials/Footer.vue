@@ -126,6 +126,8 @@ import { mapGetters } from 'vuex';
 export default {
 computed: {
     ...mapGetters({
+      allOptions: 'allOptions',
+      allOptionsLoaded: 'allOptionsLoaded',
       allMenus: 'allMenus',
       allMenusLoaded: 'allMenusLoaded',
       allCustomLogo: 'allCustomLogo',
@@ -145,18 +147,19 @@ computed: {
   data() {
     return {
       footerMenu: [],
-      site_url: location.origin,
+      site_url: this.$store.state.options.all.siteurl,
     };
   },
 
   mounted() {
     this.menus_loaded;
     this.footerMenu = this.allMenus.footer;
+    this.site_url = this.allOptions.siteurl;
   },
 
   methods: {
     setPageTitle: function(){
-      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
+      document.title = this.allOptions.blogname + " | " + this.allOptions.blogdescription;
     },
 
   },

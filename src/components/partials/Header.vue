@@ -157,6 +157,8 @@ import Loader from "./Loader.vue";
 export default {
   computed: {
     ...mapGetters({
+      allOptions: 'allOptions',
+      allOptionsLoaded: 'allOptionsLoaded',
       allMenus: 'allMenus',
       allMenusLoaded: 'allMenusLoaded',
       allCustomLogo: 'allCustomLogo',
@@ -190,7 +192,7 @@ export default {
     return {
       headerMenu: [],
       activeMobileMenu: false,
-      site_url: location.origin,
+      site_url: this.$store.state.options.all.siteurl,
     };
   },
  
@@ -198,6 +200,7 @@ export default {
     this.menus_loaded;
     this.logo_loaded;
     this.headerMenu = this.allMenus.header;
+    this.site_url = this.allOptions.siteurl;
     this.setIsActive();
   },
 
@@ -244,7 +247,7 @@ export default {
     },
 
     setPageTitle: function(){
-      document.title = this.allCustomLogo.site_name + " | " + this.allCustomLogo.site_tagline;
+      document.title = this.allOptions.blogname + " | " + this.allOptions.blogdescription;
     },
 
   }

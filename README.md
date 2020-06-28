@@ -30,9 +30,9 @@ npm run lint
 #### Install Theme
 Download to wp-content/themes and enable in wordpress. Then add custom logo: svg, jpg, png, and add site name and description.
 
-### Wordpress Custom Theme
+## Wordpress Custom Theme
 
-#### Backend
+### Backend
 The primary design of this theme is for portfolio sites. The headless custom wordpress theme makes use of the native customize theme functionality to allow for custom logo upload
 as an svg or image file, and header and footer menus (multi-dimensional).
 
@@ -43,7 +43,7 @@ and oEmbed videos are utilzed in a custom touchable lightbox component in the Vu
 
 Webpack is utilized to create a logical file structure and for development watch functionality. 
 
-##### Custom Menus
+#### Custom Menus
 The theme has enabled 2 menus: header, footer. Both are designed to allow for at least 1 child 
 level for drop-down capabilities.
 
@@ -61,15 +61,15 @@ The menu capabilities:
 | Tag - Custom link    | tag/:tagSlug                 | router-link           | Tag        | Functional Route Not in Menu |
 
 
-##### Integrated Wordpress Options - Desgined for Versatile Extensibility
+#### Integrated Wordpress Options - Desgined for Versatile Extensibility
 The theme has an API route to receive the following options. Some are made available but not currently used.
 
 |            Option          |       Usage       |   Actively used   |
 | -------------------------- | ----------------- | ----------------- | 
-| blogname                   |                   |                   |
-| blogdescription            |                   |                   |
+| blogname                   | page title        |         x         |
+| blogdescription            | page title&desc   |         x         |
 | home                       |                   |                   |
-| siteurl                    |                   |                   |
+| siteurl                    | menus home check  |         x         |
 | show_avatars               | show author_avatar|         x         |
 | posts_per_page             | pagination limit  |         x         |
 | posts_per_rss              |                   |                   |
@@ -89,7 +89,7 @@ The theme has an API route to receive the following options. Some are made avail
 | category_base              | used in router    |         x         |
 | tag_base                   | used in router    |         x         |
 
-#### Vuejs Frontend
+### Vuejs Frontend
 The frontend is built in Vuejs. Making use of Router-Link functionality and transitions it is an animated SPA.
 
 Some of the built in functionality includes:
@@ -105,6 +105,6 @@ as well as swipe functionality.
 - Mobile first design via Tailwindscss for fully responsive design
 
 
-### Customize configuration
+## Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 # wa-vuejs
