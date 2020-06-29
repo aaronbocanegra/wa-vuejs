@@ -64,8 +64,8 @@
           <!-- sub-menu items -->
           <ul v-if="fmi.children.length > 0" 
               id="footer-sub-menu" 
-              class="flex flex-col items-end w-full border-l-2 border-green-600 hover:border-blue-600 
-                     sm:border-l-0 sm:border-t-2 sm:pl-5 md:pl-0 md:border-l-0 lg:border-t-0 lg:border-l-2">
+              class="flex flex-col items-end w-full  border-green-600 hover:border-blue-600 
+                     border-l-0 border-t-0  border-b-2 sm:border-b-0 sm:border-t-2 sm:pl-5 md:pl-0 lg:border-t-0 lg:border-l-2">
              <li v-for="cmi in fmi.children" :key="cmi.title" 
                 class="w-full">
                <!-- Post Sub Link -->

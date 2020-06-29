@@ -1,6 +1,6 @@
 <template>
   <div class="widget category-posts">
-    <h1 class="flex flex-wrap flex-rows w-full">
+    <h1 class="flex flex-wrap flex-row w-full">
       <router-link :to="{name: 'Archive', params: { taxSlug: 'categories' }}"
                    title="View Categories Archive">Categories</router-link>
       <div>&nbsp;|&nbsp;</div>
@@ -12,28 +12,47 @@
         <div>{{ category.name }}</div>
       </slot>
     </h1>
-    <ul v-if="categoryPostsLoaded">
-      <li v-for="post in filterPosts()" :key="post.id">
+    <div class="wa-link-prevue-content w-full border-b-2 border-gray-400 mb-3 relative">
+      <div class="wa-vuejs-taxonomy__card-text px-4 w-full p-3 mb-6 shadow-lg hover:shadow-2xl relative">
+        <div v-if="category.count" class="wa-vuejs-taxonomy__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ category.count }}</div>
+        <h3 class="flex flex-wrap flex-row font-hairline border-b-2 border-green-600 hover:border-blue-600">
+          <div v-if="parent">{{ parent.name }}</div>
+            <div v-if="category.parent">&nbsp;>&nbsp;</div>
+            <div v-if="category.name.length" class="0" v-html="category.name"></div>
+        </h3>
+        <p v-if="category.description.length" v-html="category.description"></p>
+      </div>
+    </div>
+
+    <ul v-if="categoryPostsLoaded" class="my-5 min-h-64 sm:min-h-56 grid grid-cols-1 lg:grid-cols-2 gap-1">
+      <li v-for="post in filterPosts()" :key="post.id" class="relative">
         <router-link :to="post.slug"
                      :title="post.title.rendered"
-                     class="w-full flex flex-row cursor-pointer">
-          <img v-if="post._embedded['wp:featuredmedia'] != undefined"
-            class="w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-            :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
-            :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
-          <div
-            class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
-                  bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-1/2 object-contain">
-            <div class="mb-8">
-              <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
-              <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
+                     class="w-full flex flex-row cursor-pointer h-full">
+          <picture v-if="post._embedded['wp:featuredmedia'] != undefined">
+                   <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'] != undefined"
+                            media="(min-width:1280px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'].source_url">
+                   <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'] != undefined"
+                            media="(min-width:1920px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'].source_url">
+                   <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'] != undefined"
+                            media="(min-width:3840px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'].source_url">
+                   <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['post-thumbnail'].source_url"
+                        :alt="post._embedded['wp:featuredmedia'][0].alt_text"
+                        draggable="false"
+                        class="wa-vuejs_post-card-featured min-h-64 sm:min-h-56 w-full object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+          </picture>
+
+          <div class="wa-vuejs_post-description absolute text-white bg-black bg-opacity-45 hover:bg-opacity-75 p-4 flex flex-col justify-between leading-normal inset-0 object-contain">
+            <div class="wa-vuejs__post-card">
+              <div class="wa-vuejs_post-catd-title bg-black bg-opacity-75 hover:bg-opacity-90 absolute top-0 left-0 px-4 py-2 w-full text-green-600
+                          hover:text-blue-600 font-bold text-xl">{{ post.title.rendered }}</div>
+              <p class="wa-vuejs_post-excerpt text-white text-base pt-10" v-html="post.excerpt.rendered"></p>
             </div>
-            <div v-if="$root.show_author_avatar" class="flex items-center">
+            <div v-if="$root.show_author_avatar" class="wa-vuejs__autho flex items-center">
               <img
                 class="w-10 h-10 rounded-full mr-4"
                 :src="post._embedded['author'][0].avatar_urls[96]"
-                :alt="post._embedded['author'][0].name"
-              />
+                :alt="post._embedded['author'][0].name"/>
               <div class="text-sm">
                 <p class="text-gray-600">{{ post._embedded["author"][0].name }}</p>
               </div>

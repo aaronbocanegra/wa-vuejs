@@ -34,6 +34,8 @@ new Vue({
       show_on_front:      this.$store.state.options.all.show_on_front,
       page_on_front:      this.$store.state.options.all.page_on_front,
       page_for_posts:     this.$store.state.options.all.page_for_posts,
+      isSwipeMenu:        false,
+      activeMobileMenu:   false,
     };
   },
 
@@ -56,11 +58,6 @@ new Vue({
     this.show_on_front      = this.$store.state.options.all.show_on_front;
     this.page_on_front      = this.$store.state.options.all.page_on_front;
     this.page_for_posts     = this.$store.state.options.all.page_for_posts;
-/*
-   console.log("LIMIT: " + this.storedPostsPerPage);
-   console.log(this.$store.state);
-   console.log( this.$store.getters.allOptions );
-*/
   },
 }).$mount('#app')
 

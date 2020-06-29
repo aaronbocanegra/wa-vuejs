@@ -3,7 +3,7 @@
   <div class='wa-link-prevue-content w-full'>
     <!-- Loader -->
     <div v-if="!response && validUrl" 
-         class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full"
+         class="wa-link-prevue__main flex flex-row flex-wrap items-center justify-center h-full"
          :id="'wa-link-prevue__loader-' + index">
       <slot name="loading">
         <div class="text-black w-full flex justify-center items-center">
@@ -23,12 +23,12 @@
     <!-- Filter Card -->
     <div v-else-if="mode === 'filter-card' && this.response" 
          :id="'wa-link-prevue__filter-card-' + index"
-         class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full">
+         class="wa-link-prevue__main flex flex-row flex-wrap items-center justify-center h-full">
       <transition name="fade" mode="out-in">
         <div v-if="urlExists" 
-             class="wa-link-prevue_response w-full flex flex-rows flex-wrap text-black">
+             class="wa-link-prevue_response w-full flex flex-row flex-wrap text-black">
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div :id="'wa-link-prevue__filter-card-wrapper-' + index" class="wa-link-prevue__filter-card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+            <div :id="'wa-link-prevue__filter-card-wrapper-' + index" class="wa-link-prevue__filter-card-wrapper w-full flex flex-row p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
               <div v-if="count" class="wa-link-prevue__filter-card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
               <div v-if="response.image != undefined" class="wa-link-prevue__filter-card-img flex w-1/4 justify-center items-center">
                 <img :src="response.image" :alt="response.title" />
@@ -56,16 +56,16 @@
     <!-- Cards -->
     <div v-else-if="mode === 'cards' && this.response" 
          :id="'wa-link-prevue__card-' + index"
-         class="wa-link-prevue__main flex flex-rows flex-wrap items-center justify-center h-full">
+         class="wa-link-prevue__main flex flex-row flex-wrap items-center justify-center h-full">
       <transition name="fade" mode="out-in">
         <!-- post_tag -->
         <router-link v-if="taxonomy === 'post_tag' && urlExists" 
-           class="wa-link-prevue_response w-full flex flex-rows flex-wrap cursor-pointer hover:text-black text-black"
+           class="wa-link-prevue_response w-full flex flex-row flex-wrap cursor-pointer hover:text-black text-black"
            :to="{ name: 'Tag', params: { tagSlug: slug } }"
            :title="'Filter Posts by: ' + title">
           <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div :id="'wa-link-prevue__card-wrapper-' + index" class="wa-link-prevue__card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
+            <div :id="'wa-link-prevue__card-wrapper-' + index" class="wa-link-prevue__card-wrapper w-full flex flex-row p-3 mb-6 shadow-lg hover:shadow-2xl relative" >
               <div v-if="count" class="wa-link-prevue__card-count absolute z-50 bg-gray-500 text-white px-2 line-height-3 text-xs py-1 right-0 mt-1 mr-2 rounded-full">{{ count }}</div>	
               <div v-if="response.image != undefined" class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
                 <img :src="response.image" :alt="response.title" />
@@ -85,13 +85,13 @@
         </router-link>
         <!-- custom -->
         <a v-else-if="taxonomy === 'custom' && urlExists" 
-           class="wa-link-prevue_response w-full flex flex-rows flex-wrap cursor-pointer hover:text-black text-black"
+           class="wa-link-prevue_response w-full flex flex-row flex-wrap cursor-pointer hover:text-black text-black"
            :href="url"
            target="_blank"
            :title="title">
           <h4 class="pl-3 w-full text-green-600 hover:text-blue-600">{{ title }}</h4>
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
-            <div class="wa-link-prevue__card-wrapper w-full flex flex-rows p-3 mb-6 shadow-lg hover:shadow-2xl" >
+            <div class="wa-link-prevue__card-wrapper w-full flex flex-row p-3 mb-6 shadow-lg hover:shadow-2xl" >
               <div v-if="response.image != undefined"  class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
                 <img :src="response.image" :alt="response.title" />
               </div>
@@ -121,11 +121,11 @@
          @mouseenter="showCardInfo()"
          @mouseleave="hideCardInfo()"
          v-touch:longtap="this.iconToggle" 
-         class="wa-link-prevue__icon-main relative flex flex-rows flex-wrap items-center justify-center h-full border-2 border-gray-200 p-1">
+         class="wa-link-prevue__icon-main relative flex flex-row flex-wrap items-center justify-center h-full border-2 border-gray-200 p-1">
       <transition name="fade" mode="out-in">
         <router-link v-if="taxonomy === 'post_tag'"
            :to="{ name: 'Tag', params: { tagSlug: slug } }" 
-           class="wa-link-prevue__icon-response flex flex-cols w-full flex-wrap cursor-pointer hover:text-blue-600 text-green-600"
+           class="wa-link-prevue__icon-response flex flex-col w-full flex-wrap cursor-pointer hover:text-blue-600 text-green-600"
            :title="'Filter Posts by: ' + title">
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
             <div class="wa-link-prevue__icon-wrapper flex flex-row w-full min-h-20 relative">
@@ -152,12 +152,12 @@
 
         <a v-else-if="taxonomy === 'custom' && urlExists"
            :href="url" 
-           class="wa-link-prevue__icon-response flex flex-cols w-full flex-wrap cursor-pointer hover:text-black text-black"
+           class="wa-link-prevue__icon-response flex flex-col w-full flex-wrap cursor-pointer hover:text-black text-black"
            :title="title"
            target="_blank">
           <slot :img="response.image" :title="response.title" :description="response.description" 
                 :url="url">
-            <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
+            <div class="wa-link-prevue__icon-wrapper flex flex-row w-full min-h-20">
               <div v-if="response.image != undefined" class="wa-link-prevue__icon-card-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
                 <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
@@ -181,7 +181,7 @@
 
         <!-- Defunct -->
         <div v-else-if="!urlExists">
-          <div class="wa-link-prevue__icon-wrapper flex flex-rows w-full min-h-20">
+          <div class="wa-link-prevue__icon-wrapper flex flex-row w-full min-h-20">
             <div class="flex font-bold justify-center items-center h-full w-full">{{ title }}</div>
           </div>
         </div>

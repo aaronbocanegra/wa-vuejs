@@ -1,154 +1,172 @@
-/** line Hight **/
-.line-height-3{
-  line-height: 0.75rem;
-}
-.line-height-8{
-  line-height: 2rem;
-}
-
-/** Rotate by Degrees **/
-.rotate-deg-0{
-  transform: rotate(0deg);
-}
-.rotate-deg-15{
-  transform: rotate(15deg);
-}
-.rotate-deg-30{
-  transform: rotate(30deg);
-}
-.rotate-deg-45{
-  transform: rotate(45deg);
-}
-.rotate-deg-60{
-  transform: rotate(60deg);
-}
-.rotate-deg-75{
-  transform: rotate(75deg);
-}
-.rotate-deg-90{
-  transform: rotate(90deg);
-}
-.rotate-deg-105{
-  transform: rotate(105deg);
-}
-.rotate-deg-120{
-  transform: rotate(120deg);
-}
-.rotate-deg-135{
-  transform: rotate(135deg);
-}
-.rotate-deg-150{
-  transform: rotate(150deg);
-}
-.rotate-deg-165{
-  transform: rotate(165deg);
-}
-.rotate-deg-180{
-  transform: rotate(180deg);
-}
-.rotate-deg-195{
-  transform: rotate(195deg);
-}
-.rotate-deg-210{
-  transform: rotate(210deg);
-}
-.rotate-deg-225{
-  transform: rotate(225deg);
-}
-.rotate-deg-240{
-  transform: rotate(240deg);
-}
-.rotate-deg-255{
-  transform: rotate(255deg);
-}
-.rotate-deg-270{
-  transform: rotate(270deg);
-}
-.rotate-deg-285{
-  transform: rotate(285deg);
-}
-.rotate-deg-300{
-  transform: rotate(300deg);
-}
-.rotate-deg-315{
-  transform: rotate(315deg);
-}
-.rotate-deg-330{
-  transform: rotate(330deg);
-}
-.rotate-deg-345{
-  transform: rotate(345deg);
-}
-
-.-rotate-deg-15{
-  transform: rotate(-15deg);
-}
-.-rotate-deg-30{
-  transform: rotate(-30deg);
-}
-.-rotate-deg-45{
-  transform: rotate(-45deg);
-}
-.-rotate-deg-60{
-  transform: rotate(-60deg);
-}
-.-rotate-deg-75{
-  transform: rotate(-75deg);
-}
-.-rotate-deg-90{
-  transform: rotate(-90deg);
-}
-.-rotate-deg-105{
-  transform: rotate(-105deg);
-}
-.-rotate-deg-120{
-  transform: rotate(-120deg);
-}
-.-rotate-deg-135{
-  transform: rotate(-135deg);
-}
-.-rotate-deg-150{
-  transform: rotate(-150deg);
-}
-.-rotate-deg-165{
-  transform: rotate(-165deg);
-}
-.-rotate-deg-180{
-  transform: rotate(-180deg);
-}
-.-rotate-deg-195{
-  transform: rotate(-195deg);
-}
-.-rotate-deg-210{
-  transform: rotate(-210deg);
-}
-.-rotate-deg-225{
-  transform: rotate(-225deg);
-}
-.-rotate-deg-240{
-  transform: rotate(-240deg);
-}
-.-rotate-deg-255{
-  transform: rotate(-255deg);
-}
-.-rotate-deg-270{
-  transform: rotate(-270deg);
-}
-.-rotate-deg-285{
-  transform: rotate(-285deg);
-}
-.-rotate-deg-300{
-  transform: rotate(-300deg);
-}
-.-rotate-deg-315{
-  transform: rotate(-315deg);
-}
-.-rotate-deg-330{
-  transform: rotate(-330deg);
-}
-.-rotate-deg-345{
-  transform: rotate(-345deg);
-}
+@variants responsive, hover, focus{
+  /**   transform-translate **/
+  .transform-translate-x-0{
+    transform: translateX(0%);
+  } 
+  .-transform-translate-x-full{
+    transform: translateX(-100%);
+  }
+  .transform-translate-x-full{
+    transform: translateX(100%);
+  }
+  .-transform-translate-y-full{
+    transform: translateY(-100%);
+  }
+  .transform-translate-y-full{
+    transform: translateY(100%);
+  }
 
 
+  /** line Hight **/
+  .line-height-3{
+    line-height: 0  .75rem;
+  }
+  .line-height-8{
+    line-height: 2rem;
+  }
+
+  /** Rotate by Degrees **/
+  .rotate-deg-0{
+    transform: rotate(0deg);
+  }
+  .rotate-deg-15{
+    transform: rotate(15deg);
+  }
+  .rotate-deg-30{
+    transform: rotate(30deg);
+  }
+  .rotate-deg-45{
+    transform: rotate(45deg);
+  }
+  .rotate-deg-60{
+    transform: rotate(60deg);
+  }
+  .rotate-deg-75{
+    transform: rotate(75deg);
+  }
+  .rotate-deg-90{
+    transform: rotate(90deg);
+  }
+  .rotate-deg-105{
+    transform: rotate(105deg);
+  }
+  .rotate-deg-120{
+    transform: rotate(120deg);
+  }
+  .rotate-deg-135{
+    transform: rotate(135deg);
+  }
+  .rotate-deg-150{
+    transform: rotate(150deg);
+  }
+  .rotate-deg-165{
+    transform: rotate(165deg);
+  }
+  .rotate-deg-180{
+    transform: rotate(180deg);
+  }
+  .rotate-deg-195{
+    transform: rotate(195deg);
+  }
+  .rotate-deg-210{
+    transform: rotate(210deg);
+  }
+  .rotate-deg-225{
+    transform: rotate(225deg);
+  }
+  .rotate-deg-240{
+    transform: rotate(240deg);
+  }
+  .rotate-deg-255{
+    transform: rotate(255deg);
+  }
+  .rotate-deg-270{
+    transform: rotate(270deg);
+  }
+  .rotate-deg-285{
+    transform: rotate(285deg);
+  }
+  .rotate-deg-300{
+    transform: rotate(300deg);
+  }
+  .rotate-deg-315{
+    transform: rotate(315deg);
+  }
+  .rotate-deg-330{
+    transform: rotate(330deg);
+  }
+  .rotate-deg-345{
+    transform: rotate(345deg);
+  }
+
+  .-rotate-deg-15{
+    transform: rotate(-15deg);
+  }
+  .-rotate-deg-30{
+    transform: rotate(-30deg);
+  }
+  .-rotate-deg-45{
+    transform: rotate(-45deg);
+  }
+  .-rotate-deg-60{
+    transform: rotate(-60deg);
+  }
+  .-rotate-deg-75{
+    transform: rotate(-75deg);
+  }
+  .-rotate-deg-90{
+    transform: rotate(-90deg);
+  }
+  .-rotate-deg-105{
+    transform: rotate(-105deg);
+  }
+  .-rotate-deg-120{
+    transform: rotate(-120deg);
+  }
+  .-rotate-deg-135{
+    transform: rotate(-135deg);
+  }
+  .-rotate-deg-150{
+    transform: rotate(-150deg);
+  }
+  .-rotate-deg-165{
+    transform: rotate(-165deg);
+  }
+  .-rotate-deg-180{
+    transform: rotate(-180deg);
+  }
+  .-rotate-deg-195{
+    transform: rotate(-195deg);
+  }
+  .-rotate-deg-210{
+    transform: rotate(-210deg);
+  }
+  .-rotate-deg-225{
+    transform: rotate(-225deg);
+  }
+  .-rotate-deg-240{
+    transform: rotate(-240deg);
+  }
+  .-rotate-deg-255{
+    transform: rotate(-255deg);
+  }
+  .-rotate-deg-270{
+    transform: rotate(-270deg);
+  }
+  .-rotate-deg-285{
+    transform: rotate(-285deg);
+  }
+  .-rotate-deg-300{
+    transform: rotate(-300deg);
+  }
+  .-rotate-deg-315{
+    transform: rotate(-315deg);
+  }
+  .-rotate-deg-330{
+    transform: rotate(-330deg);
+  }
+  .-rotate-deg-345{
+    transform: rotate(-345deg);
+  }
+}
 

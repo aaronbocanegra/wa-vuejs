@@ -8,7 +8,10 @@
     <app-header />
 
     <!-- Main Content -->
-    <main class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl">
+    <main class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl"
+          v-touch:swipe.left="swipeLeft"
+          v-touch:swipe.right="swipeRight"
+          v-touch-options="{swipeTolerance: 100}">
       <transition-page>
         <router-view></router-view>
       </transition-page>
@@ -74,5 +77,17 @@ export default {
     },
   },
 
+  methods: {
+    swipeLeft: function(){
+      var overlay = document.getElementById('overlay');
+      if( overlay == null){
+        this.$root.isSwipeMenu = true;
+      }
+    },
+
+    swipeRight: function(){
+      this.$root.isSwipeMenu = false;
+    },
+  },
 };
 </script>

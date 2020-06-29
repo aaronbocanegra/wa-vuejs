@@ -9,10 +9,12 @@
           <img v-if="item.type === 'image'"
                :src="item.thumbnail"
                :alt="item.alt" 
+               draggable="false"
                class="w-full object-cover" />
           <img v-if="item.type === 'oembed'"
                :src="item.thumbnail"
                :alt="item.title" 
+               draggable="false"
                class="w-full object-cover" />
           <div v-if="item.type === 'image'" 
                class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-25">
@@ -65,9 +67,11 @@
                 <!-- Thumbnail -->
                 <img v-if="item.type == 'image'"
                      :src="item.thumbnail"
+                     draggable="false"
                      :alt="item.alt"/>
                 <img v-if="item.type == 'oembed'"
                     :src="item.thumbnail"
+                    draggable="false"
                     :alt="item.title"/>
               </li>
             </ul>
@@ -95,10 +99,10 @@
                                   index  >  imgIndex + 1 || index < imgIndex - 1 ? 'wa-lightbox__slide ' : '',
                                   item.type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
                   class="flex absolute inset-0 min-w-full h-full justify-center items-center content-overlay transition-all ease-in duration-500">
-                <picture v-if="item.type === 'image'" class="">
-                         <source media="(min-width:1280px)" :srcset="item.md">
-                         <source media="(min-width:1920px)" :srcset="item.lg">
-                         <source media="(min-width:3840px)" :srcset="item.xl">
+                <picture v-if="item.type === 'image'">
+                         <source v-if="item.md != undefined" media="(min-width:1280px)" :srcset="item.md">
+                         <source v-if="item.lg != undefined" media="(min-width:1920px)" :srcset="item.lg">
+                         <source v-if="item.xl != undefined" media="(min-width:3840px)" :srcset="item.xl">
                          <img :src="item.src" :alt="item.alt" draggable="false"
                               class="object-cover p-3 w-full h-auto sm:w-auto sm:h-90screen lg:h-screen">
                 </picture>
@@ -129,10 +133,10 @@
                                   item.type === 'oembed' && index === imgIndex ? 'vuejs-video' : '' ]"
                   class="flex absolute inset-0 min-w-full h-full justify-center items-center content-overlay transition ease-in-out duration-300">
 
-                <picture v-if="item.type === 'image'" class="">
-                         <source media="(min-width:1280px)" :srcset="item.md">
-                         <source media="(min-width:1920px)" :srcset="item.lg">
-                         <source media="(min-width:3840px)" :srcset="item.xl">
+                <picture v-if="item.type === 'image'">
+                         <source v-if="item.md != undefined" media="(min-width:1280px)" :srcset="item.md">
+                         <source v-if="item.lg != undefined" media="(min-width:1920px)" :srcset="item.lg">
+                         <source v-if="item.xl != undefined" media="(min-width:3840px)" :srcset="item.xl">
                          <img :src="item.src" :alt="item.alt" draggable="false"
                               class="object-cover p-3 w-full h-auto sm:w-auto sm:h-90screen lg:h-screen">
                 </picture>

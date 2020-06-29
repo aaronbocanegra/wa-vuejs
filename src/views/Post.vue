@@ -29,10 +29,18 @@
 
       <!-- Featured Media -->
       <div v-if="post._embedded['wp:featuredmedia'][0]" class="relative max-w-full">
-        <img 
-             :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['large'].source_url"
-             :alt="post._embedded['wp:featuredmedia'][0].alt_text" 
-             class="z-0 "/>
+        <picture v-if="post._embedded['wp:featuredmedia'] != undefined">
+                 <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'] != undefined"
+                         media="(min-width:1280px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'].source_url">
+                 <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'] != undefined"
+                         media="(min-width:1920px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'].source_url">
+                 <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'] != undefined"
+                         media="(min-width:3840px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'].source_url">
+                 <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['post-thumbnail'].source_url"
+                      :alt="post._embedded['wp:featuredmedia'][0].alt_text"
+                      draggable="false"
+                      class="wa-vuejs_post-card-featured min-h-64 sm:min-h-56 w-full object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden z-0">
+        </picture>
         <div class="absolute w-full inset-x-0 top-0">
           <h1 class="w-full text-white p-2 bg-opacity-75 bg-black z-10000">{{ post.title.rendered }}</h1>
         </div>

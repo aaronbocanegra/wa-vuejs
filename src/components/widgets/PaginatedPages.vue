@@ -54,8 +54,8 @@
             </svg>
           </a>
         </li>
-        <li v-if="numPages > 1" class="flex flex-rows">
-          <ul class="flex flex-rows">
+        <li v-if="numPages > 1" class="flex flex-row">
+          <ul class="flex flex-row">
             <li v-for="i in numPages" :key="i" 
                 @click="switchPage(i)"
                 :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner']  : 'bg-green-600' ]"

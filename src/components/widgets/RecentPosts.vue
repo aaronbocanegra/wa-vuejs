@@ -5,23 +5,31 @@
     </h1>
     <div v-if="recentPostsLoaded">
       <!-- Posts -->
-      <ul class="mb-5">
-        <li v-for="post in filteredPosts()" :key="post.id">
+      <ul class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 lg:grid-cols-2 gap-1">
+        <li v-for="post in filteredPosts()" :key="post.id" class="relative">
           <router-link :to="post.slug" 
                        :title="post.title.rendered"
-                       class="w-full flex flex-row cursor-pointer">
-            <img v-if="post._embedded['wp:featuredmedia'] != undefined"
-              class="w-1/4 md:w-1/2 object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-              :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['medium_large'].source_url"
-              :alt="post._embedded['wp:featuredmedia'][0].alt_text" />          
-            <div
-              class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 
-                    bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-3/4 md:w-1/2 object-contain">
-              <div class="mb-8">
-                <div class="text-green-600 hover:text-blue-600 font-bold text-xl mb-2">{{ post.title.rendered }}</div>
-                <p class="text-gray-700 text-base" v-html="post.excerpt.rendered"></p>
+                       class="w-full flex flex-row cursor-pointer h-full">
+            <picture v-if="post._embedded['wp:featuredmedia'] != undefined">
+                     <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'] != undefined" 
+                              media="(min-width:1280px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'].source_url">
+                     <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'] != undefined" 
+                              media="(min-width:1920px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_large'].source_url">
+                     <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'] != undefined" 
+                              media="(min-width:3840px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_extra_large'].source_url">
+                     <img :src="post._embedded['wp:featuredmedia'][0].media_details.sizes['post-thumbnail'].source_url" 
+                          :alt="post._embedded['wp:featuredmedia'][0].alt_text" 
+                          draggable="false"
+                          class="wa-vuejs_post-card-featured min-h-64 sm:min-h-56 w-full object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+            </picture>
+
+            <div class="wa-vuejs_post-description absolute text-white bg-black bg-opacity-45 hover:bg-opacity-75 p-4 flex flex-col justify-between leading-normal inset-0 object-contain">
+              <div class="wa-vuejs__post-card">
+                <div class="wa-vuejs_post-catd-title bg-black bg-opacity-75 hover:bg-opacity-90 absolute top-0 left-0 px-4 py-2 w-full text-green-600 
+                            hover:text-blue-600 font-bold text-xl">{{ post.title.rendered }}</div>
+                <p class="wa-vuejs_post-excerpt text-white text-base pt-10" v-html="post.excerpt.rendered"></p>
               </div>
-              <div v-if="$root.show_author_avatar" class="flex items-center">
+              <div v-if="$root.show_author_avatar" class="wa-vuejs__autho flex items-center">
                 <img
                   class="w-10 h-10 rounded-full mr-4"
                   :src="post._embedded['author'][0].avatar_urls[96]"
@@ -56,8 +64,8 @@
             </svg>
           </a>
         </li>
-        <li v-if="numPages > 1" class="flex flex-rows">
-          <ul class="flex flex-rows">
+        <li v-if="numPages > 1" class="flex flex-row">
+          <ul class="flex flex-row">
             <li v-for="i in numPages" :key="i" 
                 @click="switchPage(i)"
                 :class="[ i == pageNum ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600' ]"

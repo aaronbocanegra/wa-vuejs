@@ -63,13 +63,14 @@ function vuejs_wordpress_theme_support() {
         add_theme_support( 'post-thumbnails' );
 
         // Set post thumbnail size.
-        set_post_thumbnail_size( 250, 250 );
+        set_post_thumbnail_size( 720, 180, true );
+        add_image_size( 'post_thumbnail_extra_large', 4096, 1024, true );
+        add_image_size( 'post_thumbnail_large', 1920, 480, true );
+        add_image_size( 'post_thumbnail_medium_large', 1280, 320, true );
 
         // Add custom image size used in Cover Template.
-        add_image_size( 'vuejs_wordpress-4k', 4096, 2160 );
-        add_image_size( 'vuejs_wordpress-1080', 1920, 1080 );
-        add_image_size( 'vuejs_wordpress-720', 1280, 720 );
-        add_image_size( 'vuejs_wordpress-480', 720, 480 );
+        add_image_size( 'extra_large', 4096, 2160 );
+        add_image_size( 'medium_large', 1280, 720 );
 
         // Custom logo.
         $logo_width  = 120;
@@ -386,10 +387,10 @@ function vuejs_wordpress_get_vuejs_custom_gallery( WP_REST_Request $request ){
     $data = $server->response_to_data( $response, false );
     $image = array(
                     'id'           => $data['id'],
-                    'xl'           => $data['media_details']['sizes']['vuejs_wordpress-4k']['source_url'],
-                    'lg'           => $data['media_details']['sizes']['vuejs_wordpress-1080']['source_url'],
-                    'md'           => $data['media_details']['sizes']['vuejs_wordpress-720']['source_url'],
-                    'src'          => $data['media_details']['sizes']['vuejs_wordpress-480']['source_url'],
+                    'xl'           => $data['media_details']['sizes']['extra_large']['source_url'],
+                    'lg'           => $data['media_details']['sizes']['large']['source_url'],
+                    'md'           => $data['media_details']['sizes']['medium_large']['source_url'],
+                    'src'          => $data['media_details']['sizes']['medium']['source_url'],
                     'thumbnail'    => $data['media_details']['sizes']['thumbnail']['source_url'],
                     'type'         => $data['media_type'],
                     'title'        => $data['title']['rendered'],

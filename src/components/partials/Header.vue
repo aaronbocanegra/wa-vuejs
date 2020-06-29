@@ -4,7 +4,9 @@
     <nav class="flex items-center justify-between w-full whitespace-no-wrap">
 
       <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
-      <div v-if="logo_loaded" id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
+      <div v-if="logo_loaded" id="custom_logo" 
+           :class="[ $root.isSwipeMenu ? 'z-max' : '' ]"
+           class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
         <router-link to="/" class="" 
                      :title="site_url">
           <img class="h-16 md:h-25 lg:h-28"
@@ -17,8 +19,8 @@
       <div class="flex flex-col w-full items-end">
         <div class="block flex lg:hidden">
           <button id="headerMobileButton"
-            @click="activeMobileMenu = !activeMobileMenu"
-            class="flex items-center px-2 py-2 my-2 border rounded text-green-600 border-transparent active:border-transperent hover:text-white hover:border-transparent">
+            @click="toggleActiveMenu"
+            class="bg-black z-20 flex items-center px-2 py-2 my-2 border rounded text-green-600 border-transparent active:border-transperent hover:text-white hover:border-transparent">
             <svg class="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -28,9 +30,11 @@
 
         <!-- Header Menu lg-->
         <ul v-if="headerMenu.length > 0" 
-            id="headerMenu" 
-            v-bind:class="[activeMobileMenu ? 'flex' : 'hidden']"
-            class="lg:block lg:flex lg:items-start lg:w-auto lg:flex-row flex-col">
+            id="wa-vuejs-header__menu" 
+            v-touch:swipe="closeSwipe"
+            v-bind:class="[ $root.isSwipeMenu ? ['wa-vuejs-header__menu-swipe', 'lg:flex'] : ['lg:flex', 'lg:items-start', 'lg:w-auto', 'lg:flex-row', 'flex-col'],
+                            ($root.activeMobileMenu || $root.isSwipeMenu) ? 'flex' : ['absolute', 'lg:relative', 'opacity-0', 'lg:opacity-100', 'transform-translate-x-full', 
+                                                                                      'lg:transform-translate-x-0'] ]">
           <li v-for="(hmi, index) in headerMenu" 
               :key="'headerMenu-' + index" 
               v-on:click="setShowDropdown($event)"
@@ -89,8 +93,9 @@
             </a>
             <!-- sub-menu items -->
             <ul v-if="hmi.children.length > 0" 
-                id="main-sub-menu" 
-                class=" w-full flex-grow lg:flex lg:items-end lg:w-auto lg:flex-col hidden lg:hidden">
+                id="main-sub-menu"
+                :class="[ $root.isSwipeMenu ? ['flex', 'flex-col'] : ['hidden', 'lg:hidden'] ]"
+                class=" w-full flex-grow lg:flex lg:items-end lg:w-auto lg:flex-col">
                <li v-for="cmi in hmi.children" 
                   :key="cmi.title" 
                   class="w-full">
@@ -189,7 +194,6 @@ export default {
   data() {
     return {
       headerMenu: [],
-      activeMobileMenu: false,
       site_url: this.$store.state.options.all.siteurl,
     };
   },
@@ -203,6 +207,10 @@ export default {
   },
 
   methods: {
+    toggleActiveMenu: function() {
+      this.$root.activeMobileMenu = !this.$root.activeMobileMenu;
+    },
+
     setIsActive: function(){
       // Add active class to active dropdown and toggle active hidden 
       var url = window.location.href;
@@ -213,9 +221,9 @@ export default {
           mainActiveLink[0].parentNode.parentNode.classList.remove('hidden');
           mainActiveLink[0].parentNode.parentNode.parentNode.firstChild.classList.add('active');
         }
-      }else if(document.querySelectorAll('#headerMenu>li>a[href^="' + url  + '"]')[0] != undefined){
-        mainActiveLink = document.querySelectorAll('#headerMenu>li>a[href^="' + url  + '"]')[0];
-        var subActiveLink  = document.querySelectorAll('#headerMenu>li>ul>li>a[href^="' + url  + '"]')[0];
+      }else if(document.querySelectorAll('#wa-vuejs-header__menu>li>a[href^="' + url  + '"]')[0] != undefined){
+        mainActiveLink = document.querySelectorAll('#wa-vuejs-header__menu>li>a[href^="' + url  + '"]')[0];
+        var subActiveLink  = document.querySelectorAll('#wa-vuejs-header__menu>li>ul>li>a[href^="' + url  + '"]')[0];
         if(subActiveLink != undefined){
           subActiveLink.parentNode.classList.add('active');
           subActiveLink.parentNode.parentNode.parentNode.firstChild.classList.add('active'); 
@@ -228,7 +236,7 @@ export default {
 
     // Toggle Dropdown Menus in main nav on click 
     setShowDropdown: function(e){
-        //clear existing active class
+      //clear existing active class
       if(e.target.nextElementSibling != undefined){
         e.preventDefault();
         var el = e.target.nextElementSibling;
@@ -244,6 +252,9 @@ export default {
       }
     },
 
+    closeSwipe: function() {
+      this.$root.isSwipeMenu = false;
+    },
   }
 };
 </script>
