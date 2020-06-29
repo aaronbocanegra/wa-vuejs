@@ -30,23 +30,29 @@ export default {
     RecentPostsWidget,
     Loader,
   },
-
-  beforeMount() {
-    this.setPageTitle();
+  
+  mounted() {
+    this.setSeo();
   },
 
   updated() {
-    this.setPageTitle();
+    this.setSeo();
   },
  
   methods: {
-    setPageTitle: function(){
-      var pageTitle;
+    setSeo: function(){
+        var seo_description;
+        var desEl;
+
       if( this.$root.page_for_posts != this.pageContent.id ){
-        pageTitle = this.pageContent.title.rendered + " | " + this.$store.state.customLogo.all.site_name;
-        document.title = pageTitle;
+        document.title = this.pageContent.title.rendered + " - " + this.$store.state.options.all.blogname;
+        desEl = document.getElementsByName('description')[0];
+        seo_description = this.pageContent.excerpt.rendered;
+        seo_description = seo_description.replace( /<[^>]*>/g, '' );
+        seo_description = seo_description.replace( /(\[.*\])/g, '...' );
+        desEl.content = seo_description;
       }
-    }
+    },
 
   },
 };

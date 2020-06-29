@@ -124,7 +124,7 @@ export default {
   mounted() {
     this.numTotalPosts = this.$store.state.post.post_count;
     this.getNumPages();
-    this.setPageTitle();
+    this.setSeo();
   },
 
   methods: {
@@ -165,10 +165,16 @@ export default {
       }
     },
 
-    setPageTitle: function(){
+    setSeo: function(){
       var pageTitle;
+      var desEl;
+      var seo_description;
+
       if( this.$root.page_for_posts != 0 ){
-        pageTitle = this.$slots.default[0].text + " | " + this.$store.state.customLogo.all.site_name;
+        desEl = document.getElementsByName('description')[0];
+        seo_description = "A portfolio page covering the techniques and capabilities of Whatartist. The work explores interaction design, media content creation, and full-stack development";
+        desEl.content = seo_description;
+        pageTitle = this.$slots.default[0].text + " - " + this.$store.state.options.all.blogname;
         document.title = pageTitle;
       }
     }

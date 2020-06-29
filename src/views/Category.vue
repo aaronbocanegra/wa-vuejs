@@ -43,23 +43,10 @@ export default {
         if( this.category.parent ){
           this.parentCategory = this.activeCategory( this.category.parent );
         }
-        this.setPageTitle();
         this.prevSlug = this.$route.params.categorySlug;
       }
       return this.category;
     },
-
-    setPageTitle: function(){
-      var origPageTitle = this.category.name;
-      var uppercaseFirstLetter = origPageTitle.charAt(0).toUpperCase();
-      var stringWithoutFirstLetter = origPageTitle.slice(1);
-      this.title = uppercaseFirstLetter + stringWithoutFirstLetter + " " + this.$route.name;
-      var baseName = this.$store.state.customLogo.all.site_name;
-      var pageTitle = this.title + " | " + baseName;
-      document.title = pageTitle;
-      return this.title;
-    },
-
   },
 };
 </script>

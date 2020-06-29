@@ -1,7 +1,6 @@
 import Vue from 'vue';
 //Reference: https://www.npmjs.com/package/vue2-touch-events
 import Vue2TouchEvents from 'vue2-touch-events'
-
 require('./bootstrap');
 import './assets/css/styles.css';
 

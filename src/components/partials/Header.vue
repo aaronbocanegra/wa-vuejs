@@ -6,7 +6,6 @@
       <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
       <div v-if="logo_loaded" id="custom_logo" class="flex w-16 h-16 ml-1 sm:ml-5 md:w-auto md:h-auto">
         <router-link to="/" class="" 
-                     @click.native="setPageTitle()"
                      :title="site_url">
           <img class="h-16 md:h-25 lg:h-28"
             :src="this.allCustomLogo.image.src"
@@ -39,7 +38,6 @@
             <!-- Home Link -->
             <router-link v-if="hmi.url === site_url"
                          to="/"
-                         @click.native="setPageTitle()"
                          :title="hmi.title"
                          class="block font-semibold lg:inline-block text-center text-green-600 hover:text-white px-2 lg:px-10
                                 border-transparent border-b-2 hover:border-green-600 active:border-blue-600">
@@ -244,10 +242,6 @@ export default {
           el.classList.add("lg:hidden");
         }
       }
-    },
-
-    setPageTitle: function(){
-      document.title = this.allOptions.blogname + " | " + this.allOptions.blogdescription;
     },
 
   }

@@ -77,7 +77,7 @@ export default {
 
   beforeMount() {
     this.filterPosts();
-    this.setPageTitle();
+    this.setSeo();
   },
 
   methods: {
@@ -86,11 +86,16 @@ export default {
         this.$store.dispatch('clearTagPosts');
         this.$store.dispatch('getTagPosts', { tagid: this.tag.id });
         this.prevSlug = this.tag.id;
+        this.setSeo();
       }
       return this.tagPosts( this.tag.id );
     },
 
-    setPageTitle: function(){
+    setSeo: function(){
+      var desEl = document.getElementsByName('description')[0];
+      var seo_description = "Filter portfolio by Tag: " + this.tag.name;
+      desEl.content = seo_description;
+
       var baseName = this.$store.state.customLogo.all.site_name;
       var pageTitle = "Tag - " + this.tag.name + " | " + baseName;
       document.title = pageTitle;

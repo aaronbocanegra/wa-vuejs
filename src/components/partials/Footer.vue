@@ -13,7 +13,6 @@
           <!-- Home Link -->
           <router-link v-if="fmi.url === site_url"
             to="/"
-            @click.native="setPageTitle()"
             :title="fmi.title"
             class="block font-semibold inline-block text-center text-green-600 hover:text-white px-10
                    border-transparent border-b-2 hover:border-green-600 active:border-blue-600"
@@ -157,11 +156,5 @@ computed: {
     this.site_url = this.allOptions.siteurl;
   },
 
-  methods: {
-    setPageTitle: function(){
-      document.title = this.allOptions.blogname + " | " + this.allOptions.blogdescription;
-    },
-
-  },
 }
 </script>

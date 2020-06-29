@@ -72,7 +72,7 @@ export default {
 
   beforeMount() {
     this.filterPosts();
-    this.setPageTitle();
+    this.setSeo();
   },
 
   methods: {
@@ -81,13 +81,18 @@ export default {
         this.$store.dispatch('clearCategoryPosts');
         this.$store.dispatch('getCategoryPosts', { catid: this.category.id });
         this.prevSlug = this.category.id;
+        this.setSeo();
       }
       return this.categoryPosts( this.category.id );
     },
 
-    setPageTitle: function(){
-      var baseName = this.$store.state.customLogo.all.site_name;
-      var pageTitle = "Category - " + this.category.name + " | " + baseName;
+    setSeo: function(){
+      var desEl = document.getElementsByName('description')[0];
+      var seo_description = "Filter Portfolio by Category: " + this.category.name + ". " + this.category.description;
+      desEl.content = seo_description;
+
+      var baseName = this.$store.state.options.all.blogname;
+      var pageTitle = "Category - " + this.category.name + " - " + baseName;
       document.title = pageTitle;
       return this.title;
     },

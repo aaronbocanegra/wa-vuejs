@@ -31,6 +31,8 @@ export default {
     ...mapGetters({
       isLoading: 'isLoading',
       loadingProgress: 'loadingProgress',
+      allOptions: 'allOptions',
+      allOptionsLoaded: 'allOptionsLoaded',
       allMenus: 'allMenus',
       allMenusLoaded: 'allMenusLoaded',
       allCustomLogo: 'allCustomLogo',

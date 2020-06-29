@@ -128,7 +128,7 @@ export default {
         )
         .then(response => {
           this.post = response.data[0];
-          this.setPageTitle();
+          this.setSeo();
           // Get JSON from Arrays
           this.getVideos();
           this.getGallery();
@@ -194,10 +194,18 @@ export default {
       });
     },
 
-    setPageTitle: function(){
-      var baseName = this.$store.state.customLogo.all.site_name;
-      var pageTitle = this.post.title.rendered + " | " + baseName;
+    setSeo: function(){
+      var baseName = this.$store.state.options.all.blogname;
+      var pageTitle = this.post.title.rendered + " - " + baseName;
+     
       document.title = pageTitle;
+
+      var desEl = document.getElementsByName('description')[0];
+      var seo_description = this.post.excerpt.rendered;
+      seo_description = seo_description.replace( /<[^>]*>/g, '' );
+      seo_description = seo_description.replace( /(\[.*\])/g, '...' );
+      desEl.content = seo_description;
+
       return this.title;
     },
   }
