@@ -3,7 +3,7 @@
     <div v-if="post && isAllLoaded" class="relative">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
-        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-gray-400 pl-2">
+        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-gray-600 pl-2">
           <li v-for="category in categoriesArr" 
               :key="category.id" 
               class="categoryLI font-semibold mr-1 pr-2" 
@@ -28,7 +28,7 @@
       </div>
 
       <!-- Featured Media -->
-      <div v-if="post._embedded['wp:featuredmedia'][0]" class="relative max-w-full">
+      <div v-if="post._embedded['wp:featuredmedia'][0]" class="bg-black bg-opacity-25 mb-5 shadow-lg-white relative max-w-full">
         <picture v-if="post._embedded['wp:featuredmedia'] != undefined">
                  <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'] != undefined"
                          media="(min-width:1280px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'].source_url">
@@ -42,40 +42,44 @@
                       class="wa-vuejs_post-card-featured min-h-64 sm:min-h-56 w-full object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden z-0">
         </picture>
         <div class="absolute w-full inset-x-0 top-0">
-          <h1 class="w-full text-white p-2 bg-opacity-75 bg-black z-10000">{{ post.title.rendered }}</h1>
+          <h1 class="w-full text-white p-2 bg-opacity-90 bg-black z-50 tracking-wide">{{ post.title.rendered }}</h1>
         </div>
       </div>
 
-      <!-- Portfolio Videos -->
-      <transition name="fade" mode="out-in">
-        <div class="portfolio mt-3 mb-3"
-             v-if="isVideosLoaded">
-          <wa-lightbox v-if="this.videos.length > 0"
-             v-bind:gallery="videos"
-             v-bind:effect="'fade'">
-          </wa-lightbox>
-        </div>
-      </transition>
+      <div :class="[ isVideosLoaded || isGalleryLoaded ? 'lg:grid-cols-2 ' : '' ]" class="vuejs-post__media-content grid grid-cols-1 lg:gap-5">
+        <div class="vuejs-post__media">
+          <!-- Portfolio Videos -->
+          <transition name="fade" mode="out-in">
+            <div class="portfolio mt-3 mb-3"
+                 v-if="isVideosLoaded">
+              <wa-lightbox v-if="this.videos.length > 0"
+                 v-bind:gallery="videos"
+                 v-bind:effect="'fade'">
+              </wa-lightbox>
+            </div>
+          </transition>
 
-      <!-- Portfolio Images -->
-      <transition name="fade" mode="out-in">
-        <div class="portfolio mt-3 mb-3"
-             v-if="isGalleryLoaded">
-          <wa-lightbox v-if="this.gallery.length > 0"
-             v-bind:gallery="gallery"
-             v-bind:effect="'slide'">
-          </wa-lightbox>
+          <!-- Portfolio Images -->
+          <transition name="fade" mode="out-in">
+            <div class="portfolio mt-3 mb-3"
+                 v-if="isGalleryLoaded">
+              <wa-lightbox v-if="this.gallery.length > 0"
+                 v-bind:gallery="gallery"
+                 v-bind:effect="'slide'">
+              </wa-lightbox>
+            </div>
+          </transition>
         </div>
-      </transition>
 
-      <div class="content">
-        <!-- Description -->
-        <h3>Description</h3>
-        <div v-html="post.excerpt.rendered"></div>
+        <div class="content">
+          <!-- Description -->
+          <h3>Description</h3>
+          <div v-html="post.excerpt.rendered"></div>
       
-        <!-- Content -->
-        <h3>Case Study</h3>
-        <div v-html="post.content.rendered"></div>
+          <!-- Content -->
+          <h3>Case Study</h3>
+          <div v-html="post.content.rendered"></div>
+        </div>
       </div>
     </div>  
     <Loader v-else/>

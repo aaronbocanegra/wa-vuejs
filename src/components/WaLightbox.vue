@@ -2,10 +2,10 @@
   <div v-if="gallery.length > 0" id="gallery-wrap" class="relative">
     <!-- Thumbs -->
     <div id="thumbnails">
-      <ul class="grid grid-cols-3 gap-2">
+      <ul class="grid grid-cols-3 gap-2 mb-10">
         <li v-for="(item, index) in gallery" :key="item.id"
             @click="openLightbox(index)"
-            class="flex hover:m-2 relative cursor-pointer">
+            class="flex hover:m-2 relative cursor-pointer shadow-md-white hover:shadow-white">
           <img v-if="item.type === 'image'"
                :src="item.thumbnail"
                :alt="item.alt" 

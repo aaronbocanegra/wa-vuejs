@@ -1,6 +1,6 @@
 <template>
   <div class="widget homepage">
-    <h1 v-if="this.$slots.default != undefined">
+    <h1 id="wa-vuejs__home-title" v-if="this.$slots.default != undefined">
       <slot></slot>
     </h1>
     <div v-if="allPagesLoaded">

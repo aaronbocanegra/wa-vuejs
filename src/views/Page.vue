@@ -2,7 +2,7 @@
   <div class="page page--page">
     <recent-posts-widget v-if="$root.show_on_front === 'page' && $root.page_for_posts === pageContent.id" v-bind:limit="$root.storedPostsPerPage" v-bind:page="$root.storedPostsPageNum">Portfolio</recent-posts-widget>
     <div v-else-if="allPagesLoaded">
-      <h1 class="text-3xl mb-5">{{ pageContent.title.rendered }}</h1>
+      <h1 id="wa-vuejs__home-title" class="text-3xl mb-5">{{ pageContent.title.rendered }}</h1>
       <div class="page-content" v-html="pageContent.content.rendered"></div>
     </div>
     <Loader v-else />

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen">
+  <div id="app">
     <transition name="loader-animation" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
       <progress-bar :show-loader="showLoader" :loader-style="loaderStyle" />
     </transition>
@@ -8,7 +8,7 @@
     <app-header />
 
     <!-- Main Content -->
-    <main class="site-content mx-auto h-full py-5 px-5 md:px-0 w-full max-w-2xl lg:max-w-5xl"
+    <main class="site-content mx-auto h-full p-5 w-full"
           v-touch:swipe.left="swipeLeft"
           v-touch:swipe.right="swipeRight"
           v-touch-options="{swipeTolerance: 100}">

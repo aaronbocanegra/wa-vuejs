@@ -1,24 +1,24 @@
 <template>
   <div class="widget tags-archive">
-    <h1>
+    <h1 id="wa-vuejs__home-title">
       <slot></slot>
     </h1>
     <div v-if="allTagsLoaded" class="tags-archive__content">
-      <nav class="wa-vuejs_taxonomy__nav flex flex-row justify-end border-b-2 mb-3 pr-3">
+      <nav class="wa-vuejs_taxonomy__nav flex flex-row justify-end border-gray-800 border-b-2 mb-3 pr-3">
         <button type="button"
                 @click="selectTagMode = 'cards'"
-                v-bind:class="[ selectTagMode === 'cards' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
-                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-blue-600 hover:text-black text-white mr-1 tracking-wider"
+                v-bind:class="[ selectTagMode === 'cards' ? ['bg-gray-800', 'shadow-inner'] : 'bg-blue-800']"
+                class="h-10 px-5 font-bold rounded-t-lg shadow-inner hover:bg-gray-800 hover:text-black text-white mr-1 tracking-wider"
                 value="Cards">Cards</button>
         <button type="button"
                 @click="selectTagMode = 'icons'"
-                v-bind:class="[ selectTagMode === 'icons' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
-                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-blue-600 hover:text-black text-white mr-1 tracking-wider"
+                v-bind:class="[ selectTagMode === 'icons' ? ['bg-gray-800', 'shadow-inner'] : 'bg-blue-800']"
+                class="h-10 px-5 font-bold rounded-t-lg shadow-inner hover:bg-gray-800 hover:text-black text-white mr-1 tracking-wider"
                 value="icons">Icons</button>
         <button type="button"
                 @click="selectTagMode = 'cloud'"
-                v-bind:class="[ selectTagMode === 'cloud' ? ['bg-blue-600', 'shadow-inner'] : 'bg-green-600']"
-                class="h-10 px-5 font-bold rounded-t-lg hover:shadow-inner hover:bg-blue-600 hover:text-black text-white tracking-wider"
+                v-bind:class="[ selectTagMode === 'cloud' ? ['bg-gray-800', 'shadow-inner'] : 'bg-blue-800']"
+                class="h-10 px-5 font-bold rounded-t-lg shadow-inner hover:bg-gray-800 hover:text-black text-white tracking-wider"
                 value="cloud">Cloud</button>
       </nav>
 

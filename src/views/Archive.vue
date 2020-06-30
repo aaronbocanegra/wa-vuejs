@@ -2,7 +2,7 @@
   <div class="page page--archive">
 
     <!-- Tags Archive -->
-    <div v-if="filterTax() === 'tags'" class="wa-vuejs-taxonomy__tags relative" >
+    <div v-if="filterTax() === 'tags'" class="wa-vuejs-taxonomy__tags" >
       <tags-archive :mode="selectTagMode">{{ this.title }}</tags-archive>
     </div>
 
