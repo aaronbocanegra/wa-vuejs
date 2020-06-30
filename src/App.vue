@@ -50,6 +50,8 @@ export default {
   data() {
     return {
       showLoader: true,
+      headerHeight: 0,
+      footerHeight: 0,
     };
   },
 
@@ -62,9 +64,21 @@ export default {
 
   mounted() {
     /* Adjust minimum main element height */
-    this.$el.childNodes[4].style.minHeight = window.innerHeight - (this.$el.childNodes[2].clientHeight + this.$el.childNodes[6].clientHeight) + 'px';
+    this.headerHeight = this.$el.childNodes[2].clientHeight;
+    this.footerHeight = this.$el.childNodes[6].clientHeight;
+    this.$el.childNodes[4].style.minHeight = window.innerHeight - (this.headerHeight + this.footerHeight) + 'px';
   },
-  
+
+  updated() {
+    /* Adjust minimum main element height */
+    if(this.$el.childNodes[2].clientHeight != this.headerHeight || this.$el.childNodes[6].clientHeight != this.footerHeight){
+      this.headerHeight = this.$el.childNodes[2].clientHeight;
+      this.footerHeight = this.$el.childNodes[6].clientHeight;
+      console.log("header: " + this.headerHeight);
+      console.log("footer: " + this.footerHeight);
+      this.$el.childNodes[4].style.minHeight = window.innerHeight - (this.headerHeight + this.footerHeight) + 'px';
+    }
+  },
   watch: {
     // watch the value of isLoading and once it's false hide the loader
     isLoading(val) {

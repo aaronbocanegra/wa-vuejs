@@ -2,7 +2,7 @@
   <div v-if="gallery.length > 0" id="gallery-wrap" class="relative">
     <!-- Thumbs -->
     <div id="thumbnails">
-      <ul class="grid grid-cols-3 lg:grid-cols-4 gap-2">
+      <ul class="grid grid-cols-3 gap-2">
         <li v-for="(item, index) in gallery" :key="item.id"
             @click="openLightbox(index)"
             class="flex hover:m-2 relative cursor-pointer">
@@ -16,12 +16,16 @@
                :alt="item.title" 
                draggable="false"
                class="w-full object-cover" />
+          <svg v-if="item.type === 'oembed'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              class="opacity-70 h-full w-full absolute  fill-current text-white hover:text-blue-600 z-10 flex items-center justify-center">
+              <path d="M6.5 5.4v13.2l11-6.6z"></path>
+            </svg>
           <div v-if="item.type === 'image'" 
-               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-25">
+               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-20">
             {{ item.title }}
           </div>
           <div v-if="item.type === 'oembed'" 
-               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-10000">
+               class="hidden sm:block title-overlay absolute p-2 w-full font-hairline text-sm md:text-lg lg:text-xl text-white bg-opacity-75 hover:bg-opacity-90 bg-black z-20">
             {{ item.title }}
           </div>
         </li>
