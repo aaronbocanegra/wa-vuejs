@@ -5,8 +5,8 @@
     </h1>
     <div v-if="recentPostsLoaded">
       <!-- Posts -->
-      <ul class="wa-vuejs__posts_ul mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
-        <li v-for="post in filteredPosts()" :key="post.id" class="wa-vuejs__posts_li shadow-lg-white hover:shadow-xl-white">
+      <ul class="wa-vuejs__posts_ul min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
+        <li v-for="post in filteredPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
           <router-link :to="post.slug" 
                        :title="post.title.rendered"
                        class="w-full flex flex-row cursor-pointer h-full">
@@ -46,7 +46,7 @@
         </li>
       </ul>
       <!-- Pagination -->
-      <ul class="flex flex-row justify-end my-2 w-full h-8 shadow-inner">
+      <ul class="flex flex-row justify-end my-5 w-full h-8">
         <li>
           <div class="flex flex-row line-height-8 h-full px-2">
             <div class="px-1 line-height-8">Per Page</div>

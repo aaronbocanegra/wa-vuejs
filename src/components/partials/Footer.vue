@@ -1,5 +1,7 @@
 <template>
-  <footer v-if="allMenusLoaded" class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3">
+  <footer v-if="allMenusLoaded" class="site-footer static bottom-0 w-full bg-black text-white flex flex-wrap items-center justify-between px-2 py-3"
+          v-touch:swipe.left="swipeLeft"
+          v-touch:swipe.right="swipeRight">
 
     <!-- Footer Menu -->
     <nav class="flex flex-wrap items-center justify-between w-full whitespace-no-wrap">
@@ -156,5 +158,20 @@ computed: {
     this.site_url = this.allOptions.siteurl;
   },
 
+  methods: {
+    swipeLeft: function(){
+      var overlay = document.getElementById('overlay');
+      if( overlay == null){
+        this.$root.isSwipeMenu = true;
+        this.$root.activeMobileMenu = this.$root.isSwipeMenu;
+      }
+    },
+
+    swipeRight: function(){
+      this.$root.isSwipeMenu = false;
+      this.$root.activeMobileMenu = this.$root.isSwipeMenu;
+    },
+
+  }
 }
 </script>

@@ -96,11 +96,13 @@ export default {
       var overlay = document.getElementById('overlay');
       if( overlay == null){
         this.$root.isSwipeMenu = true;
+        this.$root.activeMobileMenu = this.$root.isSwipeMenu;
       }
     },
 
     swipeRight: function(){
       this.$root.isSwipeMenu = false;
+      this.$root.activeMobileMenu = this.$root.isSwipeMenu;
     },
   },
 };

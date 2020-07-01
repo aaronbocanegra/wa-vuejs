@@ -1,4 +1,8 @@
 @variants responsive, hover, focus{
+  /** Top Right Bottom Left **/
+  .right-full{
+    right:100%;
+  }
   /** margin **/
   .ml-28{
     margin-left: 7rem;
@@ -39,26 +43,47 @@
   }
 
   /**   transform-translate **/
-  .transform-translate-x-0{
+  .-transform-translate-x-0{
     transform: translateX(0%);
   } 
   .-transform-translate-x-full{
     transform: translateX(-100%);
   }
+  .-transform-translate-x-screen{
+    transform: translateX(-100vw);
+  }
+  .transform-translate-x-0{
+    transform: translateX(0%);
+  } 
   .transform-translate-x-full{
     transform: translateX(100%);
+  }
+  .transform-translate-x-screen{
+    transform: translateX(100vw);
+  }
+  .-transform-translate-y-0{
+    transform: translateY(-0);
   }
   .-transform-translate-y-full{
     transform: translateY(-100%);
   }
+  .-transform-translate-y-screen{
+    transform: translateY(-100vw);
+  }
+  .transform-translate-y-0{
+    transform: translateY(0%);
+  }
   .transform-translate-y-full{
     transform: translateY(100%);
+  }
+  .transform-translate-y-full{
+    transform: translateY(100vw);
   }
 
 
   /** line Hight **/
   .line-height-3{
-    line-height: 0  .75rem;
+    line-height: 0.75rem;
   }
   .line-height-8{
     line-height: 2rem;

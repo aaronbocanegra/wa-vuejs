@@ -15,7 +15,7 @@
     <div class="wa-link-prevue-content w-full mb-10 relative">
       <div class="wa-vuejs-taxonomy__card-text px-4 w-full p-3 mb-6 bg-black bg-opacity-25 shadow-md-white relative">
         <div v-if="category.count" 
-            class="wa-vuejs-taxonomy__card-count absolute z-50 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ category.count }}</div>
+            class="wa-vuejs-taxonomy__card-count absolute bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ category.count }}</div>
         <h3 class="flex flex-wrap flex-row font-hairline border-b-2 border-gray-600">
           <div v-if="parent">
             <router-link v-if="category.parent"
@@ -30,8 +30,8 @@
     </div>
 
     <!-- Posts -->
-    <ul v-if="categoryPostsLoaded" class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
-      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li shadow-lg-white hover:shadow-xl-white">
+    <ul v-if="categoryPostsLoaded" class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10">
+      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
         <router-link :to="post.slug"
                      :title="post.title.rendered"
                      class="w-full flex flex-row cursor-pointer h-full">

@@ -1,23 +1,27 @@
 <template>
-  <header v-if="allMenusLoaded" class="site-header">
+  <header v-if="allMenusLoaded" class="site-header"
+          v-touch:swipe.left="swipeLeft"
+          v-touch:swipe.right="swipeRight">
     <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
     <div v-if="logo_loaded" id="custom_logo" 
-         :class="[ $root.isSwipeMenu ? 'z-max' : '' ]"
-         class="flex w-16 h-16 ml-5 pt-1 sm:pt-2 md:w-auto md:h-auto">
-      <router-link to="/" class="" 
+         :class="[ $root.isSwipeMenu ? 'z-high' : '' ]"
+         class="ml-5 mt-2 lg:mt-3 md:w-auto md:h-auto">
+      <router-link to="/" class="flex flex-row items-end md:items-center justify-center hover:text-white" 
                    :title="site_url">
-        <img class="h-16 md:h-25 lg:h-28 object-contain"
+        <img class="h-16 md:h-20 lg:h-24 object-contain"
           :src="this.allCustomLogo.image.src"
           :alt="this.allCustomLogo.site_name" />
+        <h1 class="px-2 md:px-5 text-xs sm:text-base lg:text-lg mb-0 tracking-wide">{{ $store.state.options.all.blogdescription }}</h1>
       </router-link>
     </div>
     <!-- Main Navigation -->
     <nav id="header-menu__nav">
       <!-- Mobile Nav -->
-      <div id="header-menu__mobile" class="block flex lg:hidden">
+      <div id="header-menu__mobile" class="block flex lg:hidden z-50">
         <button id="headerMobileButton"
           @click="toggleActiveMenu"
-          class="bg-black z-20 flex items-center px-2 py-2 my-2 border rounded text-green-600 border-transparent active:border-transperent hover:text-white hover:border-transparent">
+          v-bind:class="[ ($root.activeMobileMenu || $root.isSwipeMenu ) ? ['fixed', 'top-0', 'right-0'] : 'relative' ]"
+          class="z-20 shadow-white bg-black bg-opacity-25  flex items-center px-3 py-3 mr-2 mt-2 border-transpparent rounded text-white">
           <svg class="fill-current h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <title>Menu</title>
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -28,14 +32,14 @@
       <!-- Header Menu lg-->
       <ul v-if="headerMenu.length > 0" 
           id="wa-vuejs-header__menu" 
-          v-touch:swipe="closeSwipe"
-          v-bind:class="[ $root.isSwipeMenu ? ['wa-vuejs-header__menu-swipe', 'lg:flex'] : ['lg:flex', 'lg:items-start', 'lg:w-auto', 'lg:flex-row', 'flex-col'],
-                          ($root.activeMobileMenu || $root.isSwipeMenu) ? 'flex' : ['absolute', 'lg:relative', 'opacity-0', 'lg:opacity-100', 'transform-translate-x-full', 
-                                                                                    'lg:transform-translate-x-0'] ]">
+          v-touch:swipe.right="closeSwipe"
+          v-bind:class="[ ($root.activeMobileMenu || $root.isSwipeMenu ) ? ['transform-translate-x-0', 'opacity-100'] : ['transform-translate-x-full', 'lg:transform-translate-x-0'] ]"
+          class="flex flex-col min-w-1/2 sm:min-w-1/3 lg:min-w-1/4 mt-0 lg:mt-2 lg:min-w-auto fixed top-0 bottom-0 right-0 z-40 items-center justify-center bg-black bg-opacity-90 lg:flex-row lg:absolute lg:items-start lg:bg-transparent
+                 lg:transform-translate-x-0 opacity-0 lg:opacity-100 transition-all duration-500 ease-in-out">
         <li v-for="(hmi, index) in headerMenu" 
             :key="'headerMenu-' + index" 
             v-on:click="setShowDropdown($event)"
-            class="header-menu__list-item lg:flex lg:flex-col">
+            class="header-menu__list-item w-full lg:w-auto flex flex-col">
           <!-- Home Link -->
           <router-link v-if="hmi.url === site_url"
                        to="/"
@@ -85,8 +89,8 @@
           <!-- sub-menu items -->
           <ul v-if="hmi.children.length > 0" 
               id="main-sub-menu"
-              :class="[ $root.isSwipeMenu ? ['flex', 'flex-col'] : ['hidden', 'lg:hidden'] ]"
-              class="w-full flex-grow lg:flex lg:items-end lg:flex-col">
+              class="w-full opacity-0 transform-translate-x-screen flex-grow lg:flex lg:items-end flex-col relative sm:absolute bg-black bg-opacity-90 
+                     lg:relative lg:bg-transparent right-0 sm:right-full lg:right-0 border-r-0 sm:border-r-2 lg:border-r-0">
              <li v-for="cmi in hmi.children" 
                  :key="cmi.title" 
                  class="w-full">
@@ -194,6 +198,7 @@ export default {
   methods: {
     toggleActiveMenu: function() {
       this.$root.activeMobileMenu = !this.$root.activeMobileMenu;
+      this.$root.isSwipeMenu = this.$root.activeMobileMenu;
     },
 
     setIsActive: function(){
@@ -225,21 +230,38 @@ export default {
       if(e.target.nextElementSibling != undefined){
         e.preventDefault();
         var el = e.target.nextElementSibling;
-        if( el.classList.contains("hidden") || el.classList.contains("lg:hidden") ){
+        if( el.classList.contains("opacity-0") || el.classList.contains("lg:opacity-0") ){
           e.target.classList.add("active");
-          el.classList.remove("hidden");
-          el.classList.remove("lg:hidden");
+          el.classList.remove("opacity-0");
+          el.classList.remove("transform-translate-x-screen");
+          el.classList.remove("lg:opacity-0");
         }else if(e.target.classList.contains("active")){
           e.target.classList.remove("active");
-          el.classList.add("hidden");
-          el.classList.add("lg:hidden");
+          el.classList.add("opacity-0");
+          el.classList.add("lg:opacity-0");
+          el.classList.add("transform-translate-x-screen");
         }
       }
     },
 
     closeSwipe: function() {
       this.$root.isSwipeMenu = false;
+      this.$root.activeMobileMenu = this.$root.isSwipeMenu;
     },
+
+    swipeLeft: function(){
+      var overlay = document.getElementById('overlay');
+      if( overlay == null){
+        this.$root.isSwipeMenu = true;
+        this.$root.activeMobileMenu = this.$root.isSwipeMenu;
+      }
+    },
+
+    swipeRight: function(){
+      this.$root.isSwipeMenu = false;
+      this.$root.activeMobileMenu = this.$root.isSwipeMenu;
+    },
+
   }
 };
 </script>

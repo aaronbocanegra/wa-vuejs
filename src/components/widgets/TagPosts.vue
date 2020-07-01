@@ -17,7 +17,7 @@
 
     <!-- Posts -->
     <ul v-if="tagPostsLoaded" class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
-      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li  shadow-lg-white hover:shadow-xl-white">
+      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
         <router-link v-bind:tagid="tag.id" 
                      :to="post.slug"
                      :title="post.title.rendered"

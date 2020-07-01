@@ -33,7 +33,7 @@
             <div :id="'wa-link-prevue__filter-card-wrapper-' + index" 
                  class="wa-link-prevue__filter-card-wrapper w-full flex flex-row px-4 w-full py-3 mb-6 bg-black bg-opacity-25 shadow-md-white relative" >
               <div v-if="count" 
-                   class="wa-vuejs-taxonomy__card-count absolute z-50 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ count }}</div>	
+                   class="wa-vuejs-taxonomy__card-count absolute z-0 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ count }}</div>	
               <div v-if="response.image != undefined" class="wa-link-prevue__filter-card-img flex w-1/4 justify-center items-center">
                 <img :src="response.image" :alt="response.title" />
               </div>
@@ -71,9 +71,9 @@
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
             <div :id="'wa-link-prevue__card-wrapper-' + index" 
                  class="wa-link-prevue__card-wrapper w-full flex flex-row px-4 w-full hover:text-white text-white 
-                        py-3 mb-10 bg-black bg-opacity-25 shadow-lg-white hover:shadow-xl-white relative" >
+                        py-3 mb-10 bg-black bg-opacity-25 mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white relative" >
               <div v-if="count" 
-                   class="wa-link-prevue__card-count absolute z-50 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ count }}</div>	
+                   class="wa-link-prevue__card-count absolute z-00 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ count }}</div>	
               <div v-if="response.image != undefined" class="wa-link-prevue__card-img flex w-1/4 justify-center items-center">	
                 <img :src="response.image" :alt="response.title" />
               </div>
@@ -128,7 +128,8 @@
          @mouseenter="showCardInfo()"
          @mouseleave="hideCardInfo()"
          v-touch:longtap="this.iconToggle" 
-         class="wa-link-prevue__icon-main relative items-center justify-center h-full bg-black bg-opacity-25 shadow-md-white hover:shadow-lg-white border-gray-200 p-2">
+         class="wa-link-prevue__icon-main mx-1 hover:mx-0 transition-all duration-300 relative items-center justify-center h-full 
+                bg-black bg-opacity-25 shadow-md-white hover:shadow-lg-white border-gray-200 p-2">
       <transition name="fade" mode="out-in">
         <router-link v-if="taxonomy === 'post_tag'"
            :to="{ name: 'Tag', params: { tagSlug: slug } }" 
@@ -136,14 +137,14 @@
            :title="'Filter Posts by: ' + title">
           <slot :img="response.image" :title="response.title" :description="response.description" :url="url">
             <div class="wa-link-prevue__icon-wrapper relative flex flex-col justify-center items-center">
-              <div v-if="count" class="wa-link-prevue__icon-count absolute z-10 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 top-0 right-0 mr-2 rounded-full">{{ count }}</div>
+              <div v-if="count" class="wa-link-prevue__icon-count absolute z-0 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 top-0 right-0 mr-2 rounded-full">{{ count }}</div>
               <div class="flex font-bold justify-center items-center h-full w-2/3">{{ title }}</div>
               <div v-if="response.image != undefined" class="wa-link-prevue__icon-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
                 <img :src="this.response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
             </div>
             <div :id="'wa-link-prevue__icon-info-' + index"
-                  class="wa-link-prevue__icon-card-text py-2 top-0 left-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__icon-card-text py-2 top-0 left-0 bg-white w-full z-40 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500 min-h-full">
               <div class="wa-link-prevue__icon-card-text px-4 text-center text-black text-sm">
                 <h3 v-if="response.title.length" class="font-hairline text-base" v-html="response.title"></h3>
@@ -173,7 +174,7 @@
             </div>
             <div :id="'wa-link-prevue__icon-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__icon-card-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__icon-card-text pt-2 top-0 bg-white w-full z-40 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
               <div class="wa-link-prevue__icon-card-text px-4 text-center text-black">
                 <h3 v-if="response.title.length" class="font-hairline" v-html="response.title"></h3>
@@ -230,10 +231,10 @@
             </div>
             <div :id="'wa-link-prevue__cloud-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__cloud-text flex flex-col pt-2 bottom-0 w-64 max-h-72 left-0 bg-white text-black z-50 shadow-black fixed shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__cloud-text flex flex-col pt-2 bottom-0 w-64 max-h-72 left-0 bg-white text-black z-40 shadow-black fixed shadow-xl px-4 text-center hidden
                          transition-all opacity-95 duration-500 shadow-xl-white">
               <div v-if="count" 
-                   class="wa-link-prevue__cloud-count absolute z-10 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 top-0 right-0 mr-2 mt-2 rounded-full">{{ count }}</div>	
+                   class="wa-link-prevue__cloud-count absolute z-0 bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 top-0 right-0 mr-2 mt-2 rounded-full">{{ count }}</div>	
               <div v-if="response.image != undefined" class="wa-link-prevue__cloud-img flex h-full w-full min-h-20 object-contain justify-center items-center">	
                 <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
               </div>
@@ -271,7 +272,7 @@
             </div>
             <div :id="'wa-link-prevue__cloud-info-' + index"
                   v-bind:class="[]"
-                  class="wa-link-prevue__cloud-text pt-2 top-0 bg-white w-full z-50 shadow-black absolute shadow-xl px-4 text-center hidden
+                  class="wa-link-prevue__cloud-text pt-2 top-0 bg-white w-full z-40 shadow-black absolute shadow-xl px-4 text-center hidden
                          transition-all duration-500">
               <div v-if="response.image != undefined" class="wa-link-prevue__cloud-img flex h-full w-1/3 min-h-20 object-contain justify-center items-center">	
                 <img :src="response.image" :alt="response.title" class="w-full h-full object-contain"/>
