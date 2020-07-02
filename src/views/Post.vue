@@ -3,7 +3,7 @@
     <div v-if="post && isAllLoaded" class="relative">
       <div class="taxonomies flex flex-col text-sm md:text-base mb-2">
         <!-- Categories -->
-        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-gray-600 pl-2">
+        <ul v-if="categoriesArr.length > 0" class="categoryUL mr-2 flex border-b-2 border-gray-600 pl-2 transform-translate-x-screen transition-all duration-300">
           <li v-for="category in categoriesArr" 
               :key="category.id" 
               class="categoryLI font-semibold mr-1 pr-2" 
@@ -17,7 +17,7 @@
         </ul>
         
         <!-- Tags -->
-        <ul v-if="tagsArr.length > 0" class="tagsUL flex flex-wrap pl-2">
+        <ul v-if="tagsArr.length > 0" class="tagsUL flex flex-wrap pl-2 transition-all duration-300 -transform-translate-x-screen">
           <li v-for="tag in tagsArr" :key="tag.id" class="tagLI mr-1 pr-2 font-semibold" :id="tag.slug" >
             <router-link :to="{name: 'Tag', params: { tagSlug: tag.slug }}"
                          :title="'Filter Posts by tag: ' + tag.name">
@@ -28,7 +28,9 @@
       </div>
 
       <!-- Featured Media -->
-      <div v-if="post._embedded['wp:featuredmedia'][0]" class="bg-black bg-opacity-25 mb-5 shadow-lg-white relative max-w-full">
+      <div v-if="post._embedded['wp:featuredmedia'][0]" 
+           id="featured-media" 
+           class="bg-black bg-opacity-25 mb-5 shadow-lg-white relative max-w-full -transform-translate-x-screen transition-all duration-300">
         <picture v-if="post._embedded['wp:featuredmedia'] != undefined">
                  <source v-if="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'] != undefined"
                          media="(min-width:1280px)" :srcset="post._embedded['wp:featuredmedia'][0].media_details.sizes['post_thumbnail_medium_large'].source_url">
@@ -42,42 +44,42 @@
                       class="wa-vuejs_post-card-featured min-h-64 sm:min-h-56 w-full object-cover flex rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden z-0">
         </picture>
         <div class="absolute w-full inset-x-0 top-0">
-          <h1 class="w-full text-white p-2 bg-opacity-90 bg-black z-50 tracking-wide">{{ post.title.rendered }}</h1>
+          <h1 class="w-full text-white py-1 px-4 bg-opacity-90 bg-black tracking-widest">{{ post.title.rendered }}</h1>
         </div>
       </div>
 
-      <div :class="[ isVideosLoaded || isGalleryLoaded ? 'lg:grid-cols-2 ' : '' ]" class="vuejs-post__media-content grid grid-cols-1 lg:gap-5">
+      <div id="media-content"
+           :class="[ isVideosLoaded || isGalleryLoaded ? 'lg:grid-cols-2 ' : '' ]" 
+           class="vuejs-post__media-content grid grid-cols-1 lg:gap-5">
         <div class="vuejs-post__media">
           <!-- Portfolio Videos -->
-          <transition name="fade" mode="out-in">
-            <div class="portfolio mt-3 mb-3"
+            <div id="video-media" 
+                 class="portfolio mt-3 mb-3 -transform-translate-x-screen transition-all duration-300"
                  v-if="isVideosLoaded">
               <wa-lightbox v-if="this.videos.length > 0"
                  v-bind:gallery="videos"
                  v-bind:effect="'fade'">
               </wa-lightbox>
             </div>
-          </transition>
 
           <!-- Portfolio Images -->
-          <transition name="fade" mode="out-in">
-            <div class="portfolio mt-3 mb-3"
+            <div id="gallery-media" 
+                 class="portfolio mt-3 mb-3 -transform-translate-x-screen transition-all duration-300"
                  v-if="isGalleryLoaded">
               <wa-lightbox v-if="this.gallery.length > 0"
                  v-bind:gallery="gallery"
                  v-bind:effect="'slide'">
               </wa-lightbox>
             </div>
-          </transition>
         </div>
 
-        <div class="content">
+        <div id="page-content" class="page-content transform-translate-x-screen transition-all duration-300">
           <!-- Description -->
-          <h3>Description</h3>
+          <h2>Description</h2>
           <div v-html="post.excerpt.rendered"></div>
       
           <!-- Content -->
-          <h3>Case Study</h3>
+          <h2>Case Study</h2>
           <div v-html="post.content.rendered"></div>
         </div>
       </div>
@@ -147,6 +149,16 @@ export default {
           this.catid = this.post.categories[0];
           this.getTags(this.post.tags);
           this.getCategories(this.post.categories);
+          if( this.post._embedded['wp:featuredmedia'][0] ){
+            setTimeout(() => {
+              var tagUL = document.getElementById('featured-media');
+              tagUL.classList.remove('-transform-translate-x-screen');
+            },5);
+          }
+          setTimeout(() => {
+            var pageContent = document.getElementById('page-content');
+            pageContent.classList.remove('transform-translate-x-screen');
+          },125);
         })
         .catch(e => {
           console.log(e);
@@ -165,6 +177,10 @@ export default {
           this.gallery = response.data;
           if(this.gallery.length > 0){
             this.isGalleryLoaded = true;
+            setTimeout(() => {
+              var galleryMedia = document.getElementById('gallery-media');
+              galleryMedia.classList.remove('-transform-translate-x-screen');
+            },25);
           }
         })
         .catch(e => {
@@ -182,6 +198,10 @@ export default {
           this.videos = response.data;
           if( this.videos.length > 0 ){
             this.isVideosLoaded = true;
+            setTimeout(() => {
+              var videoMedia = document.getElementById('video-media');
+              videoMedia.classList.remove('-transform-translate-x-screen');
+            },25);
           }
         })
         .catch(e => {
@@ -196,6 +216,12 @@ export default {
       tags.forEach((t) => {
         this.tagsArr.push( this.activeTag( t ) );
       });
+      if(this.allTagsLoaded){
+        setTimeout(() => {
+          var tagUL = document.getElementsByClassName('tagsUL')[0];
+          tagUL.classList.remove('-transform-translate-x-screen');
+        });
+      }
     },
 
     // Assign Categories JSON data to array
@@ -204,6 +230,12 @@ export default {
       cats.forEach((c) => {
           this.categoriesArr.push( this.activeCategory( c ) );
       });
+      if(this.allCategoriesLoaded){
+        setTimeout(() => {
+          var tagUL = document.getElementsByClassName('categoryUL')[0];
+          tagUL.classList.remove('transform-translate-x-screen');
+        });
+      }
     },
 
     setSeo: function(){

@@ -6,7 +6,7 @@
       <div>&nbsp;|&nbsp;</div>
       <slot :tag="tag">{{ tag.name }}</slot>
     </h1>
-    <wa-link-prevue class="mb-10" 
+    <wa-link-prevue class="-transform-translate-x-screen transition-all duration-300"
                     :url="tag.description" 
                     :title="tag.name" 
                     :index="tag.id"
@@ -17,7 +17,7 @@
 
     <!-- Posts -->
     <ul v-if="tagPostsLoaded" class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
-      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
+      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transform-translate-x-screen transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
         <router-link v-bind:tagid="tag.id" 
                      :to="post.slug"
                      :title="post.title.rendered"
@@ -99,6 +99,18 @@ export default {
         this.$store.dispatch('getTagPosts', { tagid: this.tag.id });
         this.prevSlug = this.tag.id;
         this.setSeo();
+      }
+      /* Slide In Posts */
+      if(this.tagPostsLoaded){
+        setTimeout(() => {
+          var items = document.getElementsByClassName('wa-vuejs__posts_li');
+          var items = document.getElementsByClassName('wa-vuejs__posts_li');
+          items.forEach( async function( item ){
+            var catEl = document.getElementsByClassName('wa-link-prevue-content')[0];
+            catEl.classList.remove("-transform-translate-x-screen");
+            item.classList.remove("transform-translate-x-screen");
+          });
+        },125);
       }
       return this.tagPosts( this.tag.id );
     },

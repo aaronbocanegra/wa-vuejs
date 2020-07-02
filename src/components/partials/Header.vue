@@ -4,14 +4,13 @@
           v-touch:swipe.right="swipeRight">
     <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
     <div v-if="logo_loaded" id="custom_logo" 
-         :class="[ $root.isSwipeMenu ? 'z-high' : '' ]"
          class="ml-5 mt-2 lg:mt-3 md:w-auto md:h-auto">
-      <router-link to="/" class="flex flex-row items-end md:items-center justify-center hover:text-white" 
+      <router-link to="/" class="flex flex-row items-end md:items-center justify-center text-blue-400 hover:text-white" 
                    :title="site_url">
         <img class="h-16 md:h-20 lg:h-24 object-contain"
           :src="this.allCustomLogo.image.src"
           :alt="this.allCustomLogo.site_name" />
-        <h1 class="px-2 md:px-5 text-xs sm:text-base lg:text-lg mb-0 tracking-wide">{{ $store.state.options.all.blogdescription }}</h1>
+        <h1 class="hidden sm:flex px-2 md:px-5 text-xs sm:text-base lg:text-lg mb-0 tracking-widest">{{ $store.state.options.all.blogdescription }}</h1>
       </router-link>
     </div>
     <!-- Main Navigation -->

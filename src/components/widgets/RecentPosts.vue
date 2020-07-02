@@ -6,7 +6,10 @@
     <div v-if="recentPostsLoaded">
       <!-- Posts -->
       <ul class="wa-vuejs__posts_ul min-h-64 sm:min-h-56 grid grid-cols-1 gap-10 z-0">
-        <li v-for="post in filteredPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
+        <li v-for="(post, index) in filteredPosts()" 
+            :key="post.id" 
+            :class="[ index %2 == 0 ? 'transform-translate-x-screen' : '-transform-translate-x-screen' ]"
+            class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
           <router-link :to="post.slug" 
                        :title="post.title.rendered"
                        class="w-full flex flex-row cursor-pointer h-full">
@@ -52,8 +55,7 @@
             <div class="px-1 line-height-8">Per Page</div>
             <input type="range" min="1" :max="numTotalPosts" step="1"
                    @change="setNumPages()" 
-                   v-model="$root.storedPostsPerPage"
-                   class="h-8 w-10 sm:w-20" /> 
+                   v-model="$root.storedPostsPerPage"/>
             <div v-text="$root.storedPostsPerPage" class="px-1 line-height-8"></div>
           </div>
         </li>
@@ -75,7 +77,7 @@
                 class="h-full leading-8 hover:bg-gray-800 shadow-inner">
               <a href="javascript:void(0)" 
                  :title="'Page-' + i"
-                 :class="[ i == pageNum ? 'text-black' : 'text-white' ]"
+                 :class="[ i == pageNum ? 'text-gray-500' : 'text-white' ]"
                  class="font-bold leading-8 text-xl px-2 h-full hover:text-black">{{ i }}</a>
             </li>
           </ul>
@@ -147,6 +149,16 @@ export default {
          this.$store.dispatch('getPosts', { limit: parseInt( this.perPage ), page: parseInt( this.pageNum ) });
          this.isPagesChanged = false;
        }
+       /* Slide In Posts */
+       if(this.recentPostsLoaded){
+         setTimeout(() => {
+           var items = document.getElementsByClassName('wa-vuejs__posts_li');
+           items.forEach( async function( item ){
+             item.classList.remove("transform-translate-x-screen");
+             item.classList.remove("-transform-translate-x-screen");
+           });
+         },125);             
+       }
        return this.recentPosts( parseInt( this.perPage ), parseInt( this.pageNum ) );
     },
 
@@ -169,6 +181,7 @@ export default {
     },
 
     switchPage: function(i){
+      event.preventDefault();
       if( i > 0 && i <= this.numPages ){
         this.$root.storedPostsPageNum = i;
         this.pageNum = this.$root.storedPostsPageNum;

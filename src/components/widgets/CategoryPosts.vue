@@ -12,7 +12,7 @@
         <div>{{ category.name }}</div>
       </slot>
     </h1>
-    <div class="wa-link-prevue-content w-full mb-10 relative">
+    <div class="wa-link-prevue-content w-full relative -transform-translate-x-screen transition-all duration-300">
       <div class="wa-vuejs-taxonomy__card-text px-4 w-full p-3 mb-6 bg-black bg-opacity-25 shadow-md-white relative">
         <div v-if="category.count" 
             class="wa-vuejs-taxonomy__card-count absolute bg-black bg-opacity-50 text-white px-2 line-height-3 text-xs py-1 right-0 mr-2 rounded-full">{{ category.count }}</div>
@@ -31,7 +31,7 @@
 
     <!-- Posts -->
     <ul v-if="categoryPostsLoaded" class="mb-5 min-h-64 sm:min-h-56 grid grid-cols-1 gap-10">
-      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
+      <li v-for="post in filterPosts()" :key="post.id" class="wa-vuejs__posts_li transform-translate-x-screen mx-1 hover:mx-0 transition-all duration-300 shadow-lg-white hover:shadow-xl-white">
         <router-link :to="post.slug"
                      :title="post.title.rendered"
                      class="w-full flex flex-row cursor-pointer h-full">
@@ -111,6 +111,18 @@ export default {
         this.$store.dispatch('getCategoryPosts', { catid: this.category.id });
         this.prevSlug = this.category.id;
         this.setSeo();
+      }
+      /* Slide In Posts */
+      if(this.categoryPostsLoaded){
+        setTimeout(() => {
+          var items = document.getElementsByClassName('wa-vuejs__posts_li');
+          var items = document.getElementsByClassName('wa-vuejs__posts_li');
+          items.forEach( async function( item ){
+            var catEl = document.getElementsByClassName('wa-link-prevue-content')[0];
+            catEl.classList.remove("-transform-translate-x-screen");
+            item.classList.remove("transform-translate-x-screen"); 
+          });
+        },125);
       }
       return this.categoryPosts( this.category.id );
     },
