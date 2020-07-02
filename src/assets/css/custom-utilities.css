@@ -1,4 +1,29 @@
 @variants responsive, hover, focus{
+  /** grid **/
+  .grid-col-auto-12{
+    grid-template-columns: repeat(auto-fill, minmax(min(3rem, 100%),1fr));
+  }
+  .grid-col-auto-16{
+    grid-template-columns: repeat(auto-fill, minmax(min(4rem, 100%),1fr));
+  }
+  .grid-col-auto-20{
+    grid-template-columns: repeat(auto-fill, minmax(min(5rem, 100%),1fr));
+  }
+  .grid-col-auto-24{
+    grid-template-columns: repeat(auto-fill, minmax(min(6rem, 100%),1fr));
+  }
+  .grid-col-auto-28{
+    grid-template-columns: repeat(auto-fill, minmax(min(7rem, 100%),1fr));
+  }
+  .grid-col-auto-32{
+    grid-template-columns: repeat(auto-fill, minmax(min(8rem, 100%),1fr));
+  }
+  .grid-col-auto-36{
+    grid-template-columns: repeat(auto-fill, minmax(min(9rem, 100%),1fr));
+  }
+  .grid-col-auto-40{
+    grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%),1fr));
+  }
   /** Top Right Bottom Left **/
   .right-full{
     right:100%;

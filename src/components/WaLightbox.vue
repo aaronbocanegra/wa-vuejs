@@ -38,7 +38,7 @@
            v-if="isLightbox"
            v-touch:swipe="swipeLightbox"
            v-bind:class="[isLightbox ? 'flex' : 'hidden']"
-           class="overlay fixed w-screen h-screen inset-0 bg-black bg-opacity-90 items-center justify-between z-max">
+           class="fixed w-screen h-screen inset-0 bg-black bg-opacity-90 items-center justify-between z-max">
         
         <!-- Previous -->
         <div id="swipe-left" class="z-max">
@@ -64,10 +64,10 @@
                v-if="toggleThumbnails" 
                v-bind:class="[toggleThumbnails ? 'flex' : 'hidden']"
                class="w-full justify-center">
-            <ul class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-1 p-3 ">
+            <ul class="grid grid-col-auto-28 md:grid-col-auto-24 lg:grid-col-auto-36 gap-1 w-full h-full p-3 justify-center items-center ">
               <li v-for="(item, index) in gallery" :key="item.id"
                   @click="switchLightbox(index)"
-                  class="relative cursor-pointer" >
+                  class="relative cursor-pointer flex justify-center item-center hover:m-1" >
                 <!-- Thumbnail -->
                 <img v-if="item.type == 'image'"
                      :src="item.thumbnail"
@@ -186,7 +186,7 @@
         <div class="wa-lightbox-toolbar fixed bg-black bg-opacity-50 top-0 right-0">
  
           <!-- Play Slideshow -->
-          <button type="button" 
+          <button v-if="!toggleThumbnails" type="button" 
                   title="Play slideshow" 
                   @click="toggleSlideshow()"
                   class="wa-lightbox-toolbar__btn">
@@ -216,7 +216,7 @@
           </button>
 
           <!-- Info -->
-          <button type="button" v-if="!this.isCurrentVideo"
+          <button type="button" v-if="!isCurrentVideo && !toggleThumbnails"
                   @click="toggleDesc();" 
                   class="wa-lightbox-toolbar__btn" 
                   title="Info">
@@ -421,12 +421,12 @@ export default {
     },
 
     toggleFullScreenMode: function() {
-      if(this.isFullScreenMode) {
+      this.isFullScreenMode = !this.isFullScreenMode;
+      if(!this.isFullScreenMode) {
         this.closeFullscreen()
       } else {
         this.fullScreenMode()
       }
-      this.isFullScreenMode = !this.isFullScreenMode
     },
 
     closeFullscreen: function() {

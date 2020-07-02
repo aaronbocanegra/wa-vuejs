@@ -4,7 +4,7 @@
           v-touch:swipe.right="swipeRight">
     <!-- Site Logo Pulled from Theme Custom_Logo *SVG Enabled--> 
     <div v-if="logo_loaded" id="custom_logo" 
-         class="ml-5 mt-2 lg:mt-3 md:w-auto md:h-auto">
+         class="ml-5 mt-2 lg:mt-3 md:w-auto md:h-auto -transform-translate-x-screen transition-all duration-300">
       <router-link to="/" class="flex flex-row items-end md:items-center justify-center text-blue-400 hover:text-white" 
                    :title="site_url">
         <img class="h-16 md:h-20 lg:h-24 object-contain"
@@ -14,7 +14,7 @@
       </router-link>
     </div>
     <!-- Main Navigation -->
-    <nav id="header-menu__nav">
+    <nav id="header-menu__nav" class="transform-translate-x-screen transition-all duration-300">
       <!-- Mobile Nav -->
       <div id="header-menu__mobile" class="block flex lg:hidden z-50">
         <button id="headerMobileButton"
@@ -161,7 +161,6 @@ export default {
       this.$store.getters.allCustomLogo;
       this.$store.getters.allCustomLogoLoaded;
       this.$store.dispatch('getAllCustomLogo');
-      this.allCustomLogoLoaded;
       return this.$store.state.customLogo.loaded;
     },
 
@@ -201,6 +200,18 @@ export default {
     },
 
     setIsActive: function(){
+      if(this.allCustomLogoLoaded){
+        setTimeout(() => {
+           var logo = document.getElementById('custom_logo');
+           logo.classList.remove('-transform-translate-x-screen');
+        },10);
+      }
+      if(this.allMenusLoaded){
+        setTimeout(() => {
+           var menu = document.getElementById('header-menu__nav');
+           menu.classList.remove('transform-translate-x-screen');
+        },10);
+      }
       // Add active class to active dropdown and toggle active hidden 
       var url = window.location.href;
       var mainActiveLink;
