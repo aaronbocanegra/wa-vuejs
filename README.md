@@ -6,6 +6,8 @@ wa-vuejs is a headless wordpress theme for Vuejs.
 The main APIs and Platforms used are:
 - [Wordpress](https://wordpress.org) with custom meta-boxes, menus, customizable theme - no plugins used
 - [Vuejs](https://vuejs.org/) with vuex, vue-router, vue-cli
+  - [Vuejs-GL](https://vue-gl.github.io/) 3D rendering with vue-gl
+  - [Three.js](https://threejs.org/) 3D rendering dependency
 - [Webpack](https://webpack.js.org/)
 - [Postcss](https://postcss.org/)
 - [Tailwindcss](https://tailwindcss.com/) Mobile First CSS
