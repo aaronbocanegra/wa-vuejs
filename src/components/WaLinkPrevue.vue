@@ -380,15 +380,17 @@ export default {
             this.urlExists = true;
             this.response = response.data;
             /* Slide In Posts */
-            setTimeout(() => {
-              var item = document.getElementById('wa-link-prevue__card-' + this.id);
-              item.classList.remove("opacity-0");
+            if( this.mode === 'cards'){
               setTimeout(() => {
                 var item = document.getElementById('wa-link-prevue__card-' + this.id);
-                item.classList.remove("transform-translate-x-screen");
-                item.classList.remove("-transform-translate-x-screen");
-              });
-            },125);
+                item.classList.remove("opacity-0");
+                setTimeout(() => {
+                  var item = document.getElementById('wa-link-prevue__card-' + this.id);
+                  item.classList.remove("transform-translate-x-screen");
+                  item.classList.remove("-transform-translate-x-screen");
+                });
+              },125);
+            }
           })
           .catch(e => {
             this.response = null;
@@ -432,7 +434,7 @@ export default {
     iconToggle: function() {
       this.isIconHover = !this.isIconHover;
       var el = document.getElementById('wa-link-prevue__icon-info-' + this.id);
-      if( this.isIconHover ){
+      if( this.isIconHover){
         el.classList.remove('hidden');
         setTimeout(() => {
           el.classList.remove('opacity-0');

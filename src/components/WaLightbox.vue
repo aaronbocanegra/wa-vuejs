@@ -51,7 +51,7 @@
                   title="Previous">
             <svg xmlns="http://www.w3.org/2000/svg" 
                  viewBox="0 0 24 24" 
-                 class="text-white hover:text-green-600 fill-current h-10">
+                 class="text-white hover:text-blue-800 fill-current h-10">
               <path d="M11.28 15.7l-1.34 1.37L5 12l4.94-5.07 1.34 1.38-2.68 2.72H19v1.94H8.6z"></path>
             </svg>
           </button>
@@ -175,7 +175,7 @@
                  title="Next">
              <svg xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 24 24"
-                  class="text-white fill-current hover:text-green-600 h-10">
+                  class="text-white fill-current hover:text-blue-800 h-10">
                <path d="M15.4 12.97l-2.68 2.72 1.34 1.38L19 12l-4.94-5.07-1.34 1.38 2.68 2.72H5v1.94z"></path>
              </svg>
           </button>
@@ -191,7 +191,7 @@
                   @click="toggleSlideshow()"
                   class="wa-lightbox-toolbar__btn">
             <svg v-if="!this.isSlideshowPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              class="h-10 fill-current text-white hover:text-green-600">
+              class="h-10 fill-current text-white hover:text-blue-800">
               <path d="M6.5 5.4v13.2l11-6.6z"></path>
             </svg>
             <!-- Pause Slideshow -->
@@ -206,7 +206,7 @@
           <!-- Show Thumbnails -->
           <button type="button" v-if="thumbnails" @click="showThumbs();" title="Show thumbnails" class="wa-lightbox-toolbar__btn">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                 class="h-10 fill-current text-white hover:text-green-600">
+                 class="h-10 fill-current text-white hover:text-blue-800">
               <path d="M14.59 14.59h3.76v3.76h-3.76v-3.76zm-4.47 
                     0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76v-3.76zm-4.47 
                     0h3.76v3.76h-3.76v-3.76zm-4.47 0h3.76v3.76H5.65v-3.76zm8.94-4.47h3.76v3.76h-3.76V5.65zm-4.47 
@@ -221,7 +221,7 @@
                   class="wa-lightbox-toolbar__btn" 
                   title="Info">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"
-                 class="h-10 border-0 fill-current text-white hover:text-green-600">
+                 class="h-10 border-0 fill-current text-white hover:text-blue-800">
               <defs>
                 <clipPath><path fill="#f2f2f2" d="m7 1023.36h1v1h-1z"/></clipPath>
                 <clipPath><path fill="#f2f2f2" d="m7 1023.36h1v1h-1z"/></clipPath>
@@ -245,7 +245,7 @@
                   class="wa-lightbox-toolbar__btn" 
                   title="Fullscreen">
             <svg  viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" 
-                 class="h-10 fill-current text-white hover:text-green-600">
+                 class="h-10 fill-current text-white hover:text-blue-800">
               <path d="M4.5 11H3v4h4v-1.5H4.5V11zM3 7h1.5V4.5H7V3H3v4zm10.5 6.5H11V15h4v-4h-1.5v2.5zM11 3v1.5h2.5V7H15V3h-4z"></path>
             </svg>
           </button>
@@ -257,7 +257,7 @@
                   class="wa-lightbox-toolbar__btn"> 
             <slot name="close">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
-                   class="h-10 fill-current text-white hover:text-green-600">
+                   class="h-10 fill-current text-white hover:text-blue-800">
                 <path d="M12 10.6L6.6 5.2 5.2 6.6l5.4 5.4-5.4 5.4 1.4 1.4 5.4-5.4 5.4 5.4 1.4-1.4-5.4-5.4 5.4-5.4-1.4-1.4-5.4 5.4z"></path>
               </svg>
             </slot>
